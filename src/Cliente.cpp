@@ -12,7 +12,7 @@ Cliente::Cliente(char *puerto, char* serverSocket){
 	cliente = socket(AF_INET, SOCK_STREAM, 0);
 
 	//Accept
-	sock = connect( cliente, (struct sockaddr *)&direccionServer, sizeof(direccionServer));
+	sock = connect( 3, (struct sockaddr *)&direccionServer, sizeof(direccionServer));
 
 	if (sock != 0){
 		perror("Acceptance Failed. Error");
@@ -20,33 +20,43 @@ Cliente::Cliente(char *puerto, char* serverSocket){
 		exit(-1);
 	}else{
 		puts("Connection Accepted");
-		puts("Connection Successful");
+
 	}
+	recv(cliente, name, 100, 0);
+	printf("%s\n", name);
+	fgets(name, 100, stdin);
+	send(cliente, name, strlen(name), 0);
+	bzero(name, 100);
 
 }
 
 Cliente::~Cliente(){
 
-	close(sock);
-	printf("Socket numero %d Closed\n", sock);
+	//close(sock);
+	//printf("Socket numero %d Closed\n", sock);
 
 }
 
 void Cliente::enviarMensaje(char reply[1000]){
 
-	printf("Client:\n");
 	bzero(reply, 1000);
 	fgets(reply, 1000, stdin);
+	//printf("Yo:\n");
 	send(cliente, reply, strlen(reply), 0);
 
 }
 
-void Cliente::recibirMensaje(char reply[1000]){
+void Cliente::recibirMensaje(char mensajeEntrada[1000]){
 
+	bzero(name, 1000);
 	bzero(reply, 1000);
-	recv(socketServidor, reply, 1000, 0);
-	printf("Server:\n");
-	printf("%s\n", reply);
-
+	recv(cliente, name, 100, 0);
+	//printf("%s\n", name);
+	recv(cliente, reply, 1000, 0);
+	//printf("%s\n", reply);
+	if(strlen(name) != 0){
+		printf("%s\n", name);
+		printf("%s\n", reply);
+	}
 
 }

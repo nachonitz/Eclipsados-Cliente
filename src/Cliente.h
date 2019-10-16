@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <thread>
 using namespace std;
 
 class Cliente {
@@ -22,6 +23,7 @@ private:
 	int sock;
 	int cliente;
 	char reply[1000];
+	char name[1000];
 	int socketServidor;
 
 };
