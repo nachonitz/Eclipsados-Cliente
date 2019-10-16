@@ -7,15 +7,16 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include <thread>
 using namespace std;
 
 class Cliente {
 public:
 	Cliente(char *puerto, char* serverSocket);
+	Cliente();
 	~Cliente();
 	void enviarMensaje(char replay[1000]);
 	void recibirMensaje(char replay[1000]);
+	void setPortAndSocket(char *puerto, char* serverSocket);
 
 private:
 	struct sockaddr_in direccionServer;
@@ -23,7 +24,6 @@ private:
 	int sock;
 	int cliente;
 	char reply[1000];
-	char name[1000];
 	int socketServidor;
 
 };
