@@ -1,9 +1,9 @@
-#include "../../../../eclipse-workspace/Cliente/Cliente/src/Cliente.h"
+#include "Cliente.h"
 
 
-Cliente::Cliente(char *puerto, char* serverSocket){
+Cliente::Cliente(char *puerto, char* serverSocket, char* userName){
 
-	setPortAndSocket(puerto, serverSocket);
+	setPortAndSocket(puerto, serverSocket, userName);
 
 }
 
@@ -20,26 +20,31 @@ Cliente::~Cliente(){
 
 void Cliente::enviarMensaje(char reply[1000]){
 
-	printf("Client:\n");
-	bzero(reply, 1000);
-	fgets(reply, 1000, stdin);
-	send(cliente, reply, strlen(reply), 0);
+
+	bzero(sHost.userName, 1000);
+	bzero(sHost.mrec, 1000);
+	strcat(sHost.userName, miUsuario);
+	printf("%s:\n", sHost.userName);
+	fgets(sHost.mrec, 1000, stdin);
+	send(cliente, &sHost, sizeof(struct rec), 0);
 
 }
 
 void Cliente::recibirMensaje(char reply[1000]){
 
-	bzero(reply, 1000);
-	recv(socketServidor, reply, 1000, 0);
-	printf("Server:\n");
-	printf("%s\n", reply);
+	bzero(sGuest.userName, 1000);
+	bzero(sGuest.mrec, 1000);
+	recv(socketServidor, &sGuest, sizeof(struct rec), 0);
+	printf("%s:\n", sGuest.userName);
+	printf("%s\n", sGuest.mrec);
 }
 
-void Cliente::setPortAndSocket(char *puerto, char* serverSocket){
+void Cliente::setPortAndSocket(char *puerto, char* serverSocket, char* userName){
 	direccionServer.sin_family = AF_INET;
-		direccionServer.sin_addr.s_addr = inet_addr("127.0.0.1");
-		direccionServer.sin_port = htons( atoi(puerto) );
-		socketServidor = atoi(serverSocket);
+	direccionServer.sin_addr.s_addr = inet_addr("127.0.0.1");
+	direccionServer.sin_port = htons( atoi(puerto) );
+	socketServidor = atoi(serverSocket);
+	miUsuario = userName;
 
 		c = sizeof(struct sockaddr_in);
 		cliente = socket(AF_INET, SOCK_STREAM, 0);
@@ -52,7 +57,7 @@ void Cliente::setPortAndSocket(char *puerto, char* serverSocket){
 			close(sock);
 			exit(-1);
 		}else{
-			puts("Connection Accepted");
+			puts("Accepting Connection...");
 			puts("Connection Successful");
 		}
 }
