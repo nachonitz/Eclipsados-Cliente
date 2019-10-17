@@ -1,8 +1,6 @@
 #include "Dibujador.h"
 #include "Logger.h"
 
-Dibujador::Dibujador();
-
 
 void Dibujador::inicializarNivel(char const* informacion){
 	//toDo Pasar de char* a la informacion posta

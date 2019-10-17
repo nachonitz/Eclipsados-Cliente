@@ -23,7 +23,6 @@ void Cliente::enviarMensaje(char reply[1000]){
 
 	bzero(sHost.userName, 1000);
 	bzero(sHost.mrec, 1000);
-	strcat(sHost.userName, miUsuario);
 	printf("%s:\n", sHost.userName);
 	fgets(sHost.mrec, 1000, stdin);
 	send(cliente, &sHost, sizeof(struct rec), 0);

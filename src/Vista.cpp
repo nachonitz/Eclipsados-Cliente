@@ -1,4 +1,4 @@
-#include "Vista.h"
+/*#include "Vista.h"
 #include "../Logger.h"
 
 Vista::Vista(Juego* modelo, Controlador* controlador, AsignadorDeTexturas& unAsignador) {
@@ -265,4 +265,4 @@ void Vista::loop() {
 
 	}
 }
-
+*/

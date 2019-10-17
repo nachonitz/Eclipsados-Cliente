@@ -1,4 +1,4 @@
-#include "Controlador.h"
+/*#include "Controlador.h"
 
 Controlador::Controlador(Juego* juego) {
 	// TODO Auto-generated constructor stub
@@ -294,3 +294,4 @@ bool Controlador::eventHandler(){
 	jugador->setAnimacionActual(accionActual, spriteFlip);
 	return running;
 }
+*/

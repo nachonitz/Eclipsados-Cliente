@@ -1,7 +1,16 @@
 #ifndef DIBUJADOR_H_
 #define DIBUJADOR_H_
 
-#include <vector.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+#include <iostream>
+#include <vector>
+
+struct informacion{
+	std::vector<struct animados> animados;
+	std::vector<struct estaticos> estaticos;
+	std::vector<struct capas> capas;
+};
 
 struct renderizable {
 	SDL_Texture* textura;
@@ -19,8 +28,7 @@ public:
 	void inicializarNivel(char const* informacion);
 	void actualizarPosiciones(char const* informacion);
 private:
-	vector <struct renderizable> enemigos;
-	vector <struct renderizable> elementos;
-	vector <struct renderizable> capas;
-	vector <struct renderizable> personajes;
+	struct informacion informacion;
 };
+
+#endif

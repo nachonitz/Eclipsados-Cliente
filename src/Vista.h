@@ -1,4 +1,4 @@
-#ifndef VISTA_H_
+/*#ifndef VISTA_H_
 #define VISTA_H_
 
 #include "../defs.h"
