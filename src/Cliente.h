@@ -11,12 +11,12 @@ using namespace std;
 
 class Cliente {
 public:
-	Cliente(char *puerto, char* serverSocket, char* userName);
+	Cliente(char *puerto, char* serverSocket);
 	Cliente();
 	~Cliente();
 	void enviarMensaje(char replay[1000]);
 	void recibirMensaje(char replay[1000]);
-	void setPortAndSocket(char *puerto, char* serverSocket, char* userName);
+	void setPortAndSocket(char *puerto, char* serverSocket);
 
 private:
 	struct sockaddr_in direccionServer;

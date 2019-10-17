@@ -22,7 +22,7 @@ int main(int argc, char *argv[]){
 	pthread_t hiloSendMessage;
 	pthread_t hiloRecieveMessage;
 
-	cliente.setPortAndSocket(argv[1], argv[2], argv[3]);
+	cliente.setPortAndSocket(argv[1], argv[2]);
 
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
