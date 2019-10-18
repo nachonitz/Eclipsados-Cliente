@@ -1,8 +1,11 @@
 #include "Cliente.h"
 #include <pthread.h>
+#include "Dibujador.h"
 
 Cliente cliente;
 char mensaje[1000];
+Dibujador dibujador;
+
 
 void* message_send(void*arg){
 	while(1){
@@ -12,7 +15,9 @@ void* message_send(void*arg){
 
 void* message_recieve(void*arg){
 	while(1){
-		cliente.recibirMensaje(mensaje);
+		//cliente.recibirMensaje(mensaje);
+		struct informacion info = cliente.recibirInformacion();
+		dibujador.dibujar(info);
 	}
 }
 
@@ -23,6 +28,8 @@ int main(int argc, char *argv[]){
 	pthread_t hiloRecieveMessage;
 
 	cliente.setPortAndSocket(argv[1], argv[2]);
+
+	dibujador.inicializar();
 
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);

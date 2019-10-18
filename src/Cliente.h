@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include "Dibujador.h"
 using namespace std;
 
 class Cliente {
@@ -16,6 +17,7 @@ public:
 	~Cliente();
 	void enviarMensaje(char replay[1000]);
 	void recibirMensaje(char replay[1000]);
+	struct informacion recibirInformacion();
 	void setPortAndSocket(char *puerto, char* serverSocket);
 
 private:

@@ -5,29 +5,43 @@
 #include "SDL2/SDL_image.h"
 #include <iostream>
 #include <vector>
+#include "defs.h"
 
-struct informacion{
-	std::vector<struct animados> animados;
-	std::vector<struct estaticos> estaticos;
-	std::vector<struct capas> capas;
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+//#include "cody.h"
+struct animado{
+	SDL_Texture* txt;
+	SDL_Rect dest;
+	SDL_Rect src;
+	SDL_RendererFlip flip;
 };
 
-struct renderizable {
-	SDL_Texture* textura;
-	SDL_Rect source;
-	SDL_Rect destination;
-	SDL_RendererFlip flip;
-	bool operator < (const renderizable& a) const {
+struct elemento{
+	SDL_Texture* txt;
+	SDL_Rect dest;
+	SDL_Rect src;
+};
 
-		return (destination.y + destination.h) < (a.destination.y + a.destination.h);
-	    }
-} ;
+struct capa{
+	SDL_Texture* txt;
+	SDL_Rect dest;
+	SDL_Rect src;
+};
+
+struct informacion{
+	std::vector<struct animado> animados;
+	std::vector<struct elemento> elementos;
+	std::vector<struct capa> capas;
+};
 
 class Dibujador {
 public:
-	void inicializarNivel(char const* informacion);
-	void actualizarPosiciones(char const* informacion);
+	void inicializar();
+	void dibujar(struct informacion info);
 private:
+	SDL_Renderer* ren;
+	SDL_Window* win;
 	struct informacion informacion;
 };
 
