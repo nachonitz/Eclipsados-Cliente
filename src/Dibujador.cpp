@@ -12,13 +12,18 @@ void Dibujador::inicializar(){
 
 	SDL_SetWindowTitle(win, "Final Fight");
 
+	setearCapas();
 }
 
 void Dibujador::dibujar(struct informacion info){
 	//toDo Pasar de char* a las posiciones
+
+	frameStart=SDL_GetTicks();
+	static int lastTime;
+
 	SDL_RenderClear(ren);
 
-	setearCapas();
+	//setearCapas();
 
 	SDL_RenderCopy(ren, tex3, &info.elementos[2].src, &info.elementos[2].dest);
 	SDL_RenderCopy(ren, tex2, &info.elementos[1].src, &info.elementos[1].dest);
@@ -31,14 +36,17 @@ void Dibujador::dibujar(struct informacion info){
 		SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
 	}
 	renderizables.clear();
-	*/
+
+	if(frameDelay > lastTime){
+		SDL_Delay(frameDelay - lastTime);
+	}*/
 }
 
 void Dibujador::setearCapas(){
 
-SDL_Surface* surfCapa1 = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
-SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
-SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
+	SDL_Surface* surfCapa1 = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
+	SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
+	SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
 
 	/*if (surf == nullptr) {
 
