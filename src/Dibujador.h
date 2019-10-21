@@ -34,13 +34,15 @@ struct informacion{
 	//vector<struct elemento> elementos;
 	//vector<struct capa> capas;
 	struct elemento elementos[3];
+	struct animado animados[9];
+	int cantAnimados;
 };
 
 class Dibujador {
 public:
 	void inicializar();
 	void dibujar(struct informacion info);
-	void setearCapas();
+	void setearTexturas();
 private:
 	int FPS = 60;
 	int frameCount;
@@ -50,6 +52,8 @@ private:
 	SDL_Texture* tex1;
 	SDL_Texture* tex2;
 	SDL_Texture* tex3;
+	SDL_Texture* texCody;
+	SDL_Texture* texEnemigo;
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacion informacion;
