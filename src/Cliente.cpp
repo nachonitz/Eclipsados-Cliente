@@ -1,9 +1,9 @@
 #include "Cliente.h"
 
 
-Cliente::Cliente(char *puerto, char* serverSocket){
+Cliente::Cliente(char *puerto){
 
-	setPortAndSocket(puerto, serverSocket);
+	setPortAndSocket(puerto);
 
 }
 
@@ -31,25 +31,24 @@ void Cliente::enviarMensaje(char reply[1000]){
 
 void Cliente::recibirMensaje(char reply[1000]){
 
-	//bzero(sGuest.userName, 1000);
-	//bzero(sGuest.mrec, 1000);
-	//recv(socketServidor, &sGuest, sizeof(struct rec), 0);
-	//printf("%s:\n", sGuest.userName);
-	//printf("%s\n", sGuest.mrec);
+	bzero(sGuest.userName, 1000);
+	bzero(sGuest.mrec, 1000);
+	recv(cliente, &sGuest, sizeof(struct rec), 0);
+	printf("%s:\n", sGuest.userName);
+	printf("%s\n", sGuest.mrec);
 
 }
 
 struct informacion Cliente::recibirInformacion(){
 	struct informacion info;
-	recv(socketServidor, &info, sizeof(struct informacion), 0);
+	recv(cliente, &info, sizeof(struct informacion), 0);
 	return info;
 }
 
-void Cliente::setPortAndSocket(char *puerto, char* serverSocket){
+void Cliente::setPortAndSocket(char *puerto){
 	direccionServer.sin_family = AF_INET;
 	direccionServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	direccionServer.sin_port = htons( atoi(puerto) );
-	socketServidor = atoi(serverSocket);
 
 		c = sizeof(struct sockaddr_in);
 		cliente = socket(AF_INET, SOCK_STREAM, 0);

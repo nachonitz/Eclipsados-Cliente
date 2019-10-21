@@ -27,9 +27,11 @@ int main(int argc, char *argv[]){
 	pthread_t hiloSendMessage;
 	pthread_t hiloRecieveMessage;
 
-	cliente.setPortAndSocket(argv[1], argv[2]);
+	cliente.setPortAndSocket(argv[1]);
 
 	dibujador.inicializar();
+
+	cliente.recibirMensaje(mensaje);
 
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);

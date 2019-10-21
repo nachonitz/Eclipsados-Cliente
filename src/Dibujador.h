@@ -11,20 +11,20 @@
 #include "SDL2/SDL_image.h"
 //#include "cody.h"
 struct animado{
-	SDL_Texture* txt;
+	//SDL_Texture* txt;
 	SDL_Rect dest;
 	SDL_Rect src;
 	SDL_RendererFlip flip;
 };
 
 struct elemento{
-	SDL_Texture* txt;
+	//SDL_Texture* txt;
 	SDL_Rect dest;
 	SDL_Rect src;
 };
 
 struct capa{
-	SDL_Texture* txt;
+	//SDL_Texture* txt;
 	SDL_Rect dest;
 	SDL_Rect src;
 };
@@ -39,7 +39,9 @@ class Dibujador {
 public:
 	void inicializar();
 	void dibujar(struct informacion info);
+	void setearCapas();
 private:
+	SDL_Texture* tex;
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacion informacion;

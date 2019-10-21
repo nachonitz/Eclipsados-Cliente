@@ -12,13 +12,13 @@ using namespace std;
 
 class Cliente {
 public:
-	Cliente(char *puerto, char* serverSocket);
+	Cliente(char *puerto);
 	Cliente();
 	~Cliente();
 	void enviarMensaje(char replay[1000]);
 	void recibirMensaje(char replay[1000]);
 	struct informacion recibirInformacion();
-	void setPortAndSocket(char *puerto, char* serverSocket);
+	void setPortAndSocket(char *puerto);
 
 private:
 	struct sockaddr_in direccionServer;
