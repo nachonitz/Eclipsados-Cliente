@@ -42,6 +42,8 @@ void Cliente::recibirMensaje(char reply[1000]){
 struct informacion Cliente::recibirInformacion(){
 	struct informacion info;
 	recv(cliente, &info, sizeof(struct informacion), 0);
+	//recv(cliente, &sGuest.mrec,strlen(sGuest.mrec),0);
+	//printf("%s",sGuest.mrec);
 	return info;
 }
 

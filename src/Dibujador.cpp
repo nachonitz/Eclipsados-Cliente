@@ -20,13 +20,11 @@ void Dibujador::dibujar(struct informacion info){
 
 	setearCapas();
 
-	if(info.capas.size()){
-		SDL_RenderCopy(ren, tex, &info.capas[0].src, &info.capas[0].dest);
-		SDL_RenderCopy(ren, tex, &info.capas[1].src, &info.capas[1].dest);
-		SDL_RenderCopy(ren, tex, &info.capas[2].src, &info.capas[2].dest);
+	SDL_RenderCopy(ren, tex3, &info.elementos[2].src, &info.elementos[2].dest);
+	SDL_RenderCopy(ren, tex2, &info.elementos[1].src, &info.elementos[1].dest);
+	SDL_RenderCopy(ren, tex1, &info.elementos[0].src, &info.elementos[0].dest);
+	SDL_RenderPresent(ren);
 
-		SDL_RenderPresent(ren);
-	}
 	/*
 	std::sort(renderizables.begin(), renderizables.end());
 	for (uint i = 0; i < renderizables.size(); i++) {
@@ -38,8 +36,9 @@ void Dibujador::dibujar(struct informacion info){
 
 void Dibujador::setearCapas(){
 
-SDL_Surface* surf = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
-
+SDL_Surface* surfCapa1 = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
+SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
+SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
 
 	/*if (surf == nullptr) {
 
@@ -54,6 +53,8 @@ SDL_Surface* surf = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
 	    Logger::getInstance()->log(ERROR, "No se encuentra el sprite para capa, se mostrara una textura erronea.");
 	}
 	else*/
-		tex = SDL_CreateTextureFromSurface(ren, surf);
+		tex1 = SDL_CreateTextureFromSurface(ren, surfCapa1);
+		tex2 = SDL_CreateTextureFromSurface(ren, surfCapa2);
+		tex3 = SDL_CreateTextureFromSurface(ren, surfCapa3);
 
 }

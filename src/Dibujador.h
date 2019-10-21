@@ -30,9 +30,10 @@ struct capa{
 };
 
 struct informacion{
-	std::vector<struct animado> animados;
-	std::vector<struct elemento> elementos;
-	std::vector<struct capa> capas;
+	//vector<struct animado> animados;
+	//vector<struct elemento> elementos;
+	//vector<struct capa> capas;
+	struct elemento elementos[100];
 };
 
 class Dibujador {
@@ -41,7 +42,9 @@ public:
 	void dibujar(struct informacion info);
 	void setearCapas();
 private:
-	SDL_Texture* tex;
+	SDL_Texture* tex1;
+	SDL_Texture* tex2;
+	SDL_Texture* tex3;
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacion informacion;
