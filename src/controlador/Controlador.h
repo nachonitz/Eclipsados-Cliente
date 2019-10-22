@@ -1,16 +1,23 @@
-/*#ifndef CONTROLADOR_H_
+#ifndef CONTROLADOR_H_
 #define CONTROLADOR_H_
 
-
-#include "../modelo/Juego.h"
+#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "../defs.h"
+
+struct informacionEnv{
+	int animacionActual;
+	int movimiento;
+	SDL_RendererFlip flip;
+};
+
 
 class Controlador {
 public:
-	Controlador(Juego* juego);
+	Controlador();
 	~Controlador();
-	bool eventHandler();
+	struct informacionEnv eventHandler();
 
 	void setAccionActual(int acActual);
 	void setAcciones(int c, int p, int s, int sPatada, int g, int a, int sV);
@@ -22,8 +29,6 @@ public:
 	void preparoSalto(int tipoDeSalto, int setAction);
 
 private:
-	Juego* juego;
-	Personaje* jugador;
 	SDL_Event e;
 	SDL_RendererFlip spriteFlip;
 	SDL_Joystick* gameController;
@@ -47,6 +52,8 @@ private:
 	int x_move;
 	int y_move;
 	bool teclado;
+	struct informacionEnv infoEnv;
+	int der, izq, up, down;
 };
 
 #endif /* CONTROLADOR_H_ */

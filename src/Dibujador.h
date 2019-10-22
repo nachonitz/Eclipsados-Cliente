@@ -29,10 +29,7 @@ struct capa{
 	SDL_Rect src;
 };
 
-struct informacion{
-	//vector<struct animado> animados;
-	//vector<struct elemento> elementos;
-	//vector<struct capa> capas;
+struct informacionRec{
 	struct elemento elementos[15];
 	struct capa capas[3];
 	struct animado animados[9];
@@ -40,10 +37,11 @@ struct informacion{
 	int cantElementos;
 };
 
+
 class Dibujador {
 public:
 	void inicializar();
-	void dibujar(struct informacion info);
+	void dibujar(struct informacionRec info);
 	void setearTexturas();
 private:
 	int FPS = 60;
@@ -59,7 +57,7 @@ private:
 	SDL_Texture* texElemento;
 	SDL_Renderer* ren;
 	SDL_Window* win;
-	struct informacion informacion;
+	struct informacionRec informacion;
 };
 
 #endif

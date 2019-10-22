@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "Dibujador.h"
+#include "controlador/Controlador.h"
 using namespace std;
 
 class Cliente {
@@ -15,9 +16,9 @@ public:
 	Cliente(char *puerto);
 	Cliente();
 	~Cliente();
-	void enviarMensaje(char replay[1000]);
 	void recibirMensaje(char replay[1000]);
-	struct informacion recibirInformacion();
+	void enviarInformacion(struct informacionEnv info);
+	struct informacionRec recibirInformacion();
 	void setPortAndSocket(char *puerto);
 
 private:

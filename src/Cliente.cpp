@@ -18,14 +18,9 @@ Cliente::~Cliente(){
 
 }
 
-void Cliente::enviarMensaje(char reply[1000]){
+void Cliente::enviarInformacion(struct informacionEnv infoEnv){
 
-
-	bzero(sHost.userName, 1000);
-	bzero(sHost.mrec, 1000);
-	printf("%s:\n", sHost.userName);
-	fgets(sHost.mrec, 1000, stdin);
-	send(cliente, &sHost, sizeof(struct rec), 0);
+	send(cliente, &infoEnv, sizeof(struct informacionEnv), 0);
 
 }
 
@@ -39,17 +34,15 @@ void Cliente::recibirMensaje(char reply[1000]){
 
 }
 
-struct informacion Cliente::recibirInformacion(){
-	struct informacion info;
+struct informacionRec Cliente::recibirInformacion(){
+	struct informacionRec infoRec;
+
 	int infoRecibida = 0;
-	while (infoRecibida < sizeof(struct informacion)){
-		int recibido = recv(cliente, &info, sizeof(struct informacion), 0);
+	while (infoRecibida < sizeof(struct informacionRec)){
+		int recibido = recv(cliente, &infoRec, sizeof(struct informacionRec), 0);
 		infoRecibida += recibido;
 	}
-
-	//recv(cliente, &sGuest.mrec,strlen(sGuest.mrec),0);
-	//printf("%s",sGuest.mrec);
-	return info;
+	return infoRec;
 }
 
 void Cliente::setPortAndSocket(char *puerto){

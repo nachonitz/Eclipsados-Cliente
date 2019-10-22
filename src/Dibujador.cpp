@@ -15,7 +15,7 @@ void Dibujador::inicializar(){
 	setearTexturas();
 }
 
-void Dibujador::dibujar(struct informacion info){
+void Dibujador::dibujar(struct informacionRec info){
 	//toDo Pasar de char* a las posiciones
 
 	//frameStart=SDL_GetTicks();
