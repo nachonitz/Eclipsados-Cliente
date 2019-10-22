@@ -24,13 +24,15 @@ void Dibujador::dibujar(struct informacion info){
 
 	SDL_RenderClear(ren);
 
-	SDL_RenderCopy(ren, tex3, &info.elementos[2].src, &info.elementos[2].dest);
-	SDL_RenderCopy(ren, tex2, &info.elementos[1].src, &info.elementos[1].dest);
-	SDL_RenderCopy(ren, tex1, &info.elementos[0].src, &info.elementos[0].dest);
+	SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
+	SDL_RenderCopy(ren, tex2, &info.capas[1].src, &info.capas[1].dest);
+	SDL_RenderCopy(ren, tex1, &info.capas[0].src, &info.capas[0].dest);
 	SDL_RenderCopyEx(ren, texCody, &info.animados[0].src, &info.animados[0].dest, 0, NULL, info.animados[0].flip);
-	for(int i = 1; i == info.cantAnimados; i++){
+	for(int i = 1; i < (info.cantAnimados); i++){
 		SDL_RenderCopyEx(ren, texEnemigo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
-		i ++;
+	}
+	for(int i = 0; i < (info.cantElementos); i++){
+		SDL_RenderCopy(ren, texElemento, &info.elementos[i].src, &info.elementos[i].dest);
 	}
 	SDL_RenderPresent(ren);
 
@@ -52,7 +54,8 @@ void Dibujador::setearTexturas(){
 	SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
 	SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
 	SDL_Surface* surfCody = IMG_Load("../sprites/SpriteCodyCompleto-120x120.png");
-	SDL_Surface* surfEnemigo = IMG_Load("../sprites/Dug.png");
+	SDL_Surface* surfEnemigo = IMG_Load("../sprites/AndoreJr.png");
+	SDL_Surface* surfElemento = IMG_Load("../sprites/objetos_varios.png");
 
 	/*if (surf == nullptr) {
 
@@ -72,5 +75,6 @@ void Dibujador::setearTexturas(){
 		tex3 = SDL_CreateTextureFromSurface(ren, surfCapa3);
 		texCody = SDL_CreateTextureFromSurface(ren, surfCody);
 		texEnemigo = SDL_CreateTextureFromSurface(ren, surfEnemigo);
+		texElemento = SDL_CreateTextureFromSurface(ren, surfElemento);
 
 }

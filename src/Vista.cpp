@@ -79,7 +79,6 @@ void Vista::inicializarVistaParaNivel(){
 //-->> Ojo que no todos van a tener las mismas dimensiones (source y dest cambian de acuredo al obj)
 // -> solucion: cada objeto setea su source y se le pide el ancho y el alto para dibujarlo
 		dibujable->setDest(posicionX, posicionY, dibujable->getWidth(),dibujable->getHeight());
-		//dibujable->setSource(200, 190, 100, 100);
 	}
 	srand(time(NULL));
 	for (uint i = 0; i < enemigos.size(); i++) {

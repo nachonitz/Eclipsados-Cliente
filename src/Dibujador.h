@@ -33,9 +33,11 @@ struct informacion{
 	//vector<struct animado> animados;
 	//vector<struct elemento> elementos;
 	//vector<struct capa> capas;
-	struct elemento elementos[3];
+	struct elemento elementos[15];
+	struct capa capas[3];
 	struct animado animados[9];
 	int cantAnimados;
+	int cantElementos;
 };
 
 class Dibujador {
@@ -54,6 +56,7 @@ private:
 	SDL_Texture* tex3;
 	SDL_Texture* texCody;
 	SDL_Texture* texEnemigo;
+	SDL_Texture* texElemento;
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacion informacion;
