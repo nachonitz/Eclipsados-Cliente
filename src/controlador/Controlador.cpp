@@ -4,18 +4,16 @@ Controlador::Controlador() {
 	// TODO Auto-generated constructor stub
 	/*this->juego = juego;
 	jugador = juego->getJugador();*/
+	this->setAcciones(ACCION_CAMINAR, ACCION_PARADO, ACCION_SALTO, ACCION_SALTO_PATADA, ACCION_GOLPEAR, ACCION_AGACHADO, ACCION_SALTO_VERTICAL);
 	spriteFlip = SDL_FLIP_NONE;
+	infoEnv.animacionActual = parado;
 	infoEnv.flip = spriteFlip;
+	infoEnv.movimiento = STAND;
 	saltando = false;
 	golpeando = false;
 	agachando = false;
 	gameController = NULL;
 	teclado = true;
-
-	der = 0;
-	izq = 1;
-	up = 2;
-	down = 3;
 
 	SDL_Init(SDL_INIT_JOYSTICK);
 
@@ -77,7 +75,7 @@ void Controlador::resetearAnimaciones(){
 
 void Controlador::moviendoDerecha(int setAction){
 	//juego->movimientoDerecha(); mandar al servidor que se mueva a la derecha
-	infoEnv.movimiento = der;
+	infoEnv.movimiento = RIGHT;
 	spriteFlip = SDL_FLIP_NONE;
 	infoEnv.flip = spriteFlip;
 	if(accionActual != setAction){
@@ -91,7 +89,7 @@ void Controlador::moviendoDerecha(int setAction){
 
 void Controlador::moviendoIzquierda(int setAction){
 	//juego->movimientoIzquierda(); mandar al servidro que se mueva a la izquierda
-	infoEnv.movimiento = izq;
+	infoEnv.movimiento = LEFT;
 	spriteFlip = SDL_FLIP_HORIZONTAL;
 	infoEnv.flip = spriteFlip;
 	if(accionActual != setAction){
@@ -122,7 +120,7 @@ void Controlador::verificarJoystick(){
 	//Up of dead zone
 	if( y_move > JOYSTICK_DEAD_ZONE && !golpeando && !agachando ){
 	   	//juego->movimientoAbajo();	mandar a servidor que mueva para abajo
-		infoEnv.movimiento = down;
+		infoEnv.movimiento = DOWN;
 	   	teclado = false;
 	   	if(accionActual != caminar){
 	   		/*jugador->setAnimacionActual(caminar, spriteFlip);
@@ -135,7 +133,7 @@ void Controlador::verificarJoystick(){
 	//Down of dead zone
 	if( y_move < -JOYSTICK_DEAD_ZONE && !golpeando && !agachando ){
 		// juego->movimientoArriba();	mandar al servidor q mueva para arriba
-		infoEnv.movimiento = up;
+		infoEnv.movimiento = UP;
 		teclado = false;
 		if(accionActual != caminar){
 			/*jugador->setAnimacionActual(caminar, spriteFlip);
@@ -151,6 +149,7 @@ void Controlador::verificarJoystick(){
 		accionActual = parado;
 		infoEnv.animacionActual = accionActual;
 		infoEnv.flip = spriteFlip;
+		infoEnv.movimiento = STAND;
 	}
 
 }
@@ -216,7 +215,7 @@ struct informacionEnv Controlador::eventHandler(){
 		if(keystates[SDL_SCANCODE_UP] && !golpeando && !agachando) {
 			teclado = true;
 			//juego->movimientoArriba();	decirle al servidor que mueva para arriba
-			infoEnv.movimiento = up;
+			infoEnv.movimiento = UP;
 			if(accionActual != caminar){
 				/*jugador->setAnimacionActual(caminar, spriteFlip);
 				mandar al servidor que updatee la animacion */
@@ -229,7 +228,7 @@ struct informacionEnv Controlador::eventHandler(){
 		if(keystates[SDL_SCANCODE_DOWN] && !golpeando && !agachando) {
 			teclado = true;
 			//juego->movimientoAbajo();	avisarle al servidor que se mueva para abajo
-			infoEnv.movimiento = down;
+			infoEnv.movimiento = DOWN;
 			if(accionActual != caminar){
 				/*jugador->setAnimacionActual(caminar, spriteFlip);
 				mandar al servidor que updatee la animacion */
@@ -320,6 +319,7 @@ struct informacionEnv Controlador::eventHandler(){
 			accionActual = parado;
 			infoEnv.animacionActual = accionActual;
 			infoEnv.flip = spriteFlip;
+			infoEnv.movimiento = STAND;
 		}
 
 		return infoEnv;
@@ -338,9 +338,9 @@ struct informacionEnv Controlador::eventHandler(){
 		switch(tipoSalto){
 			case SALTO_VERTICAL: return infoEnv;				//Salta en vertical
 			break;
-			case SALTO_DERECHA: infoEnv.movimiento = der; 	//juego->movimientoDerecha();	servidor mover derecha
+			case SALTO_DERECHA: infoEnv.movimiento = RIGHT; 	//juego->movimientoDerecha();	servidor mover derecha
 			break;
-			case SALTO_IZQUIERDA: infoEnv.movimiento = izq; //juego->movimientoIzquierda();	servidor mover izquierda
+			case SALTO_IZQUIERDA: infoEnv.movimiento = LEFT; //juego->movimientoIzquierda();	servidor mover izquierda
 			break;
 		}
 		return infoEnv;
@@ -350,6 +350,7 @@ struct informacionEnv Controlador::eventHandler(){
 	accionActual = parado;
 	infoEnv.animacionActual = accionActual;
 	infoEnv.flip = spriteFlip;
+	infoEnv.movimiento = STAND;
 	/*jugador->setAnimacionActual(accionActual, spriteFlip);	mandar al servidor que updatee la animacion */
 	return infoEnv;
 }

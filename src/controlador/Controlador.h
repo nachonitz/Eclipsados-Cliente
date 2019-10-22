@@ -53,7 +53,6 @@ private:
 	int y_move;
 	bool teclado;
 	struct informacionEnv infoEnv;
-	int der, izq, up, down;
 };
 
 #endif /* CONTROLADOR_H_ */
