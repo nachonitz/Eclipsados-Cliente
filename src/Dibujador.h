@@ -44,9 +44,8 @@ public:
 	void dibujar(struct informacionRec info);
 	void setearTexturas();
 private:
-	int FPS = 60;
+
 	int frameCount;
-	int frameDelay = 1000/FPS;
 	int timerFPS;
 	Uint32 frameStart;
 	SDL_Texture* tex1;

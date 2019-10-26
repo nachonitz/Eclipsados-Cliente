@@ -21,7 +21,6 @@ void Dibujador::dibujar(struct informacionRec info){
 	//frameStart=SDL_GetTicks();
 	//static int lastTime;
 
-
 	SDL_RenderClear(ren);
 
 	SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
