@@ -53,7 +53,10 @@ int main(int argc, char *argv[]){
 
 	controlador = new Controlador();
 
-	cliente.setPortAndSocket(argv[1]);
+	if (argc >= 3)
+		cliente.setPortAndIP(argv[1], argv[2]);
+	else
+		cliente.setPortAndIP(argv[1], "127.0.0.1");
 
 	dibujador.inicializar();
 

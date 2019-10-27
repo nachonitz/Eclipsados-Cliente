@@ -19,7 +19,7 @@ public:
 	void recibirMensaje(char replay[1000]);
 	void enviarInformacion(struct informacionEnv info);
 	struct informacionRec recibirInformacion();
-	void setPortAndSocket(char *puerto);
+	void setPortAndIP(char *puerto, std::string ip);
 
 private:
 	struct sockaddr_in direccionServer;

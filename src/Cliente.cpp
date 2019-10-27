@@ -3,7 +3,7 @@
 
 Cliente::Cliente(char *puerto){
 
-	setPortAndSocket(puerto);
+	setPortAndIP(puerto, "127.0.0.1");
 
 }
 
@@ -45,9 +45,9 @@ struct informacionRec Cliente::recibirInformacion(){
 	return infoRec;
 }
 
-void Cliente::setPortAndSocket(char *puerto){
+void Cliente::setPortAndIP(char *puerto, std::string ip){
 	direccionServer.sin_family = AF_INET;
-	direccionServer.sin_addr.s_addr = inet_addr("127.0.0.1");
+	direccionServer.sin_addr.s_addr = inet_addr(ip.c_str());
 	direccionServer.sin_port = htons( atoi(puerto) );
 
 		c = sizeof(struct sockaddr_in);
