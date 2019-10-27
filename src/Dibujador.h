@@ -35,6 +35,7 @@ struct informacionRec{
 	struct animado animados[9];
 	int cantAnimados;
 	int cantElementos;
+	int cantJugadores;
 };
 
 

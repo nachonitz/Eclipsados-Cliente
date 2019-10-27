@@ -26,10 +26,14 @@ void Dibujador::dibujar(struct informacionRec info){
 	SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
 	SDL_RenderCopy(ren, tex2, &info.capas[1].src, &info.capas[1].dest);
 	SDL_RenderCopy(ren, tex1, &info.capas[0].src, &info.capas[0].dest);
-	SDL_RenderCopyEx(ren, texCody, &info.animados[0].src, &info.animados[0].dest, 0, NULL, info.animados[0].flip);
-	for(int i = 1; i < (info.cantAnimados); i++){
+
+	for(int i = 0; i < (info.cantJugadores); i++){
+		SDL_RenderCopyEx(ren, texCody, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+	}
+	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
 		SDL_RenderCopyEx(ren, texEnemigo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
 	}
+
 	for(int i = 0; i < (info.cantElementos); i++){
 		SDL_RenderCopy(ren, texElemento, &info.elementos[i].src, &info.elementos[i].dest);
 	}

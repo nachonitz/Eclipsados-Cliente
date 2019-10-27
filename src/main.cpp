@@ -8,8 +8,7 @@ char mensaje[1000];
 Dibujador dibujador;
 Controlador* controlador;
 queue <struct informacionRec> colaInfoRecibida;
-pthread_mutex_t mutexPush;
-pthread_mutex_t mutexPop;
+pthread_mutex_t mutexQueue;
 
 
 void* message_send(void*arg){
@@ -24,18 +23,18 @@ void* message_send(void*arg){
 void* message_recieve(void*arg){
 	while(1){
 		struct informacionRec info = cliente.recibirInformacion();
-		pthread_mutex_lock(&mutexPush);
+		pthread_mutex_lock(&mutexQueue);
 		colaInfoRecibida.push(info);
-		pthread_mutex_unlock(&mutexPush);
+		pthread_mutex_unlock(&mutexQueue);
 	}
 }
 
 void* render_vista(void*arg){
 	while(1){
 		if(!colaInfoRecibida.empty()){
-			pthread_mutex_lock(&mutexPop);
+			pthread_mutex_lock(&mutexQueue);
 			struct informacionRec info = colaInfoRecibida.front();
-			pthread_mutex_unlock(&mutexPop);
+			pthread_mutex_unlock(&mutexQueue);
 
 			dibujador.dibujar(info);
 			colaInfoRecibida.pop();
@@ -50,8 +49,7 @@ int main(int argc, char *argv[]){
 	pthread_t hiloRecieveMessage;
 	pthread_t hiloRender;
 
-	pthread_mutex_init(&mutexPop,NULL);
-	pthread_mutex_init(&mutexPush,NULL);
+	pthread_mutex_init(&mutexQueue,NULL);
 
 	controlador = new Controlador();
 
@@ -59,7 +57,7 @@ int main(int argc, char *argv[]){
 
 	dibujador.inicializar();
 
-	cliente.recibirMensaje(mensaje);
+	//cliente.recibirMensaje(mensaje);
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
@@ -67,6 +65,7 @@ int main(int argc, char *argv[]){
 
 	pthread_join(hiloRecieveMessage,NULL);
 	pthread_join(hiloSendMessage,NULL);
+	pthread_join(hiloRender, NULL);
 
 	return 0;
 }
