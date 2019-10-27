@@ -48,5 +48,7 @@
 
 #define FRAME_DELAY 1000/60
 
+#define MAX_CLIENTES 4
+
 
 #endif /* SRC_DEFS_H_ */

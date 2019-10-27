@@ -52,7 +52,7 @@ private:
 	SDL_Texture* tex1;
 	SDL_Texture* tex2;
 	SDL_Texture* tex3;
-	SDL_Texture* texCody;
+	SDL_Texture* texCody[MAX_CLIENTES];
 	SDL_Texture* texEnemigo;
 	SDL_Texture* texElemento;
 	SDL_Renderer* ren;

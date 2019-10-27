@@ -28,7 +28,7 @@ void Dibujador::dibujar(struct informacionRec info){
 	SDL_RenderCopy(ren, tex1, &info.capas[0].src, &info.capas[0].dest);
 
 	for(int i = 0; i < (info.cantJugadores); i++){
-		SDL_RenderCopyEx(ren, texCody, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+		SDL_RenderCopyEx(ren, texCody[i], &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
 	}
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
 		SDL_RenderCopyEx(ren, texEnemigo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
@@ -56,7 +56,12 @@ void Dibujador::setearTexturas(){
 	SDL_Surface* surfCapa1 = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
 	SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
 	SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
-	SDL_Surface* surfCody = IMG_Load("../sprites/SpriteCodyCompleto-120x120.png");
+
+	SDL_Surface* surfCody1 = IMG_Load("../sprites/SpriteCodyCompleto1-120x120.png");
+	SDL_Surface* surfCody2 = IMG_Load("../sprites/SpriteCodyCompleto2-120x120.png");
+	SDL_Surface* surfCody3 = IMG_Load("../sprites/SpriteCodyCompleto3-120x120.png");
+	SDL_Surface* surfCody4 = IMG_Load("../sprites/SpriteCodyCompleto4-120x120.png");
+
 	SDL_Surface* surfEnemigo = IMG_Load("../sprites/AndoreJr.png");
 	SDL_Surface* surfElemento = IMG_Load("../sprites/objetos_varios.png");
 
@@ -76,7 +81,12 @@ void Dibujador::setearTexturas(){
 		tex1 = SDL_CreateTextureFromSurface(ren, surfCapa1);
 		tex2 = SDL_CreateTextureFromSurface(ren, surfCapa2);
 		tex3 = SDL_CreateTextureFromSurface(ren, surfCapa3);
-		texCody = SDL_CreateTextureFromSurface(ren, surfCody);
+
+		texCody[0] = SDL_CreateTextureFromSurface(ren, surfCody1);
+		texCody[1] = SDL_CreateTextureFromSurface(ren, surfCody2);
+		texCody[2] = SDL_CreateTextureFromSurface(ren, surfCody3);
+		texCody[3] = SDL_CreateTextureFromSurface(ren, surfCody4);
+
 		texEnemigo = SDL_CreateTextureFromSurface(ren, surfEnemigo);
 		texElemento = SDL_CreateTextureFromSurface(ren, surfElemento);
 
