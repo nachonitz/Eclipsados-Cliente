@@ -200,7 +200,7 @@ void Dibujador::login(){
 	surfaceTexto4 = TTF_RenderText_Solid(fontInput, "Press Spacebar to login", colorTextoAyuda);
 	texturaTextoLogin4 = SDL_CreateTextureFromSurface(ren, surfaceTexto4);
 	SDL_QueryTexture(texturaTextoLogin4,NULL,NULL,&width,&height);
-	rectTexto4.x=600;rectTexto4.y=575;rectTexto4.w=width;rectTexto4.h=height;
+	rectTexto4.x=580;rectTexto4.y=575;rectTexto4.w=width;rectTexto4.h=height;
 
 	surfaceTextoError = TTF_RenderText_Solid(fontInput, "Invalid username or password. Try again", colorTextoError);
 	texturaTextoLoginError = SDL_CreateTextureFromSurface(ren, surfaceTextoError);
