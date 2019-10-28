@@ -141,13 +141,9 @@ void Controlador::verificarJoystick(){
 }
 
 void Controlador::preparoSalto(int tipoDeSalto, int setAction){
-	saltando = true;
+	//saltando = true;
 	tipoSalto = tipoDeSalto;
-	//alturaActualSalto = juego->getPosicionJugador()->getVertical();	que servidor mande altura
-	//alturaMaximaSalto = juego->getPosicionJugador()->getVertical()+25;
 	if(accionActual != setAction){
-		/*jugador->setAnimacionActual(setAction, spriteFlip);
-		mandar al servidor que updatee la animacion */
 		accionActual = setAction;
 		infoEnv.animacionActual = setAction;
 		infoEnv.flip = spriteFlip;
@@ -166,10 +162,8 @@ struct informacionEnv Controlador::eventHandler(){
 	x_move = SDL_JoystickGetAxis(gameController, 0);
 	y_move = SDL_JoystickGetAxis(gameController, 1);
 
-	if(!saltando){
-
-		verificarJoystick();
-		if(e.type == SDL_JOYBUTTONDOWN){
+	verificarJoystick();
+	if(e.type == SDL_JOYBUTTONDOWN){
 			switch(e.jbutton.button){
 			case 0: preparoSalto(SALTO_VERTICAL, saltoVertical);
 					if( x_move > JOYSTICK_DEAD_ZONE ){
@@ -188,100 +182,102 @@ struct informacionEnv Controlador::eventHandler(){
 			}
 		}
 
-		if(keystates[SDL_SCANCODE_RIGHT] && !(keystates[SDL_SCANCODE_SPACE]) && !golpeando && !agachando) {
-			teclado = true;
-			moviendoDerecha(caminar);
-		}
+	if(keystates[SDL_SCANCODE_RIGHT] && !(keystates[SDL_SCANCODE_SPACE]) && !golpeando && !agachando) {
+		teclado = true;
+		moviendoDerecha(caminar);
+	}
 
-		if(keystates[SDL_SCANCODE_LEFT] && !(keystates[SDL_SCANCODE_SPACE]) && !golpeando && !agachando) {
-			teclado = true;
-			moviendoIzquierda(caminar);
-		}
+	if(keystates[SDL_SCANCODE_LEFT] && !(keystates[SDL_SCANCODE_SPACE]) && !golpeando && !agachando) {
+		teclado = true;
+		moviendoIzquierda(caminar);
+	}
 
-		if(keystates[SDL_SCANCODE_UP] && !golpeando && !agachando) {
-			teclado = true;
-			infoEnv.movimiento = UP;
-			if(accionActual != caminar){
-				accionActual = caminar;
-				infoEnv.animacionActual = accionActual;
-				infoEnv.flip = spriteFlip;
-			}
-		}
-
-		if(keystates[SDL_SCANCODE_DOWN] && !golpeando && !agachando) {
-			teclado = true;
-			infoEnv.movimiento = DOWN;
-			if(accionActual != caminar){
-				accionActual = caminar;
-				infoEnv.animacionActual = accionActual;
-				infoEnv.flip = spriteFlip;
-			}
-		}
-
-		if(keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
-			preparoSalto(SALTO_VERTICAL, saltoVertical);
-		}
-
-		if( ( keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando ) ) {
-			preparoSalto(SALTO_DERECHA, salto);
-			spriteFlip = SDL_FLIP_NONE;
-			infoEnv.flip = spriteFlip;
-		}
-
-		if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
-			preparoSalto(SALTO_DERECHA, saltoPatada);
-			spriteFlip = SDL_FLIP_NONE;
-			infoEnv.flip = spriteFlip;
-		}
-
-		if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
-			preparoSalto(SALTO_IZQUIERDA, salto);
-			spriteFlip = SDL_FLIP_HORIZONTAL;
-			infoEnv.flip = spriteFlip;
-		}
-
-		if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
-			preparoSalto(SALTO_IZQUIERDA, saltoPatada);
-			spriteFlip = SDL_FLIP_HORIZONTAL;
-			infoEnv.flip = spriteFlip;
-		}
-
-		if(keystates[SDL_SCANCODE_LSHIFT] && !saltando && !agachando) {
-			pegar:
-			golpeando = true;
-			if(accionActual != golpear){
-				accionActual = golpear;
-				infoEnv.animacionActual = accionActual;
-				infoEnv.flip = spriteFlip;
-			}
-		}
-
-		if(keystates[SDL_SCANCODE_LCTRL] && !saltando && !golpeando) {
-			agacharse:
-				if(accionActual != agachado){
-					accionActual = agachado;
-					infoEnv.animacionActual = accionActual;
-					infoEnv.flip = spriteFlip;
-				}
-			}
-
-		if(keystates[SDL_SCANCODE_ESCAPE]) {
-			return infoEnv;
-		}
-
-		if(e.type == SDL_QUIT){
-			return infoEnv;
-		}
-
-		if(e.type == SDL_KEYUP && !golpeando && !agachando){
-			accionActual = parado;
+	if(keystates[SDL_SCANCODE_UP] && !golpeando && !agachando) {
+		teclado = true;
+		infoEnv.movimiento = UP;
+		if(accionActual != caminar){
+			accionActual = caminar;
 			infoEnv.animacionActual = accionActual;
 			infoEnv.flip = spriteFlip;
-			infoEnv.movimiento = STAND;
 		}
+	}
 
+	if(keystates[SDL_SCANCODE_DOWN] && !golpeando && !agachando) {
+		teclado = true;
+		infoEnv.movimiento = DOWN;
+		if(accionActual != caminar){
+			accionActual = caminar;
+			infoEnv.animacionActual = accionActual;
+			infoEnv.flip = spriteFlip;
+		}
+	}
+
+	if(keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
+		preparoSalto(SALTO_VERTICAL, saltoVertical);
+	}
+
+	if( ( keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando ) ) {
+		spriteFlip = SDL_FLIP_NONE;
+		preparoSalto(SALTO_DERECHA, salto);
+		infoEnv.flip = spriteFlip;
+		infoEnv.movimiento = RIGHT;
+	}
+
+	/*if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
+		preparoSalto(SALTO_DERECHA, saltoPatada);
+		spriteFlip = SDL_FLIP_NONE;
+		infoEnv.flip = spriteFlip;
+	}*/
+
+	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
+		spriteFlip = SDL_FLIP_HORIZONTAL;
+		preparoSalto(SALTO_IZQUIERDA, salto);
+		infoEnv.flip = spriteFlip;
+		infoEnv.movimiento = LEFT;
+	}
+/*	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
+		preparoSalto(SALTO_IZQUIERDA, saltoPatada);
+		spriteFlip = SDL_FLIP_HORIZONTAL;
+		infoEnv.flip = spriteFlip;
+	}
+*/
+	if(keystates[SDL_SCANCODE_LSHIFT] && !saltando && !agachando) {
+		pegar:
+		if(accionActual != golpear){
+			accionActual = golpear;
+			infoEnv.animacionActual = accionActual;
+			infoEnv.flip = spriteFlip;
+		}
+	}
+
+	if(keystates[SDL_SCANCODE_LCTRL] && !saltando && !golpeando) {
+		agacharse:
+		if(accionActual != agachado){
+			accionActual = agachado;
+			infoEnv.animacionActual = accionActual;
+			infoEnv.flip = spriteFlip;
+		}
+	}
+
+	if(keystates[SDL_SCANCODE_ESCAPE]) {
+		//setear variable para salir
 		return infoEnv;
 	}
+
+	if(e.type == SDL_QUIT){
+		//setear variable para salir
+		return infoEnv;
+	}
+
+	if(e.type == SDL_KEYUP && !golpeando && !agachando){
+		accionActual = parado;
+		infoEnv.animacionActual = accionActual;
+		infoEnv.flip = spriteFlip;
+		infoEnv.movimiento = STAND;
+	}
+
+	return infoEnv;
+}
 /*
 	if(e.jbutton.button == 3 && accionActual != saltoPatada || keystates[SDL_SCANCODE_LSHIFT]){
 		/*jugador->setAnimacionActual(saltoPatada, spriteFlip);
@@ -302,13 +298,4 @@ struct informacionEnv Controlador::eventHandler(){
 			break;
 		}
 		return infoEnv;
-	}
-	//juego->terminadoSalto();	servidor termine el salto
-	saltando = false;
-	accionActual = parado;
-	infoEnv.animacionActual = accionActual;
-	infoEnv.flip = spriteFlip;
-	infoEnv.movimiento = STAND;
-	/*jugador->setAnimacionActual(accionActual, spriteFlip);	mandar al servidor que updatee la animacion
-	return infoEnv;*/
-}
+	}*/
