@@ -65,3 +65,14 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 			puts("Connection Successful");
 		}
 }
+
+/*
+void Cliente::esperarConfirmacionDeInicio(){
+	int recibido;
+	bool puedeEmpezarElJuego = false;
+	while(puedeEmpezarElJuego){
+		puedeEmpezarElJuego = recv(cliente, &recibido, sizeof(int), 0);
+	}
+
+}
+*/

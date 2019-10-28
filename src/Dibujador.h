@@ -3,12 +3,12 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
+
 #include <iostream>
 #include <vector>
 #include "defs.h"
 
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
 //#include "cody.h"
 struct animado{
 	//SDL_Texture* txt;
@@ -41,9 +41,12 @@ struct informacionRec{
 
 class Dibujador {
 public:
+
 	void inicializar();
 	void dibujar(struct informacionRec info);
 	void setearTexturas();
+	void login();
+
 private:
 
 	int frameCount;
@@ -58,6 +61,10 @@ private:
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacionRec informacion;
+
+
+
+
 };
 
 #endif

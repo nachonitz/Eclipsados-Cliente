@@ -60,7 +60,13 @@ int main(int argc, char *argv[]){
 
 	dibujador.inicializar();
 
-	//cliente.recibirMensaje(mensaje);
+	dibujador.login();
+	//-> Ventana Login
+
+	//dibujador.login(&cliente);
+	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
+	//cliente.esperarConfirmacionDeInicio();
+
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
