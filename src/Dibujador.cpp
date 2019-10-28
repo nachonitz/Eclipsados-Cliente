@@ -105,19 +105,30 @@ void Dibujador::login(){
 	SDL_Rect rectFondo2source;
 	SDL_Rect rectFondo2dest;
 	TTF_Font* font;
+	TTF_Font* fontAyuda;
 
 	SDL_Texture* texturaFlecha;
 	SDL_Surface* surfaceFlecha;
 	SDL_Rect rectFlechaSource;
-	SDL_Rect rectFlechaUsuarioDest;
-	SDL_Rect rectFlechaContraseniaDest;
+	SDL_Rect rectFlechaDest;
+
 
 	SDL_Surface* surfaceTexto1;
 	SDL_Surface* surfaceTexto2;
+	SDL_Surface* surfaceTexto3;
+	SDL_Surface* surfaceTexto4;
+	SDL_Surface* surfaceTextoError;
 	SDL_Texture* texturaTextoLogin1;
 	SDL_Texture* texturaTextoLogin2;
+	SDL_Texture* texturaTextoLogin3;
+	SDL_Texture* texturaTextoLogin4;
+	SDL_Texture* texturaTextoLoginError;
 	SDL_Rect rectTexto1;
 	SDL_Rect rectTexto2;
+	SDL_Rect rectTexto3;
+	SDL_Rect rectTexto4;
+	SDL_Rect rectTextoError;
+	SDL_Color colorTextoAyuda;
 	SDL_Color colorTexto;
 
 	SDL_Surface* surfaceTextoInput1;
@@ -127,6 +138,7 @@ void Dibujador::login(){
 	SDL_Rect rectTextoInput1;
 	SDL_Rect rectTextoInput2;
 	SDL_Color colorTextoInput;
+	SDL_Color colorTextoError;
 	TTF_Font* fontInput;
 
 	std::string textoIngresadoUsuario = "";
@@ -136,15 +148,19 @@ void Dibujador::login(){
 	bool isLogginIn = true;
 	bool needToRender = false;
 	bool inputEnUsuario = true;
+	bool errorAlValidar = false;
 	SDL_Event event;
 	const Uint8* keystates;
-/*
-	rectFlechaSource.x=0;rectFlechaSource.y=0;rectFlechaSource.w=100;rectFlechaSource.h=100;
-	rectFlechaUsuarioDest.x=0;rectFlechaUsuarioDest.y=0;rectFlechaUsuarioDest.w=100;rectFlechaUsuarioDest.h=100;
-	rectFlechaContraseniaDest.x=200;rectFlechaContraseniaDest.y=100;rectFlechaContraseniaDest.w=100;rectFlechaContraseniaDest.h=100;
+
+
+	rectFlechaSource.x=0;rectFlechaSource.y=0;rectFlechaSource.w=850;rectFlechaSource.h=850;
+	rectFlechaDest.x=20;rectFlechaDest.y=390;rectFlechaDest.w=70;rectFlechaDest.h =70;
+
 	surfaceFlecha = IMG_Load("../sprites/flecha.png");
 	texturaFlecha = SDL_CreateTextureFromSurface(ren,surfaceFlecha);
-*/
+
+
+
 	rectFondo1source.x=0;rectFondo1source.y=0;rectFondo1source.w=620;rectFondo1source.h=390;
 	rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
 	surfaceFondoLogin1 = IMG_Load("../sprites/Login-FondoAlt.jpg");
@@ -159,7 +175,11 @@ void Dibujador::login(){
 	if(TTF_Init());
 
 	font = TTF_OpenFont("../sprites/Sansation-Bold.ttf", 30);
+	fontInput = TTF_OpenFont("../sprites/Sansation-Bold.ttf", 20);
+	colorTextoInput.r = 200; colorTextoInput.g = 100; colorTextoInput.b = 100;
 	colorTexto.r = 190; colorTexto.g = 60; colorTexto.b = 32;
+	colorTextoAyuda.r = 170; colorTextoAyuda.g = 30; colorTextoAyuda.b = 10;
+	colorTextoError.r = 220; colorTextoError.g = 0; colorTextoError.b = 0;
 
 	surfaceTexto1 = TTF_RenderText_Solid(font, "Username", colorTexto);
 	texturaTextoLogin1 = SDL_CreateTextureFromSurface(ren, surfaceTexto1);
@@ -172,12 +192,25 @@ void Dibujador::login(){
 	SDL_QueryTexture(texturaTextoLogin2,NULL,NULL,&width,&height);
 	rectTexto2.x=100;rectTexto2.y=515;rectTexto2.w=width;rectTexto2.h=height;
 	
+	surfaceTexto3 = TTF_RenderText_Solid(fontInput, "Use arrows to move", colorTextoAyuda);
+	texturaTextoLogin3 = SDL_CreateTextureFromSurface(ren, surfaceTexto3);
+	SDL_QueryTexture(texturaTextoLogin3,NULL,NULL,&width,&height);
+	rectTexto3.x=600;rectTexto3.y=550;rectTexto3.w=width;rectTexto3.h=height;
+
+	surfaceTexto4 = TTF_RenderText_Solid(fontInput, "Press Spacebar to login", colorTextoAyuda);
+	texturaTextoLogin4 = SDL_CreateTextureFromSurface(ren, surfaceTexto4);
+	SDL_QueryTexture(texturaTextoLogin4,NULL,NULL,&width,&height);
+	rectTexto4.x=600;rectTexto4.y=575;rectTexto4.w=width;rectTexto4.h=height;
+
+	surfaceTextoError = TTF_RenderText_Solid(fontInput, "Invalid username or password. Try again", colorTextoError);
+	texturaTextoLoginError = SDL_CreateTextureFromSurface(ren, surfaceTextoError);
+	SDL_QueryTexture(texturaTextoLoginError,NULL,NULL,&width,&height);
+	rectTextoError.x=120;rectTextoError.y=570;rectTextoError.w=width;rectTextoError.h=height;
 
 	SDL_StartTextInput();
 
 
-	fontInput = TTF_OpenFont("../sprites/Sansation-Bold.ttf", 20);
-	colorTextoInput.r = 200; colorTextoInput.g = 100; colorTextoInput.b = 100;
+
 
 
 
@@ -206,11 +239,19 @@ void Dibujador::login(){
 			}
 			if(keystates[SDL_SCANCODE_DOWN]){
 				inputEnUsuario = false;
+				rectFlechaDest.y=495;
 			}
 			if(keystates[SDL_SCANCODE_UP]){
 				inputEnUsuario = true;
+				rectFlechaDest.y=390;
 			}
-			if(keystates[SDL_SCANCODE_LEFT]){
+			if(keystates[SDL_SCANCODE_SPACE]){
+				errorAlValidar = true;
+				textoIngresadoUsuario.clear();
+				textoIngresadoContrasenia.clear();
+				needToRender = true;
+			}
+			if(keystates[SDL_SCANCODE_BACKSPACE]){
 				if(inputEnUsuario && textoIngresadoUsuario.length()>0){
 					textoIngresadoUsuario.pop_back();
 					needToRender = true;
@@ -223,31 +264,39 @@ void Dibujador::login(){
 		}
 		
 		if(needToRender){
-			if(inputEnUsuario){
-				surfaceTextoInput1 = TTF_RenderText_Solid(fontInput, textoIngresadoUsuario.c_str(), colorTextoInput);
-				texturaTextoInput1 = SDL_CreateTextureFromSurface(ren, surfaceTextoInput1);
-				SDL_QueryTexture(texturaTextoInput1,NULL,NULL,&width,&height);
-				rectTextoInput1.x=270;rectTextoInput1.y=415;rectTextoInput1.w=width;rectTextoInput1.h=height;
-			}
-			else{
-				surfaceTextoInput2 = TTF_RenderText_Solid(fontInput, textoIngresadoContrasenia.c_str(), colorTextoInput);
-				texturaTextoInput2 = SDL_CreateTextureFromSurface(ren, surfaceTextoInput2);
-				SDL_QueryTexture(texturaTextoInput2,NULL,NULL,&width,&height);
-				rectTextoInput2.x=270;rectTextoInput2.y=520;rectTextoInput2.w=width;rectTextoInput2.h=height;
-			}
+
+			surfaceTextoInput1 = TTF_RenderText_Solid(fontInput, textoIngresadoUsuario.c_str(), colorTextoInput);
+			texturaTextoInput1 = SDL_CreateTextureFromSurface(ren, surfaceTextoInput1);
+			SDL_QueryTexture(texturaTextoInput1,NULL,NULL,&width,&height);
+			rectTextoInput1.x=270;rectTextoInput1.y=415;rectTextoInput1.w=width;rectTextoInput1.h=height;
+
+			surfaceTextoInput2 = TTF_RenderText_Solid(fontInput, textoIngresadoContrasenia.c_str(), colorTextoInput);
+			texturaTextoInput2 = SDL_CreateTextureFromSurface(ren, surfaceTextoInput2);
+			SDL_QueryTexture(texturaTextoInput2,NULL,NULL,&width,&height);
+			rectTextoInput2.x=270;rectTextoInput2.y=520;rectTextoInput2.w=width;rectTextoInput2.h=height;
+
 			needToRender = false;
 		}
 
 		SDL_RenderClear(ren);
 
+
 		SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
 		SDL_RenderCopy(ren, texturaFondoLogin2,&rectFondo2source,&rectFondo2dest);
 		SDL_RenderCopy(ren, texturaTextoLogin1,NULL,&rectTexto1);
 		SDL_RenderCopy(ren, texturaTextoLogin2,NULL,&rectTexto2);
+		SDL_RenderCopy(ren, texturaTextoLogin3,NULL,&rectTexto3);
+		SDL_RenderCopy(ren, texturaTextoLogin4,NULL,&rectTexto4);
+
+		SDL_RenderCopy(ren, texturaFlecha,&rectFlechaSource,&rectFlechaDest);
 		SDL_RenderCopy(ren, texturaTextoInput1,NULL,&rectTextoInput1);
 		SDL_RenderCopy(ren, texturaTextoInput2,NULL,&rectTextoInput2);
-//		SDL_RenderCopy(ren, texturaFlecha,&rectFlechaSource,&rectFlechaUsuarioDest);
-		//SDL_RenderCopy(ren, texturaFlecha,&rectFlechaSource,&rectFlechaContraseniaDest);
+
+		if(errorAlValidar){
+			SDL_RenderCopy(ren, texturaTextoLoginError,NULL,&rectTextoError);
+		}
+
+
 		SDL_RenderPresent(ren);
 		
 
