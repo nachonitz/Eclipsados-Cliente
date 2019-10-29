@@ -55,6 +55,8 @@ public:
 
 private:
 
+	SDL_Texture* crearTexturaDesdeRuta(std::string ruta);
+
 	int frameCount;
 	int timerFPS;
 	Uint32 frameStart;

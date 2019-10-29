@@ -54,43 +54,43 @@ void Dibujador::dibujar(struct informacionRec info){
 
 void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites) {
 
-	SDL_Surface* surfCapa1 = IMG_Load(nivel1.at(0).c_str());
-	SDL_Surface* surfCapa2 = IMG_Load(nivel1.at(1).c_str());
-	SDL_Surface* surfCapa3 = IMG_Load(nivel1.at(2).c_str());
+	tex1 = crearTexturaDesdeRuta(nivel1.at(0).c_str());
+	tex2 = crearTexturaDesdeRuta(nivel1.at(1).c_str());
+	tex3 = crearTexturaDesdeRuta(nivel1.at(2).c_str());
 
-	SDL_Surface* surfCody1 = IMG_Load(sprites.at(0).c_str());
-	SDL_Surface* surfCody2 = IMG_Load(sprites.at(1).c_str());
-	SDL_Surface* surfCody3 = IMG_Load(sprites.at(2).c_str());
-	SDL_Surface* surfCody4 = IMG_Load(sprites.at(3).c_str());
+	texCody[0] = crearTexturaDesdeRuta(sprites.at(0).c_str());
+	texCody[1] = crearTexturaDesdeRuta(sprites.at(1).c_str());
+	texCody[2] = crearTexturaDesdeRuta(sprites.at(2).c_str());
+	texCody[3] = crearTexturaDesdeRuta(sprites.at(3).c_str());
 
-	SDL_Surface* surfEnemigo = IMG_Load(sprites.at(6).c_str());
-	SDL_Surface* surfElemento = IMG_Load(sprites.at(4).c_str());
+	texEnemigo = crearTexturaDesdeRuta(sprites.at(6).c_str());
+	texElemento = crearTexturaDesdeRuta(sprites.at(4).c_str());
 
-	/*if (surf == nullptr) {
+}
 
-	    tex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 500, 500);
+SDL_Texture* Dibujador::crearTexturaDesdeRuta(std::string ruta) {
 
-	    Uint32 * pixels = new Uint32[500* 500];
+	SDL_Texture* tex = nullptr;
 
-	    memset(pixels, 50*(this->velocidad), 500* 500* sizeof(Uint32));
+	SDL_Surface* surf = IMG_Load(ruta.c_str());
 
-	    SDL_UpdateTexture(tex, NULL, pixels, 500* sizeof(Uint32));
+	if (surf == nullptr) {
 
-	    Logger::getInstance()->log(ERROR, "No se encuentra el sprite para capa, se mostrara una textura erronea.");
+		tex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 500, 500);
+
+		Uint32 * pixels = new Uint32[500* 500];
+
+		memset(pixels, 50*ruta.length(), 500* 500* sizeof(Uint32));
+
+		SDL_UpdateTexture(tex, NULL, pixels, 500* sizeof(Uint32));
+
+		Logger::getInstance()->log(ERROR, "No se encuentra la imagen en " + ruta + ", se mostrara una textura erronea.");
 	}
-	else*/
-		tex1 = SDL_CreateTextureFromSurface(ren, surfCapa1);
-		tex2 = SDL_CreateTextureFromSurface(ren, surfCapa2);
-		tex3 = SDL_CreateTextureFromSurface(ren, surfCapa3);
+	else {
+		tex = SDL_CreateTextureFromSurface(ren, surf);
+	}
 
-		texCody[0] = SDL_CreateTextureFromSurface(ren, surfCody1);
-		texCody[1] = SDL_CreateTextureFromSurface(ren, surfCody2);
-		texCody[2] = SDL_CreateTextureFromSurface(ren, surfCody3);
-		texCody[3] = SDL_CreateTextureFromSurface(ren, surfCody4);
-
-		texEnemigo = SDL_CreateTextureFromSurface(ren, surfEnemigo);
-		texElemento = SDL_CreateTextureFromSurface(ren, surfElemento);
-
+	return tex;
 }
 
 void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar){
