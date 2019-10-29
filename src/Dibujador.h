@@ -29,6 +29,7 @@ struct capa{
 	SDL_Rect src;
 };
 
+
 struct informacionRec{
 	struct elemento elementos[15];
 	struct capa capas[3];
@@ -38,6 +39,11 @@ struct informacionRec{
 	int cantJugadores;
 };
 
+struct credencial {
+	const char* usuario;
+	const char* contrasenia;
+	bool credencialValida;
+} ;
 
 class Dibujador {
 public:
@@ -45,7 +51,7 @@ public:
 	void inicializar();
 	void dibujar(struct informacionRec info);
 	void setearTexturas();
-	void login();
+	void login(struct credencial* credencialCliente, bool errorAlValidar);
 
 private:
 

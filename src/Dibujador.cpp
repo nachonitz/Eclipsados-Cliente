@@ -93,8 +93,7 @@ void Dibujador::setearTexturas(){
 
 }
 
-void Dibujador::login(){
-
+void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar){
 
 	SDL_Texture* texturaFondoLogin1;
 	SDL_Surface* surfaceFondoLogin1;
@@ -111,7 +110,6 @@ void Dibujador::login(){
 	SDL_Surface* surfaceFlecha;
 	SDL_Rect rectFlechaSource;
 	SDL_Rect rectFlechaDest;
-
 
 	SDL_Surface* surfaceTexto1;
 	SDL_Surface* surfaceTexto2;
@@ -148,7 +146,6 @@ void Dibujador::login(){
 	bool isLogginIn = true;
 	bool needToRender = false;
 	bool inputEnUsuario = true;
-	bool errorAlValidar = false;
 	SDL_Event event;
 	const Uint8* keystates;
 
@@ -246,10 +243,10 @@ void Dibujador::login(){
 				rectFlechaDest.y=390;
 			}
 			if(keystates[SDL_SCANCODE_SPACE]){
-				errorAlValidar = true;
-				textoIngresadoUsuario.clear();
-				textoIngresadoContrasenia.clear();
-				needToRender = true;
+				isLogginIn = false;
+				//textoIngresadoUsuario.clear();
+				//textoIngresadoContrasenia.clear();
+				//needToRender = true;
 			}
 			if(keystates[SDL_SCANCODE_BACKSPACE]){
 				if(inputEnUsuario && textoIngresadoUsuario.length()>0){
@@ -301,6 +298,8 @@ void Dibujador::login(){
 		
 
 	}
+	credencialCliente->usuario = textoIngresadoUsuario.c_str();
+	credencialCliente->contrasenia = textoIngresadoContrasenia.c_str();
 
 	SDL_StopTextInput();
 }

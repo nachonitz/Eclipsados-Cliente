@@ -49,6 +49,9 @@ int main(int argc, char *argv[]){
 	pthread_t hiloRecieveMessage;
 	pthread_t hiloRender;
 
+	credencial credencialesCliente;
+	credencialesCliente.credencialValida = false;
+
 	pthread_mutex_init(&mutexQueue,NULL);
 
 	controlador = new Controlador();
@@ -60,13 +63,15 @@ int main(int argc, char *argv[]){
 
 	dibujador.inicializar();
 
-	dibujador.login();
-	//-> Ventana Login
+	dibujador.login(& credencialesCliente, false);
+/*
+	while(!cliente.validarCredenciales(& credencialesCliente)){
+		dibujador.login(& credencialesCliente, true);
+	}
 
-	//dibujador.login(&cliente);
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	//cliente.esperarConfirmacionDeInicio();
-
+	cliente.esperarConfirmacionDeInicio();
+*/
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);

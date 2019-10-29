@@ -66,13 +66,16 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 		}
 }
 
-/*
+
 void Cliente::esperarConfirmacionDeInicio(){
-	int recibido;
-	bool puedeEmpezarElJuego = false;
-	while(puedeEmpezarElJuego){
-		puedeEmpezarElJuego = recv(cliente, &recibido, sizeof(int), 0);
-	}
 
 }
-*/
+
+bool Cliente::validarCredenciales(struct credencial* credencialesAValidar){
+
+	send(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
+
+	recv(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
+
+	return (credencialesAValidar->credencialValida);
+}

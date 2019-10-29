@@ -21,6 +21,7 @@ public:
 	struct informacionRec recibirInformacion();
 	void setPortAndIP(char *puerto, std::string ip);
 	void esperarConfirmacionDeInicio();
+	bool validarCredenciales(struct credencial* credencialesAValidar);
 
 private:
 	struct sockaddr_in direccionServer;
