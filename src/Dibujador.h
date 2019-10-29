@@ -48,9 +48,9 @@ struct credencial {
 class Dibujador {
 public:
 
-	void inicializar();
+	void inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void dibujar(struct informacionRec info);
-	void setearTexturas();
+	void setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void login(struct credencial* credencialCliente, bool errorAlValidar);
 
 private:

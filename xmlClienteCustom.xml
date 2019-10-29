@@ -1,0 +1,27 @@
+<configuracionCliente>
+	<debugLevel>DEBUG</debugLevel>
+	<escenario>
+		<niveles>
+			<nivel1>
+				<fondo>sprites/Nivel1-fondo1-XL.png</fondo>
+				<fondo>sprites/Nivel1-fondo2-XL.png</fondo>
+				<fondo>sprites/Nivel1-fondo3-XL.png</fondo>
+			</nivel1>
+			<nivel2>
+				<fondo>sprites/Nivel2-fondo1.png</fondo>
+				<fondo>sprites/Nivel2-fondo2.png</fondo>
+				<fondo>sprites/Nivel2-fondo3.png</fondo>
+			</nivel2>
+		</niveles>
+	</escenario>
+	<sprites>
+		<sprite>sprites/SpriteCodyCompleto1-120x120.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto2-120x120.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto3-120x120.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto4-120x120.png</sprite>
+		<sprite>sprites/objetos_varios.png</sprite>
+		<sprite>sprites/Dug.png</sprite>
+		<sprite>sprites/AndoreJr.png</sprite>
+		<sprite>sprites/Haggar.png</sprite>
+	</sprites>
+</configuracionCliente>

@@ -3,7 +3,7 @@
 #include <string>
 
 
-void Dibujador::inicializar(){
+void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites){
 	if ( SDL_Init(SDL_INIT_VIDEO) != 0); // @suppress("Suspicious semicolon")
 	//Logger::getInstance()->log(ERROR, SDL_GetError());
 
@@ -13,7 +13,7 @@ void Dibujador::inicializar(){
 
 	SDL_SetWindowTitle(win, "Final Fight");
 
-	setearTexturas();
+	setearTexturas(nivel1, nivel2, sprites);
 }
 
 void Dibujador::dibujar(struct informacionRec info){
@@ -52,19 +52,19 @@ void Dibujador::dibujar(struct informacionRec info){
 	}*/
 }
 
-void Dibujador::setearTexturas(){
+void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites) {
 
-	SDL_Surface* surfCapa1 = IMG_Load("../sprites/Nivel1-fondo1-XL.png");
-	SDL_Surface* surfCapa2 = IMG_Load("../sprites/Nivel1-fondo2-XL.png");
-	SDL_Surface* surfCapa3 = IMG_Load("../sprites/Nivel1-fondo3-XL.png");
+	SDL_Surface* surfCapa1 = IMG_Load(nivel1.at(0).c_str());
+	SDL_Surface* surfCapa2 = IMG_Load(nivel1.at(1).c_str());
+	SDL_Surface* surfCapa3 = IMG_Load(nivel1.at(2).c_str());
 
-	SDL_Surface* surfCody1 = IMG_Load("../sprites/SpriteCodyCompleto1-120x120.png");
-	SDL_Surface* surfCody2 = IMG_Load("../sprites/SpriteCodyCompleto2-120x120.png");
-	SDL_Surface* surfCody3 = IMG_Load("../sprites/SpriteCodyCompleto3-120x120.png");
-	SDL_Surface* surfCody4 = IMG_Load("../sprites/SpriteCodyCompleto4-120x120.png");
+	SDL_Surface* surfCody1 = IMG_Load(sprites.at(0).c_str());
+	SDL_Surface* surfCody2 = IMG_Load(sprites.at(1).c_str());
+	SDL_Surface* surfCody3 = IMG_Load(sprites.at(2).c_str());
+	SDL_Surface* surfCody4 = IMG_Load(sprites.at(3).c_str());
 
-	SDL_Surface* surfEnemigo = IMG_Load("../sprites/AndoreJr.png");
-	SDL_Surface* surfElemento = IMG_Load("../sprites/objetos_varios.png");
+	SDL_Surface* surfEnemigo = IMG_Load(sprites.at(6).c_str());
+	SDL_Surface* surfElemento = IMG_Load(sprites.at(4).c_str());
 
 	/*if (surf == nullptr) {
 
