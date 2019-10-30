@@ -16,6 +16,7 @@ struct animado{
 	SDL_Rect dest;
 	SDL_Rect src;
 	SDL_RendererFlip flip;
+	int ID;
 };
 
 struct elemento{
@@ -46,6 +47,7 @@ struct credencial {
 	char usuario[MAX_USER_LEN];
 	char contrasenia[MAX_PASS_LEN];
 	bool credencialValida;
+	int idx;
 } ;
 
 class Dibujador {
