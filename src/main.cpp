@@ -83,18 +83,18 @@ int main(int argc, char *argv[]){
 
 	dibujador.inicializar(nivel1, nivel2, sprites);
 
-	//dibujador.login(& credencialesCliente, false);
+	dibujador.login(& credencialesCliente, false);
 	//-> Ventana Login
 
 	//dibujador.login(& credencialesCliente, false);
 
-//	while(!cliente.validarCredenciales(& credencialesCliente)){
-//		dibujador.login(& credencialesCliente, true);
-//	}
+	while(!cliente.validarCredenciales(& credencialesCliente)){
+		dibujador.login(& credencialesCliente, true);
+	}
 
 
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	//cliente.esperarConfirmacionDeInicio();
+	cliente.esperarConfirmacionDeInicio();
 
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
