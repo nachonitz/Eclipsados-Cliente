@@ -73,9 +73,20 @@ void Cliente::esperarConfirmacionDeInicio(){
 
 bool Cliente::validarCredenciales(struct credencial* credencialesAValidar){
 
-	send(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
 
-	recv(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
+	Logger::getInstance()->log(DEBUG, "ENVIANDO CREDENCIALES: " + std::string(credencialesAValidar->usuario) + " - " + std::string(credencialesAValidar->contrasenia));
 
+	send(cliente, credencialesAValidar, sizeof(struct credencial), 0);
+
+
+	Logger::getInstance()->log(DEBUG, "RECIBIENDO...");
+	int infoRecibida = 0;
+	while (infoRecibida < sizeof(struct credencial)){
+		int recibido = recv(cliente, credencialesAValidar, sizeof(struct credencial), 0);
+		infoRecibida += recibido;
+	}
+
+	Logger::getInstance()->log(DEBUG, "RESULTADO: " + std::to_string(credencialesAValidar->credencialValida));
 	return (credencialesAValidar->credencialValida);
+
 }

@@ -154,7 +154,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 
 	int width,height;
 	bool isLogginIn = true;
-	bool needToRender = false;
+	bool needToRender = true;
 	bool inputEnUsuario = true;
 	SDL_Event event;
 	const Uint8* keystates;
@@ -237,7 +237,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 				if(inputEnUsuario && textoIngresadoUsuario.length()<18){
 					textoIngresadoUsuario += event.text.text;
 				}
-				else if(textoIngresadoContrasenia.length()<18){
+				else if(!inputEnUsuario && textoIngresadoContrasenia.length()<18){
 					textoIngresadoContrasenia += event.text.text;
 				}
 
@@ -263,7 +263,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 					textoIngresadoUsuario.pop_back();
 					needToRender = true;
 				}
-				else if(textoIngresadoContrasenia.length()>0){
+				else if(!inputEnUsuario &&textoIngresadoContrasenia.length()>0){
 					textoIngresadoContrasenia.pop_back();
 					needToRender = true;
 				}
@@ -312,4 +312,30 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	credencialCliente->contrasenia = textoIngresadoContrasenia.c_str();
 
 	SDL_StopTextInput();
+	SDL_DestroyTexture(texturaFondoLogin1);
+	SDL_DestroyTexture(texturaFondoLogin2);
+	SDL_DestroyTexture(texturaFlecha);
+	SDL_DestroyTexture(texturaTextoLogin1);
+	SDL_DestroyTexture(texturaTextoLogin2);
+	SDL_DestroyTexture(texturaTextoLogin3);
+	SDL_DestroyTexture(texturaTextoLogin4);
+	SDL_DestroyTexture(texturaTextoLoginError);
+	SDL_DestroyTexture(texturaTextoInput1);
+	SDL_DestroyTexture(texturaTextoInput2);
+
+}
+
+Dibujador::~Dibujador(){
+	SDL_DestroyRenderer(ren);
+	SDL_DestroyWindow(win);
+	SDL_DestroyTexture(tex1);
+	SDL_DestroyTexture(tex2);
+	SDL_DestroyTexture(tex3);
+	SDL_DestroyTexture(texCody[0]);
+	SDL_DestroyTexture(texCody[1]);
+	SDL_DestroyTexture(texCody[2]);
+	SDL_DestroyTexture(texCody[3]);
+	SDL_DestroyTexture(texEnemigo);
+	SDL_DestroyTexture(texElemento);
+
 }

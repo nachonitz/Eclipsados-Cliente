@@ -80,13 +80,21 @@ int main(int argc, char *argv[]){
 		Logger::getInstance()->log(INFO, "Iniciando conexion a puerto: " + std::string((char*)argv[1]) + ". Con IP: 127.0.0.1 (localhost)");
 		cliente.setPortAndIP(argv[1], "127.0.0.1");
 	}
+
 	dibujador.inicializar(nivel1, nivel2, sprites);
 
 	//dibujador.login(& credencialesCliente, false);
 	//-> Ventana Login
 
+	//dibujador.login(& credencialesCliente, false);
+
+//	while(!cliente.validarCredenciales(& credencialesCliente)){
+//		dibujador.login(& credencialesCliente, true);
+//	}
+
+
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	cliente.esperarConfirmacionDeInicio();
+	//cliente.esperarConfirmacionDeInicio();
 
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);

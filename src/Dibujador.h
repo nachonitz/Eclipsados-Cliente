@@ -53,6 +53,7 @@ public:
 	void dibujar(struct informacionRec info);
 	void setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void login(struct credencial* credencialCliente, bool errorAlValidar);
+	~Dibujador();
 
 private:
 
