@@ -54,5 +54,9 @@
 
 #define MAX_CLIENTES 4
 
+#define MAX_USER_LEN 30
+
+#define MAX_PASS_LEN 30
+
 
 #endif /* SRC_DEFS_H_ */

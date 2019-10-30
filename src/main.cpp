@@ -87,8 +87,9 @@ int main(int argc, char *argv[]){
 	//-> Ventana Login
 
 	//dibujador.login(& credencialesCliente, false);
+	Logger::getInstance()->log(DEBUG, "COMENZANDO LOOP CON: " + std::string(credencialesCliente.usuario) + " - " + std::string(credencialesCliente.contrasenia));
 
-	while(!cliente.validarCredenciales(& credencialesCliente)){
+	while(!cliente.validarCredenciales(credencialesCliente)){
 		dibujador.login(& credencialesCliente, true);
 	}
 

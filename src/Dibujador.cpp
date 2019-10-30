@@ -313,8 +313,13 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 		
 
 	}
-	credencialCliente->usuario = textoIngresadoUsuario.c_str();
-	credencialCliente->contrasenia = textoIngresadoContrasenia.c_str();
+
+	// quitar espacio del final
+	textoIngresadoContrasenia[textoIngresadoContrasenia.find(' ')] = '\0';
+
+	strcpy(credencialCliente->usuario, textoIngresadoUsuario.c_str());
+	strcpy(credencialCliente->contrasenia, textoIngresadoContrasenia.c_str());
+
 
 	SDL_StopTextInput();
 	SDL_DestroyTexture(texturaFondoLogin1);
@@ -327,6 +332,8 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	SDL_DestroyTexture(texturaTextoLoginError);
 	SDL_DestroyTexture(texturaTextoInput1);
 	SDL_DestroyTexture(texturaTextoInput2);
+
+	Logger::getInstance()->log(DEBUG, "DIBUJADOR OBTUVO CREDENCIALES: " + std::string(credencialCliente->usuario) + " - " + std::string(credencialCliente->contrasenia));
 
 }
 

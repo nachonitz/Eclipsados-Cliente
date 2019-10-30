@@ -41,9 +41,10 @@ struct informacionRec{
 	int cantJugadores;
 };
 
+
 struct credencial {
-	const char* usuario;
-	const char* contrasenia;
+	char usuario[MAX_USER_LEN];
+	char contrasenia[MAX_PASS_LEN];
 	bool credencialValida;
 } ;
 

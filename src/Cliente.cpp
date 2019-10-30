@@ -72,22 +72,21 @@ void Cliente::esperarConfirmacionDeInicio(){
 	recv(cliente, &noDevuelveNada, sizeof(bool), 0);
 }
 
-bool Cliente::validarCredenciales(struct credencial* credencialesAValidar){
+bool Cliente::validarCredenciales(struct credencial credencialesAValidar){
+
+	std::string user = credencialesAValidar.usuario;
+	std::string pass = credencialesAValidar.contrasenia;
 
 
-	Logger::getInstance()->log(DEBUG, "ENVIANDO CREDENCIALES: " + std::string(credencialesAValidar->usuario) + " - " + std::string(credencialesAValidar->contrasenia));
+	Logger::getInstance()->log(DEBUG, "ENVIANDO CREDENCIALES: " + user + " - " + pass);
 
-	send(cliente, credencialesAValidar, sizeof(struct credencial), 0);
+	send(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
 
 
 	Logger::getInstance()->log(DEBUG, "RECIBIENDO...");
-	int infoRecibida = 0;
-	while (infoRecibida < sizeof(struct credencial)){
-		int recibido = recv(cliente, credencialesAValidar, sizeof(struct credencial), 0);
-		infoRecibida += recibido;
-	}
+	recv(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
 
-	Logger::getInstance()->log(DEBUG, "RESULTADO: " + std::to_string(credencialesAValidar->credencialValida));
-	return (credencialesAValidar->credencialValida);
+	Logger::getInstance()->log(DEBUG, "RESULTADO: " + std::to_string(credencialesAValidar.credencialValida));
+	return (credencialesAValidar.credencialValida);
 
 }
