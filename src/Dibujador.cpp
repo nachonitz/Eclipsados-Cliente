@@ -108,7 +108,7 @@ SDL_Texture* Dibujador::crearTexturaDesdeRuta(std::string ruta) {
 	return tex;
 }
 
-void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar){
+void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar, bool esperar){
 
 	SDL_Texture* texturaFondoLogin1;
 	SDL_Surface* surfaceFondoLogin1;
@@ -131,16 +131,19 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	SDL_Surface* surfaceTexto3;
 	SDL_Surface* surfaceTexto4;
 	SDL_Surface* surfaceTextoError;
+	SDL_Surface* surfaceTextoEsperando;
 	SDL_Texture* texturaTextoLogin1;
 	SDL_Texture* texturaTextoLogin2;
 	SDL_Texture* texturaTextoLogin3;
 	SDL_Texture* texturaTextoLogin4;
 	SDL_Texture* texturaTextoLoginError;
+	SDL_Texture* texturaTextoEsperando;
 	SDL_Rect rectTexto1;
 	SDL_Rect rectTexto2;
 	SDL_Rect rectTexto3;
 	SDL_Rect rectTexto4;
 	SDL_Rect rectTextoError;
+	SDL_Rect rectTextoEsperando;
 	SDL_Color colorTextoAyuda;
 	SDL_Color colorTexto;
 
@@ -218,6 +221,11 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	texturaTextoLoginError = SDL_CreateTextureFromSurface(ren, surfaceTextoError);
 	SDL_QueryTexture(texturaTextoLoginError,NULL,NULL,&width,&height);
 	rectTextoError.x=120;rectTextoError.y=570;rectTextoError.w=width;rectTextoError.h=height;
+
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for the other users", colorTextoError);
+	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
+	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
+	rectTextoEsperando.x=120;rectTextoEsperando.y=570;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
 
 	SDL_StartTextInput();
 
@@ -308,6 +316,12 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 			SDL_RenderCopy(ren, texturaTextoLoginError,NULL,&rectTextoError);
 		}
 
+		if(esperar){
+			SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
+			SDL_RenderPresent(ren);
+			break;
+		}
+
 
 		SDL_RenderPresent(ren);
 		
@@ -330,6 +344,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	SDL_DestroyTexture(texturaTextoLogin3);
 	SDL_DestroyTexture(texturaTextoLogin4);
 	SDL_DestroyTexture(texturaTextoLoginError);
+	SDL_DestroyTexture(texturaTextoEsperando);
 	SDL_DestroyTexture(texturaTextoInput1);
 	SDL_DestroyTexture(texturaTextoInput2);
 

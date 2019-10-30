@@ -83,15 +83,18 @@ int main(int argc, char *argv[]){
 
 	dibujador.inicializar(nivel1, nivel2, sprites);
 
-	dibujador.login(& credencialesCliente, false);
+	dibujador.login(& credencialesCliente, false,false);
 	//-> Ventana Login
 
 	//dibujador.login(& credencialesCliente, false);
 	Logger::getInstance()->log(DEBUG, "COMENZANDO LOOP CON: " + std::string(credencialesCliente.usuario) + " - " + std::string(credencialesCliente.contrasenia));
 
 	while(!cliente.validarCredenciales(credencialesCliente)){
-		dibujador.login(& credencialesCliente, true);
+		dibujador.login(& credencialesCliente, true,false);
 	}
+
+	dibujador.login(&credencialesCliente,false,true);
+
 
 
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
