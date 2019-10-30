@@ -24,9 +24,15 @@ void Dibujador::dibujar(struct informacionRec info){
 
 	SDL_RenderClear(ren);
 
-	SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
-	SDL_RenderCopy(ren, tex2, &info.capas[1].src, &info.capas[1].dest);
-	SDL_RenderCopy(ren, tex1, &info.capas[0].src, &info.capas[0].dest);
+	if (info.capas[2].nivel == 1){
+		SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
+		SDL_RenderCopy(ren, tex2, &info.capas[1].src, &info.capas[1].dest);
+		SDL_RenderCopy(ren, tex1, &info.capas[0].src, &info.capas[0].dest);
+	}else{
+		SDL_RenderCopy(ren, nivel2Capa3, &info.capas[2].src, &info.capas[2].dest);
+		SDL_RenderCopy(ren, nivel2Capa2, &info.capas[1].src, &info.capas[1].dest);
+		SDL_RenderCopy(ren, nivel2Capa1, &info.capas[0].src, &info.capas[0].dest);
+	}
 
 	for(int i = 0; i < (info.cantJugadores); i++){
 		SDL_RenderCopyEx(ren, texCody[i], &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
@@ -57,6 +63,10 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	tex1 = crearTexturaDesdeRuta(nivel1.at(0).c_str());
 	tex2 = crearTexturaDesdeRuta(nivel1.at(1).c_str());
 	tex3 = crearTexturaDesdeRuta(nivel1.at(2).c_str());
+
+	nivel2Capa1 = crearTexturaDesdeRuta(nivel2.at(0).c_str());
+	nivel2Capa2 = crearTexturaDesdeRuta(nivel2.at(1).c_str());
+	nivel2Capa3 = crearTexturaDesdeRuta(nivel2.at(2).c_str());
 
 	texCody[0] = crearTexturaDesdeRuta(sprites.at(0).c_str());
 	texCody[1] = crearTexturaDesdeRuta(sprites.at(1).c_str());

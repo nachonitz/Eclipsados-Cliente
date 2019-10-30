@@ -25,6 +25,7 @@ struct elemento{
 
 struct capa{
 	//SDL_Texture* txt;
+	int nivel;
 	SDL_Rect dest;
 	SDL_Rect src;
 };
@@ -63,6 +64,11 @@ private:
 	SDL_Texture* tex1;
 	SDL_Texture* tex2;
 	SDL_Texture* tex3;
+
+	SDL_Texture* nivel2Capa1;
+	SDL_Texture* nivel2Capa2;
+	SDL_Texture* nivel2Capa3;
+
 	SDL_Texture* texCody[MAX_CLIENTES];
 	SDL_Texture* texEnemigo;
 	SDL_Texture* texElemento;
