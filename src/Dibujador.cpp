@@ -16,11 +16,15 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	setearTexturas(nivel1, nivel2, sprites);
 }
 
-void Dibujador::dibujar(struct informacionRec info){
+void Dibujador::dibujar(struct informacionRec info, int ID){
 	//toDo Pasar de char* a las posiciones
 
 	//frameStart=SDL_GetTicks();
 	//static int lastTime;
+
+	int j = 0;
+
+	renderizable renderizableActual;
 
 	SDL_RenderClear(ren);
 
@@ -34,33 +38,119 @@ void Dibujador::dibujar(struct informacionRec info){
 		SDL_RenderCopy(ren, nivel2Capa1, &info.capas[0].src, &info.capas[0].dest);
 	}
 
-	for(int i = 0; i < (info.cantJugadores); i++){
-		if (info.animados[i].estaActivo){
-			SDL_RenderCopyEx(ren, texCody[i], &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
-		}
-		else{
-			SDL_RenderCopyEx(ren, texCodyInactivo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
-		}
-	}
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
-		SDL_RenderCopyEx(ren, texEnemigo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+		renderizableActual.textura = texEnemigo;
+		renderizableActual.source = info.animados[i].src;
+		renderizableActual.destination = info.animados[i].dest;
+		renderizableActual.flip = info.animados[i].flip;
+		renderizableActual.soyJugador = false;
+		renderizableActual.estaActivo = true;
+		renderizableActual.idxJugador = info.animados[i].idx;
+		renderizables.push_back(renderizableActual);
+	}
+
+	for(int i = 0; i < (info.cantJugadores); i++){
+		renderizableActual.textura = texCody[i];
+		renderizableActual.source = info.animados[i].src;
+		renderizableActual.destination = info.animados[i].dest;
+		renderizableActual.flip = info.animados[i].flip;
+		renderizableActual.soyJugador = true;
+		renderizableActual.estaActivo = info.animados[i].estaActivo;
+		renderizableActual.idxJugador = info.animados[i].idx;
+		renderizablesJugadores.push_back(renderizableActual);
+		renderizables.push_back(renderizableActual);
 	}
 
 	for(int i = 0; i < (info.cantElementos); i++){
-		SDL_RenderCopy(ren, texElemento, &info.elementos[i].src, &info.elementos[i].dest);
+		renderizableActual.textura = texElemento;
+		renderizableActual.source = info.elementos[i].src;
+		renderizableActual.destination = info.elementos[i].dest;
+		renderizableActual.flip = SDL_FLIP_NONE;
+		renderizableActual.soyJugador = false;
+		renderizableActual.estaActivo = true;
+		renderizableActual.idxJugador = -1;
+		renderizables.push_back(renderizableActual);
 	}
-	SDL_RenderPresent(ren);
 
-	/*
 	std::sort(renderizables.begin(), renderizables.end());
-	for (uint i = 0; i < renderizables.size(); i++) {
-		SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+
+	for (uint i = 0; i < renderizablesJugadores.size(); i++) {
+		if(renderizablesJugadores[i].idxJugador == ID){
+			renderizableActual.textura = texCody[i];
+			renderizableActual.source = info.animados[i].src;
+			renderizableActual.destination = info.animados[i].dest;
+			renderizableActual.flip = info.animados[i].flip;
+			renderizableActual.soyJugador = true;
+			renderizableActual.estaActivo = info.animados[i].estaActivo;
+			renderizableActual.idxJugador = info.animados[i].idx;
+		}
 	}
-	renderizables.clear();
-	if(frameDelay > lastTime){
-		SDL_Delay(frameDelay - lastTime);
-	}*/
-}
+
+	for (uint i = 0; i < renderizables.size(); i++) {
+		if (renderizables[i].estaActivo){
+			SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+		}else{
+			SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+		}
+	}
+
+/*	for (uint i = 0; i < renderizables.size(); i++) {
+		if(renderizables[i].soyJugador && renderizables[i].idxJugador != ID){
+			j++;
+			SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+		}else{
+			if(!(renderizables[i].soyJugador)){
+				SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+			}else{
+				if(j == 3){
+					if (renderizables[i].estaActivo){
+						SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+					}else{
+						SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+					}
+				}else{
+					for(uint k = i-1; k < renderizables.size(); k++){
+						if(renderizables[i].destination.x == renderizables[k].destination.x && renderizables[i].destination.y == renderizables[k].destination.y && renderizables[k].soyJugador){
+							if (renderizables[k].estaActivo){
+								SDL_RenderCopyEx(ren, renderizables[k].textura, &renderizables[k].source, &renderizables[k].destination, 0, NULL, renderizables[k].flip);
+							}else{
+								SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[k].source, &renderizables[k].destination, 0, NULL, renderizables[k].flip);
+							}
+							if (renderizables[i].estaActivo){
+								SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+								//std::swap(renderizables[i], renderizables[k]);
+							}else{
+								SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+*/
+
+		for (uint i = 0; i < renderizablesJugadores.size(); i++) {
+			if(renderizableActual.destination.x >= (renderizablesJugadores[i].destination.x - 5) && renderizableActual.destination.x <= (renderizablesJugadores[i].destination.x + 5) && renderizableActual.destination.y >= (renderizablesJugadores[i].destination.y - 5) && renderizableActual.destination.y <= (renderizablesJugadores[i].destination.y + 5) && renderizableActual.idxJugador != renderizablesJugadores[i].idxJugador){
+				if (renderizables[i].estaActivo){
+					SDL_RenderCopyEx(ren, renderizableActual.textura, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
+				}else{
+					SDL_RenderCopyEx(ren, texCodyInactivo, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
+				}
+			}
+		}
+
+		SDL_RenderPresent(ren);
+
+		renderizables.clear();
+		renderizablesJugadores.clear();
+	/*
+		if(frameDelay > lastTime){
+			SDL_Delay(frameDelay - lastTime);
+		}*/
+	}
+
 
 void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites) {
 

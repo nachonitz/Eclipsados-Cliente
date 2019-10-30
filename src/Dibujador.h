@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include "defs.h"
+#include <algorithm>
 
 //#include "cody.h"
 struct animado{
@@ -16,6 +17,7 @@ struct animado{
 	SDL_Rect dest;
 	SDL_Rect src;
 	SDL_RendererFlip flip;
+	int idx;
 };
 
 struct elemento{
@@ -46,13 +48,27 @@ struct credencial {
 	char usuario[MAX_USER_LEN];
 	char contrasenia[MAX_PASS_LEN];
 	bool credencialValida;
-} ;
+	int myID;
+};
+
+struct renderizable {
+	SDL_Texture* textura;
+	SDL_Rect source;
+	SDL_Rect destination;
+	SDL_RendererFlip flip;
+	bool soyJugador, estaActivo;
+	int idxJugador;
+	bool operator < (const renderizable& a) const {
+
+		return (destination.y + destination.h) < (a.destination.y + a.destination.h);
+	    }
+};
 
 class Dibujador {
 public:
 
 	void inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
-	void dibujar(struct informacionRec info);
+	void dibujar(struct informacionRec info, int ID);
 	void setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void login(struct credencial* credencialCliente, bool errorAlValidar, bool esperar);
 	~Dibujador();
@@ -80,7 +96,8 @@ private:
 	SDL_Window* win;
 	struct informacionRec informacion;
 
-
+	std::vector<renderizable> renderizables;
+	std::vector<renderizable> renderizablesJugadores;
 
 
 };

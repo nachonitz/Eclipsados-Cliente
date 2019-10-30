@@ -86,6 +86,8 @@ bool Cliente::validarCredenciales(struct credencial credencialesAValidar){
 	Logger::getInstance()->log(DEBUG, "RECIBIENDO...");
 	recv(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
 
+	ID = credencialesAValidar.myID;
+
 	Logger::getInstance()->log(DEBUG, "RESULTADO: " + std::to_string(credencialesAValidar.credencialValida));
 	return (credencialesAValidar.credencialValida);
 

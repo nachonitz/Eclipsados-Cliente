@@ -23,6 +23,8 @@ public:
 	void setPortAndIP(char *puerto, std::string ip);
 	void esperarConfirmacionDeInicio();
 	bool validarCredenciales(struct credencial credencialesAValidar);
+	void setID(int idx){ID = idx;}
+	int getID(){return ID;}
 
 private:
 	struct sockaddr_in direccionServer;
@@ -37,6 +39,7 @@ private:
 	char* miUsuario;
 	rec sGuest, sHost;
 	int socketServidor;
+	int ID;
 
 };
 

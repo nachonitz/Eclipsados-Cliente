@@ -9,6 +9,7 @@ Cliente cliente;
 char mensaje[1000];
 Dibujador dibujador;
 Controlador* controlador;
+credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
 
@@ -40,7 +41,7 @@ void* render_vista(void*arg){
 			struct informacionRec info = colaInfoRecibida.front();
 			pthread_mutex_unlock(&mutexQueue);
 
-			dibujador.dibujar(info);
+			dibujador.dibujar(info, cliente.getID());
 			colaInfoRecibida.pop();
 		}
 	}
@@ -66,7 +67,6 @@ int main(int argc, char *argv[]){
 	pthread_t hiloRecieveMessage;
 	pthread_t hiloRender;
 
-	credencial credencialesCliente;
 	credencialesCliente.credencialValida = false;
 
 	pthread_mutex_init(&mutexQueue,NULL);
@@ -90,8 +90,10 @@ int main(int argc, char *argv[]){
 	Logger::getInstance()->log(DEBUG, "COMENZANDO LOOP CON: " + std::string(credencialesCliente.usuario) + " - " + std::string(credencialesCliente.contrasenia));
 
 	while(!cliente.validarCredenciales(credencialesCliente)){
-		dibujador.login(& credencialesCliente, true,false);
+		dibujador.login(&credencialesCliente, true,false);
 	}
+
+	//cliente.setID(credencialesCliente.myID);
 
 	dibujador.login(&credencialesCliente,false,true);
 
