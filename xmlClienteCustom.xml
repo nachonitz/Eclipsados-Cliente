@@ -23,5 +23,6 @@
 		<sprite>sprites/Dug.png</sprite>
 		<sprite>sprites/AndoreJr.png</sprite>
 		<sprite>sprites/Haggar.png</sprite>
+		<sprite>sprites/SpriteCodyInactivo-120x120.png</sprite>
 	</sprites>
 </configuracionCliente>
