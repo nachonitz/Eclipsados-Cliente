@@ -45,7 +45,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		renderizableActual.flip = info.animados[i].flip;
 		renderizableActual.soyJugador = false;
 		renderizableActual.estaActivo = true;
-		renderizableActual.idxJugador = info.animados[i].idx;
+		renderizableActual.idxJugador = info.animados[i].ID;
 		renderizables.push_back(renderizableActual);
 	}
 
@@ -56,7 +56,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		renderizableActual.flip = info.animados[i].flip;
 		renderizableActual.soyJugador = true;
 		renderizableActual.estaActivo = info.animados[i].estaActivo;
-		renderizableActual.idxJugador = info.animados[i].idx;
+		renderizableActual.idxJugador = info.animados[i].ID;
 		renderizablesJugadores.push_back(renderizableActual);
 		renderizables.push_back(renderizableActual);
 	}
@@ -82,7 +82,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 			renderizableActual.flip = info.animados[i].flip;
 			renderizableActual.soyJugador = true;
 			renderizableActual.estaActivo = info.animados[i].estaActivo;
-			renderizableActual.idxJugador = info.animados[i].idx;
+			renderizableActual.idxJugador = info.animados[i].ID;
 		}
 	}
 

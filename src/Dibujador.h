@@ -17,7 +17,7 @@ struct animado{
 	SDL_Rect dest;
 	SDL_Rect src;
 	SDL_RendererFlip flip;
-	int idx;
+	int ID;
 };
 
 struct elemento{
