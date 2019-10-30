@@ -21,7 +21,7 @@ public:
 	void enviarInformacion(struct informacionEnv info);
 	struct informacionRec recibirInformacion();
 	void setPortAndIP(char *puerto, std::string ip);
-	void esperarConfirmacionDeInicio();
+	bool esperarConfirmacionDeInicio();
 	bool validarCredenciales(struct credencial credencialesAValidar);
 	void setID(int idx){ID = idx;}
 	int getID(){return ID;}

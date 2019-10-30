@@ -67,9 +67,11 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 }
 
 
-void Cliente::esperarConfirmacionDeInicio(){
+bool Cliente::esperarConfirmacionDeInicio(){
 	bool noDevuelveNada;
 	recv(cliente, &noDevuelveNada, sizeof(bool), 0);
+
+	return noDevuelveNada;
 }
 
 bool Cliente::validarCredenciales(struct credencial credencialesAValidar){

@@ -97,10 +97,15 @@ int main(int argc, char *argv[]){
 
 	dibujador.login(&credencialesCliente,false,true);
 
-
-
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	cliente.esperarConfirmacionDeInicio();
+	bool puedoEntrar = cliente.esperarConfirmacionDeInicio();
+
+	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(puedoEntrar));
+
+	if (!puedoEntrar) {
+
+		return 0;
+	}
 
 
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
