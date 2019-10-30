@@ -12,6 +12,7 @@
 //#include "cody.h"
 struct animado{
 	//SDL_Texture* txt;
+	bool estaActivo;
 	SDL_Rect dest;
 	SDL_Rect src;
 	SDL_RendererFlip flip;
@@ -71,6 +72,7 @@ private:
 	SDL_Texture* nivel2Capa3;
 
 	SDL_Texture* texCody[MAX_CLIENTES];
+	SDL_Texture* texCodyInactivo;
 	SDL_Texture* texEnemigo;
 	SDL_Texture* texElemento;
 	SDL_Renderer* ren;

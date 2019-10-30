@@ -35,7 +35,12 @@ void Dibujador::dibujar(struct informacionRec info){
 	}
 
 	for(int i = 0; i < (info.cantJugadores); i++){
-		SDL_RenderCopyEx(ren, texCody[i], &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+		if (info.animados[i].estaActivo){
+			SDL_RenderCopyEx(ren, texCody[i], &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+		}
+		else{
+			SDL_RenderCopyEx(ren, texCodyInactivo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
+		}
 	}
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
 		SDL_RenderCopyEx(ren, texEnemigo, &info.animados[i].src, &info.animados[i].dest, 0, NULL, info.animados[i].flip);
@@ -52,7 +57,6 @@ void Dibujador::dibujar(struct informacionRec info){
 		SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
 	}
 	renderizables.clear();
-
 	if(frameDelay > lastTime){
 		SDL_Delay(frameDelay - lastTime);
 	}*/
@@ -72,6 +76,7 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	texCody[1] = crearTexturaDesdeRuta(sprites.at(1).c_str());
 	texCody[2] = crearTexturaDesdeRuta(sprites.at(2).c_str());
 	texCody[3] = crearTexturaDesdeRuta(sprites.at(3).c_str());
+	texCodyInactivo = crearTexturaDesdeRuta(sprites.at(8).c_str());
 
 	texEnemigo = crearTexturaDesdeRuta(sprites.at(6).c_str());
 	texElemento = crearTexturaDesdeRuta(sprites.at(4).c_str());
