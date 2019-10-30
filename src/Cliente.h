@@ -9,6 +9,7 @@
 #include <string.h>
 #include "Dibujador.h"
 #include "controlador/Controlador.h"
+#include "Logger.h"
 using namespace std;
 
 class Cliente {

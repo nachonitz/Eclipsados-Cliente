@@ -223,11 +223,11 @@ struct informacionEnv Controlador::eventHandler(){
 		infoEnv.movimiento = RIGHT;
 	}
 
-	/*if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
+	if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
 		preparoSalto(SALTO_DERECHA, saltoPatada);
 		spriteFlip = SDL_FLIP_NONE;
 		infoEnv.flip = spriteFlip;
-	}*/
+	}
 
 	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
 		spriteFlip = SDL_FLIP_HORIZONTAL;
@@ -235,12 +235,12 @@ struct informacionEnv Controlador::eventHandler(){
 		infoEnv.flip = spriteFlip;
 		infoEnv.movimiento = LEFT;
 	}
-/*	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
+	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
 		preparoSalto(SALTO_IZQUIERDA, saltoPatada);
 		spriteFlip = SDL_FLIP_HORIZONTAL;
 		infoEnv.flip = spriteFlip;
 	}
-*/
+
 	if(keystates[SDL_SCANCODE_LSHIFT] && !saltando && !agachando) {
 		pegar:
 		if(accionActual != golpear){

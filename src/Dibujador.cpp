@@ -144,7 +144,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 
 	int width,height;
 	bool isLogginIn = true;
-	bool needToRender = false;
+	bool needToRender = true;
 	bool inputEnUsuario = true;
 	SDL_Event event;
 	const Uint8* keystates;
@@ -153,26 +153,26 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	rectFlechaSource.x=0;rectFlechaSource.y=0;rectFlechaSource.w=850;rectFlechaSource.h=850;
 	rectFlechaDest.x=20;rectFlechaDest.y=390;rectFlechaDest.w=70;rectFlechaDest.h =70;
 
-	surfaceFlecha = IMG_Load("../sprites/flecha.png");
+	surfaceFlecha = IMG_Load("sprites/flecha.png");
 	texturaFlecha = SDL_CreateTextureFromSurface(ren,surfaceFlecha);
 
 
 
 	rectFondo1source.x=0;rectFondo1source.y=0;rectFondo1source.w=620;rectFondo1source.h=390;
 	rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
-	surfaceFondoLogin1 = IMG_Load("../sprites/Login-FondoAlt.jpg");
+	surfaceFondoLogin1 = IMG_Load("sprites/Login-FondoAlt.jpg");
 	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
 
 	rectFondo2source.x=0;rectFondo2source.y=0;rectFondo2source.w=640;rectFondo2source.h=394;
 	rectFondo2dest.x=100;rectFondo2dest.y=0;rectFondo2dest.w=650;rectFondo2dest.h=400;
-	surfaceFondoLogin2 = IMG_Load("../sprites/FinalFight.png");
+	surfaceFondoLogin2 = IMG_Load("sprites/FinalFight.png");
 	texturaFondoLogin2 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin2);
 	
 
 	if(TTF_Init());
 
-	font = TTF_OpenFont("../sprites/Sansation-Bold.ttf", 30);
-	fontInput = TTF_OpenFont("../sprites/Sansation-Bold.ttf", 20);
+	font = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
+	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 20);
 	colorTextoInput.r = 200; colorTextoInput.g = 100; colorTextoInput.b = 100;
 	colorTexto.r = 190; colorTexto.g = 60; colorTexto.b = 32;
 	colorTextoAyuda.r = 170; colorTextoAyuda.g = 30; colorTextoAyuda.b = 10;
@@ -227,7 +227,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 				if(inputEnUsuario && textoIngresadoUsuario.length()<18){
 					textoIngresadoUsuario += event.text.text;
 				}
-				else if(textoIngresadoContrasenia.length()<18){
+				else if(!inputEnUsuario && textoIngresadoContrasenia.length()<18){
 					textoIngresadoContrasenia += event.text.text;
 				}
 
@@ -253,7 +253,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 					textoIngresadoUsuario.pop_back();
 					needToRender = true;
 				}
-				else if(textoIngresadoContrasenia.length()>0){
+				else if(!inputEnUsuario &&textoIngresadoContrasenia.length()>0){
 					textoIngresadoContrasenia.pop_back();
 					needToRender = true;
 				}
@@ -302,4 +302,30 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar)
 	credencialCliente->contrasenia = textoIngresadoContrasenia.c_str();
 
 	SDL_StopTextInput();
+	SDL_DestroyTexture(texturaFondoLogin1);
+	SDL_DestroyTexture(texturaFondoLogin2);
+	SDL_DestroyTexture(texturaFlecha);
+	SDL_DestroyTexture(texturaTextoLogin1);
+	SDL_DestroyTexture(texturaTextoLogin2);
+	SDL_DestroyTexture(texturaTextoLogin3);
+	SDL_DestroyTexture(texturaTextoLogin4);
+	SDL_DestroyTexture(texturaTextoLoginError);
+	SDL_DestroyTexture(texturaTextoInput1);
+	SDL_DestroyTexture(texturaTextoInput2);
+
+}
+
+Dibujador::~Dibujador(){
+	SDL_DestroyRenderer(ren);
+	SDL_DestroyWindow(win);
+	SDL_DestroyTexture(tex1);
+	SDL_DestroyTexture(tex2);
+	SDL_DestroyTexture(tex3);
+	SDL_DestroyTexture(texCody[0]);
+	SDL_DestroyTexture(texCody[1]);
+	SDL_DestroyTexture(texCody[2]);
+	SDL_DestroyTexture(texCody[3]);
+	SDL_DestroyTexture(texEnemigo);
+	SDL_DestroyTexture(texElemento);
+
 }
