@@ -21,7 +21,7 @@ struct renderizable {
 
 		return (destination.y + destination.h) < (a.destination.y + a.destination.h);
 	    }
-} ;
+};
 
 class Vista {
 public:

@@ -35,9 +35,9 @@ struct capa{
 
 
 struct informacionRec{
-	struct elemento elementos[MAX_CANT_ELEMENTOS];
+	struct elemento elementos[100];
 	struct capa capas[3];
-	struct animado animados[MAX_CANT_ANIMADOS];
+	struct animado animados[25];
 	int cantAnimados;
 	int cantElementos;
 	int cantJugadores;

@@ -36,12 +36,27 @@ void Cliente::recibirMensaje(char reply[1000]){
 
 struct informacionRec Cliente::recibirInformacion(){
 	struct informacionRec infoRec;
+	bool estadoTransferencia = true;
 
 	int infoRecibida = 0;
-	while (infoRecibida < sizeof(struct informacionRec)){
-		int recibido = recv(cliente, &infoRec, sizeof(struct informacionRec), 0);
-		infoRecibida += recibido;
-	}
+
+	//while (infoRecibida < sizeof(struct informacionRec)){
+		int recibido4 = recv(cliente, &infoRec.cantAnimados, sizeof(infoRec.cantAnimados), 0);
+		int recibido5 = recv(cliente, &infoRec.cantJugadores, sizeof(infoRec.cantJugadores), 0);
+		int recibido6 = recv(cliente, &infoRec.cantElementos, sizeof(infoRec.cantElementos), 0);
+		for(int i=0; i < infoRec.cantAnimados; i++){
+			int recibido1 = recv(cliente, &infoRec.animados[i], sizeof(infoRec.animados[i]), 0);
+		}
+		for(int i=0; i < 3; i++){
+			int recibido2 = recv(cliente, &infoRec.capas[i], sizeof(infoRec.capas[i]), 0);
+		}
+		for(int i=0; i < infoRec.cantElementos; i++){
+			int recibido3 = recv(cliente, &infoRec.elementos[i], sizeof(infoRec.elementos[i]), 0);
+		}
+		//int recibido = recibido1 + recibido2 + recibido3 + recibido4 + recibido5 + recibido6;
+		//int recibido = recv(cliente, &infoRec, sizeof(struct informacionRec), 0);
+		//infoRecibida += recibido;
+	//}
 	return infoRec;
 }
 

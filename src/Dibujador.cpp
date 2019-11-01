@@ -132,7 +132,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 */
 
 		for (uint i = 0; i < renderizablesJugadores.size(); i++) {
-			if(renderizableActual.destination.x >= (renderizablesJugadores[i].destination.x - 5) && renderizableActual.destination.x <= (renderizablesJugadores[i].destination.x + 5) && renderizableActual.destination.y >= (renderizablesJugadores[i].destination.y - 5) && renderizableActual.destination.y <= (renderizablesJugadores[i].destination.y + 5) && renderizableActual.idxJugador != renderizablesJugadores[i].idxJugador){
+			if(renderizableActual.destination.x >= (renderizablesJugadores[i].destination.x - 10) && renderizableActual.destination.x <= (renderizablesJugadores[i].destination.x + 10) && renderizableActual.destination.y >= (renderizablesJugadores[i].destination.y - 10) && renderizableActual.destination.y <= (renderizablesJugadores[i].destination.y + 10) && renderizableActual.idxJugador != renderizablesJugadores[i].idxJugador){
 				if (renderizables[i].estaActivo){
 					SDL_RenderCopyEx(ren, renderizableActual.textura, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
 				}else{
