@@ -11,6 +11,8 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	if ( SDL_CreateWindowAndRenderer(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL, 0, &win, &ren) ); // @suppress("Suspicious semicolon")
 	//Logger::getInstance()->log(ERROR, SDL_GetError());
 
+	SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
+
 	SDL_SetWindowTitle(win, "Final Fight");
 
 	setearTexturas(nivel1, nivel2, sprites);
@@ -334,6 +336,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 
 
 			if(event.type == SDL_QUIT ){
+				exit(0);
 				isLogginIn = false;
 			}
 			else if(event.type == SDL_TEXTINPUT){
@@ -472,13 +475,23 @@ void Dibujador::mostrarPantallaEspera() {
 	colorTextoError.r = 220; colorTextoError.g = 0; colorTextoError.b = 0;
 
 
-	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other users...", colorTextoError);
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other players...", colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
 	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
-	rectTextoEsperando.x=200;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
+	rectTextoEsperando.x=225;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
 
+	SDL_SetRenderDrawColor(ren, 25, 25,25, 200);
+
+	SDL_Rect banner;
+	banner.h=80;
+	banner.w=WINDOW_SIZE_HORIZONTAL;
+	banner.x= 0;
+	banner.y= WINDOW_SIZE_VERTICAL / 2 - banner.h/4;
 
 	SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
+
+	SDL_RenderFillRect(ren, &banner);
+
 	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
 	SDL_RenderPresent(ren);
 
