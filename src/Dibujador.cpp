@@ -312,7 +312,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 	SDL_QueryTexture(texturaTextoLoginError,NULL,NULL,&width,&height);
 	rectTextoError.x=120;rectTextoError.y=570;rectTextoError.w=width;rectTextoError.h=height;
 
-	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for the other users", colorTextoError);
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other users", colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
 	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
 	rectTextoEsperando.x=120;rectTextoEsperando.y=570;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
@@ -406,11 +406,11 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 			SDL_RenderCopy(ren, texturaTextoLoginError,NULL,&rectTextoError);
 		}
 
-		if(esperar){
+/*		if(esperar){
 			SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
 			SDL_RenderPresent(ren);
 			break;
-		}
+		}*/
 
 
 		SDL_RenderPresent(ren);
@@ -439,6 +439,48 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 	SDL_DestroyTexture(texturaTextoInput2);
 
 	Logger::getInstance()->log(DEBUG, "DIBUJADOR OBTUVO CREDENCIALES: " + std::string(credencialCliente->usuario) + " - " + std::string(credencialCliente->contrasenia));
+
+}
+
+void Dibujador::mostrarPantallaEspera() {
+
+	SDL_Surface* surfaceTextoEsperando;
+
+	SDL_Color colorTextoError;
+
+	int width, height;
+
+	SDL_Texture* texturaTextoEsperando;
+
+	SDL_Rect rectTextoEsperando;
+
+	TTF_Font* fontInput;
+
+	SDL_Texture* texturaFondoLogin1;
+	SDL_Surface* surfaceFondoLogin1;
+	SDL_Rect rectFondo1source;
+	SDL_Rect rectFondo1dest;
+
+	SDL_RenderClear(ren);
+
+	rectFondo1source.x=0;rectFondo1source.y=0;rectFondo1source.w=620;rectFondo1source.h=390;
+	rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
+	surfaceFondoLogin1 = IMG_Load("sprites/Login-Fondo.jpg");
+	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
+
+	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
+	colorTextoError.r = 220; colorTextoError.g = 0; colorTextoError.b = 0;
+
+
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other users...", colorTextoError);
+	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
+	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
+	rectTextoEsperando.x=200;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
+
+
+	SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
+	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
+	SDL_RenderPresent(ren);
 
 }
 

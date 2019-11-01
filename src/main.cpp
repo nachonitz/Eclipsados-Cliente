@@ -95,7 +95,11 @@ int main(int argc, char *argv[]){
 
 	//cliente.setID(credencialesCliente.myID);
 
-	dibujador.login(&credencialesCliente,false,true);
+	//dibujador.login(&credencialesCliente,false,true);
+
+
+	dibujador.mostrarPantallaEspera();
+
 
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
 	bool puedoEntrar = cliente.esperarConfirmacionDeInicio();

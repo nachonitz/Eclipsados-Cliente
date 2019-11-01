@@ -73,6 +73,8 @@ public:
 	void login(struct credencial* credencialCliente, bool errorAlValidar, bool esperar);
 	~Dibujador();
 
+	void mostrarPantallaEspera();
+
 private:
 
 	SDL_Texture* crearTexturaDesdeRuta(std::string ruta);
