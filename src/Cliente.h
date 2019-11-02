@@ -40,6 +40,7 @@ private:
 	rec sGuest, sHost;
 	int socketServidor;
 	int ID;
+	struct informacionRec infoRec;
 
 };
 

@@ -7,6 +7,7 @@ CPP_SRCS += \
 ../src/Cliente.cpp \
 ../src/Dibujador.cpp \
 ../src/Logger.cpp \
+../src/ParserXML.cpp \
 ../src/Vista.cpp \
 ../src/main.cpp 
 
@@ -14,6 +15,7 @@ OBJS += \
 ./src/Cliente.o \
 ./src/Dibujador.o \
 ./src/Logger.o \
+./src/ParserXML.o \
 ./src/Vista.o \
 ./src/main.o 
 
@@ -21,6 +23,7 @@ CPP_DEPS += \
 ./src/Cliente.d \
 ./src/Dibujador.d \
 ./src/Logger.d \
+./src/ParserXML.d \
 ./src/Vista.d \
 ./src/main.d 
 

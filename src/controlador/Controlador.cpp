@@ -2,8 +2,6 @@
 
 Controlador::Controlador() {
 	// TODO Auto-generated constructor stub
-	/*this->juego = juego;
-	jugador = juego->getJugador();*/
 	this->setAcciones(ACCION_CAMINAR, ACCION_PARADO, ACCION_SALTO, ACCION_SALTO_PATADA, ACCION_GOLPEAR, ACCION_AGACHADO, ACCION_SALTO_VERTICAL);
 	spriteFlip = SDL_FLIP_NONE;
 	infoEnv.animacionActual = parado;
@@ -68,9 +66,6 @@ void Controlador::resetearAnimaciones(){
 	this->golpeando = false;
 	this->saltando = false;
 	this->agachando = false;
-	/* QUE LO MANDE EL SERVIDOR A LA ALTURA MAXIMA
-	this->alturaActualSalto = juego->getPosicionJugador()->getVertical();
-	this->alturaMaximaSalto = juego->getPosicionJugador()->getVertical()+25;*/
 }
 
 void Controlador::moviendoDerecha(int setAction){
@@ -141,7 +136,6 @@ void Controlador::verificarJoystick(){
 }
 
 void Controlador::preparoSalto(int tipoDeSalto, int setAction){
-	//saltando = true;
 	tipoSalto = tipoDeSalto;
 	if(accionActual != setAction){
 		accionActual = setAction;
@@ -216,11 +210,10 @@ struct informacionEnv Controlador::eventHandler(){
 		preparoSalto(SALTO_VERTICAL, saltoVertical);
 	}
 
-	if( ( keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando ) ) {
-		spriteFlip = SDL_FLIP_NONE;
+	if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
 		preparoSalto(SALTO_DERECHA, salto);
+		spriteFlip = SDL_FLIP_NONE;
 		infoEnv.flip = spriteFlip;
-		infoEnv.movimiento = RIGHT;
 	}
 
 	if(keystates[SDL_SCANCODE_RIGHT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
@@ -230,10 +223,9 @@ struct informacionEnv Controlador::eventHandler(){
 	}
 
 	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_SPACE] && !golpeando && !agachando) {
-		spriteFlip = SDL_FLIP_HORIZONTAL;
 		preparoSalto(SALTO_IZQUIERDA, salto);
+		spriteFlip = SDL_FLIP_HORIZONTAL;
 		infoEnv.flip = spriteFlip;
-		infoEnv.movimiento = LEFT;
 	}
 	if(keystates[SDL_SCANCODE_LEFT] && keystates[SDL_SCANCODE_LALT] && !golpeando && !agachando) {
 		preparoSalto(SALTO_IZQUIERDA, saltoPatada);
@@ -261,12 +253,12 @@ struct informacionEnv Controlador::eventHandler(){
 
 	if(keystates[SDL_SCANCODE_ESCAPE]) {
 		//setear variable para salir
-		return infoEnv;
+		exit(0);
 	}
 
 	if(e.type == SDL_QUIT){
 		//setear variable para salir
-		return infoEnv;
+		exit(0);
 	}
 
 	if(e.type == SDL_KEYUP && !golpeando && !agachando){

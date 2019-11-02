@@ -468,7 +468,7 @@ void Dibujador::mostrarPantallaEspera() {
 
 	rectFondo1source.x=0;rectFondo1source.y=0;rectFondo1source.w=620;rectFondo1source.h=390;
 	rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
-	surfaceFondoLogin1 = IMG_Load("sprites/Login-Fondo.jpg");
+	surfaceFondoLogin1 = IMG_Load("sprites/pantallaCarga.jpg");
 	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
 
 	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
