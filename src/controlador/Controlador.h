@@ -11,7 +11,6 @@ struct informacionEnv{
 	int movimiento;
 	SDL_RendererFlip flip;
 	int numeroCliente;
-	int tickActual;
 };
 
 

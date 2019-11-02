@@ -19,7 +19,7 @@ void* message_send(void*arg){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
 		struct informacionEnv infoEnv = controlador->eventHandler();
 		cliente.enviarInformacion(infoEnv);
-		SDL_Delay(1000/90);
+		SDL_Delay(FRAME_DELAY);
 		//dibujador.dibujar(info);
 	}
 }
