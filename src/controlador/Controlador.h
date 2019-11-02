@@ -10,6 +10,8 @@ struct informacionEnv{
 	int animacionActual;
 	int movimiento;
 	SDL_RendererFlip flip;
+	int numeroCliente;
+	int tickActual;
 };
 
 

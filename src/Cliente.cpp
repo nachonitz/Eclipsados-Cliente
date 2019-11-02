@@ -19,8 +19,11 @@ Cliente::~Cliente(){
 }
 
 void Cliente::enviarInformacion(struct informacionEnv infoEnv){
+	int enviado = 0;
+	while (enviado < sizeof(struct informacionEnv)){
+		enviado += send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, 0);
+	}
 
-	send(cliente, &infoEnv, sizeof(struct informacionEnv), 0);
 
 }
 
