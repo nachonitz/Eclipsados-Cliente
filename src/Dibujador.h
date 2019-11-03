@@ -74,6 +74,7 @@ public:
 	~Dibujador();
 
 	void mostrarPantallaEspera();
+	void mostrarPantallaServidorCaido();
 
 private:
 

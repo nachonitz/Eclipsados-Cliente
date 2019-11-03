@@ -304,15 +304,15 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 	SDL_QueryTexture(texturaTextoLogin3,NULL,NULL,&width,&height);
 	rectTexto3.x=600;rectTexto3.y=550;rectTexto3.w=width;rectTexto3.h=height;
 
-	surfaceTexto4 = TTF_RenderText_Solid(fontInput, "Press Spacebar to login", colorTextoAyuda);
+	surfaceTexto4 = TTF_RenderText_Solid(fontInput, "Press ENTER to login", colorTextoAyuda);
 	texturaTextoLogin4 = SDL_CreateTextureFromSurface(ren, surfaceTexto4);
 	SDL_QueryTexture(texturaTextoLogin4,NULL,NULL,&width,&height);
-	rectTexto4.x=580;rectTexto4.y=575;rectTexto4.w=width;rectTexto4.h=height;
+	rectTexto4.x=600;rectTexto4.y=575;rectTexto4.w=width;rectTexto4.h=height;
 
-	surfaceTextoError = TTF_RenderText_Solid(fontInput, "Invalid username or password. Try again", colorTextoError);
+	surfaceTextoError = TTF_RenderText_Solid(fontInput, "Username or password are either invalid or in use. Try again!", colorTextoError);
 	texturaTextoLoginError = SDL_CreateTextureFromSurface(ren, surfaceTextoError);
 	SDL_QueryTexture(texturaTextoLoginError,NULL,NULL,&width,&height);
-	rectTextoError.x=120;rectTextoError.y=570;rectTextoError.w=width;rectTextoError.h=height;
+	rectTextoError.x=20;rectTextoError.y=570;rectTextoError.w=width;rectTextoError.h=height;
 
 	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other users", colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
@@ -358,7 +358,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 				inputEnUsuario = true;
 				rectFlechaDest.y=390;
 			}
-			if(keystates[SDL_SCANCODE_SPACE]){
+			if(keystates[SDL_SCANCODE_RETURN]){
 				isLogginIn = false;
 				//textoIngresadoUsuario.clear();
 				//textoIngresadoContrasenia.clear();
@@ -394,8 +394,25 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 		SDL_RenderClear(ren);
 
 
+
 		SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
 		SDL_RenderCopy(ren, texturaFondoLogin2,&rectFondo2source,&rectFondo2dest);
+
+		SDL_SetRenderDrawColor(ren, 25, 25,25, 200);
+		SDL_Rect banner1;
+		banner1.h= 40;
+		banner1.w= 190;
+		banner1.x= 600;
+		banner1.y= 557;
+		SDL_RenderFillRect(ren, &banner1);
+
+		SDL_Rect banner2;
+		banner2.h= 15;
+		banner2.w= 540;
+		banner2.x= 20;
+		banner2.y= 577;
+
+
 		SDL_RenderCopy(ren, texturaTextoLogin1,NULL,&rectTexto1);
 		SDL_RenderCopy(ren, texturaTextoLogin2,NULL,&rectTexto2);
 		SDL_RenderCopy(ren, texturaTextoLogin3,NULL,&rectTexto3);
@@ -406,8 +423,11 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 		SDL_RenderCopy(ren, texturaTextoInput2,NULL,&rectTextoInput2);
 
 		if(errorAlValidar){
+			SDL_RenderFillRect(ren, &banner2);
 			SDL_RenderCopy(ren, texturaTextoLoginError,NULL,&rectTextoError);
 		}
+
+
 
 /*		if(esperar){
 			SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
@@ -472,8 +492,7 @@ void Dibujador::mostrarPantallaEspera() {
 	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
 
 	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
-	colorTextoError.r = 220; colorTextoError.g = 0; colorTextoError.b = 0;
-
+	colorTextoError.r = 190; colorTextoError.g = 30; colorTextoError.b = 10;
 
 	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other players...", colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
@@ -495,6 +514,57 @@ void Dibujador::mostrarPantallaEspera() {
 	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
 	SDL_RenderPresent(ren);
 
+}
+
+void Dibujador::mostrarPantallaServidorCaido(){
+	SDL_Surface* surfaceTextoEsperando;
+
+	SDL_Color colorTextoError;
+
+	int width, height;
+
+	SDL_Texture* texturaTextoEsperando;
+
+	SDL_Rect rectTextoEsperando;
+
+	TTF_Font* fontInput;
+
+	SDL_Texture* texturaFondoLogin1;
+	SDL_Surface* surfaceFondoLogin1;
+	SDL_Rect rectFondo1source;
+	SDL_Rect rectFondo1dest;
+
+	SDL_RenderClear(ren);
+
+	rectFondo1source.x=0;rectFondo1source.y=0;rectFondo1source.w=620;rectFondo1source.h=390;
+		rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
+		surfaceFondoLogin1 = IMG_Load("sprites/asfalto.jpg");
+		texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
+
+	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
+	colorTextoError.r = 190; colorTextoError.g = 30; colorTextoError.b = 10;
+
+
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Server connection lost... Shutting down", colorTextoError);
+	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
+	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
+	rectTextoEsperando.x=140;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
+
+	SDL_SetRenderDrawColor(ren, 25, 25,25, 200);
+
+	SDL_Rect banner;
+	banner.h=80;
+	banner.w=WINDOW_SIZE_HORIZONTAL;
+	banner.x= 0;
+	banner.y= WINDOW_SIZE_VERTICAL / 2 - banner.h/4;
+
+	SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
+
+	SDL_RenderFillRect(ren, &banner);
+
+	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
+	SDL_RenderPresent(ren);
+	SDL_Delay(5000);
 }
 
 Dibujador::~Dibujador(){

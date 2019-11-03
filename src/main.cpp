@@ -97,7 +97,6 @@ int main(int argc, char *argv[]){
 
 	//dibujador.login(&credencialesCliente,false,true);
 
-
 	dibujador.mostrarPantallaEspera();
 
 
@@ -108,6 +107,7 @@ int main(int argc, char *argv[]){
 
 	if (!puedoEntrar) {
 
+		dibujador.mostrarPantallaServidorCaido();
 		return 0;
 	}
 

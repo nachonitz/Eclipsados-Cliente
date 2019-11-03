@@ -102,7 +102,7 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 
 
 bool Cliente::esperarConfirmacionDeInicio(){
-	bool noDevuelveNada;
+	bool noDevuelveNada = false;
 	recv(cliente, &noDevuelveNada, sizeof(bool), 0);
 
 	return noDevuelveNada;
