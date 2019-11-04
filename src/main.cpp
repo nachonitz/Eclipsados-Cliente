@@ -6,7 +6,7 @@
 #include "ParserXML.h"
 
 Cliente cliente;
-char mensaje[1000];
+
 Dibujador dibujador;
 Controlador* controlador;
 credencial credencialesCliente;
@@ -104,15 +104,20 @@ int main(int argc, char *argv[]){
 	//dibujador.login(&credencialesCliente,false,true);
 	dibujador.mostrarPantallaEspera();
 
+	int bytesRecibidos;
 
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	bool errorEspera = cliente.esperarConfirmacionDeInicio();
+	bool confirmacion = cliente.esperarConfirmacionDeInicio(&bytesRecibidos);
 
-	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(errorEspera));
+	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(confirmacion));
 
-	if (errorEspera) {
+	if (!confirmacion && bytesRecibidos > 0) {
+		dibujador.mostrarPantallaConTextoYCerrarCliente("Server full! Disconnecting...");
+		return 0;
+	}
 
-		//dibujador.mostrarPantallaServidorCaido();
+	else if (bytesRecibidos <= 0) {
+		dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
 		return 0;
 	}
 
@@ -120,11 +125,8 @@ int main(int argc, char *argv[]){
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloRender,NULL,render_vista,NULL);
 	pthread_join(hiloSendMessage,NULL);
-	dibujador.mostrarPantallaServidorCaido();
+	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
 
-	//pthread_join(hiloRecieveMessage,NULL);
-
-	//pthread_join(hiloRender, NULL);
 
 
 	return 0;

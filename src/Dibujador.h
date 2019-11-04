@@ -74,7 +74,7 @@ public:
 	~Dibujador();
 
 	void mostrarPantallaEspera();
-	void mostrarPantallaServidorCaido();
+	void mostrarPantallaConTextoYCerrarCliente(std::string mensaje);
 
 private:
 

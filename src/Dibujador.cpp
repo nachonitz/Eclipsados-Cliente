@@ -516,7 +516,7 @@ void Dibujador::mostrarPantallaEspera() {
 
 }
 
-void Dibujador::mostrarPantallaServidorCaido(){
+void Dibujador::mostrarPantallaConTextoYCerrarCliente(std::string mensaje){
 	SDL_Surface* surfaceTextoEsperando;
 
 	SDL_Color colorTextoError;
@@ -545,7 +545,7 @@ void Dibujador::mostrarPantallaServidorCaido(){
 	colorTextoError.r = 190; colorTextoError.g = 30; colorTextoError.b = 10;
 
 
-	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Server connection lost... Shutting down", colorTextoError);
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, mensaje.c_str(), colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
 	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
 	rectTextoEsperando.x=140;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
