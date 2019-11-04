@@ -95,10 +95,14 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 		sock = connect( cliente, (struct sockaddr *)&direccionServer, sizeof(direccionServer));
 
 		if (sock != 0){
+			Logger::getInstance()->log(ERROR, "Servidor con IP: " + ip + " y puerto " + std::string(puerto) + " no encontrado.");
+
 			perror("Acceptance Failed. Error");
 			close(sock);
 			exit(-1);
 		}else{
+			Logger::getInstance()->log(INFO, "Conexion con servidor exitosa!");
+
 			puts("Accepting Connection...");
 			puts("Connection Successful");
 		}

@@ -23,6 +23,7 @@ void* message_send(void*arg){
 		SDL_Delay(FRAME_DELAY);
 		if (resultadoSend <= 0){
 			serverConectado = false;
+
 		}
 		//dibujador.dibujar(info);
 	}
@@ -79,12 +80,16 @@ int main(int argc, char *argv[]){
 
 	controlador = new Controlador();
 
+	std::string puerto;
+
 	if (argc >= 3) {
 		Logger::getInstance()->log(INFO, "Iniciando conexion a puerto: " + std::string((char*)argv[1]) + ". Con IP: " + std::string((char*)argv[2]));
 		cliente.setPortAndIP(argv[1], argv[2]);
+		puerto =  std::string((char*)argv[2]);
 	} else {
 		Logger::getInstance()->log(INFO, "Iniciando conexion a puerto: " + std::string((char*)argv[1]) + ". Con IP: 127.0.0.1 (localhost)");
 		cliente.setPortAndIP(argv[1], "127.0.0.1");
+		puerto = "127.0.0.1";
 	}
 
 	dibujador.inicializar(nivel1, nivel2, sprites);
@@ -112,20 +117,29 @@ int main(int argc, char *argv[]){
 	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(confirmacion));
 
 	if (!confirmacion && bytesRecibidos > 0) {
+		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " se encuentra lleno! Desconectando....");
 		dibujador.mostrarPantallaConTextoYCerrarCliente("Server full! Disconnecting...");
 		return 0;
 	}
 
 	else if (bytesRecibidos <= 0) {
+		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
 		dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
 		return 0;
 	}
 
+	Logger::getInstance()->log(INFO, "Listo para comenzar, iniciando escenario!");
+
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloRender,NULL,render_vista,NULL);
+
 	pthread_join(hiloSendMessage,NULL);
+
+	Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
+
 	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+
 
 
 
