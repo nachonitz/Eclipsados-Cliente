@@ -18,7 +18,7 @@ Controlador::Controlador() {
 	//Check for joysticks
 	if( SDL_NumJoysticks() < 1 ){
 		//Loggear error
-		printf( "Warning: No joysticks connected!\n" );
+		//printf( "Warning: No joysticks connected!\n" );
 	}
 	else{
 		//Load joystick
@@ -26,12 +26,12 @@ Controlador::Controlador() {
 		gameController = SDL_JoystickOpen( 0 );
 		if( gameController == NULL ){
 			//Loggear error
-			printf( "Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError() );
+			//printf( "Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError() );
 		}
 		//Cosas Para Loggear
-		std::cout << "Controller Name: " << SDL_JoystickName(gameController) << std::endl;
-		std::cout << "Cant Axes: " << SDL_JoystickNumAxes(gameController) << std::endl;
-		std::cout << "Cant Buttons: " << SDL_JoystickNumButtons(gameController) << std::endl;
+		//std::cout << "Controller Name: " << SDL_JoystickName(gameController) << std::endl;
+		//std::cout << "Cant Axes: " << SDL_JoystickNumAxes(gameController) << std::endl;
+		//std::cout << "Cant Buttons: " << SDL_JoystickNumButtons(gameController) << std::endl;
 	}
 }
 

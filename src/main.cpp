@@ -23,6 +23,7 @@ void* message_send(void*arg){
 		SDL_Delay(FRAME_DELAY);
 		if (resultadoSend <= 0){
 			serverConectado = false;
+
 		}
 		//dibujador.dibujar(info);
 	}
@@ -113,19 +114,26 @@ int main(int argc, char *argv[]){
 
 	if (!confirmacion && bytesRecibidos > 0) {
 		dibujador.mostrarPantallaConTextoYCerrarCliente("Server full! Disconnecting...");
+		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + std::string((char*)argv[2]) + "se encuentra lleno! Desconectando....");
+
 		return 0;
 	}
 
 	else if (bytesRecibidos <= 0) {
 		dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + std::string((char*)argv[2]) + "caido! (no se encuentra el server) Desconectando...");
 		return 0;
 	}
+
+	Logger::getInstance()->log(INFO, "Listo para comenzar, iniciando escenario!");
 
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloRender,NULL,render_vista,NULL);
 	pthread_join(hiloSendMessage,NULL);
 	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+	Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + std::string((char*)argv[2]) + "caido! (no se encuentra el server) Desconectando...");
+
 
 
 

@@ -16,6 +16,9 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	SDL_SetWindowTitle(win, "Final Fight");
 
 	setearTexturas(nivel1, nivel2, sprites);
+
+	Logger::getInstance()->log(DEBUG, "Inicializado SDL");
+
 }
 
 void Dibujador::dibujar(struct informacionRec info, int ID){
