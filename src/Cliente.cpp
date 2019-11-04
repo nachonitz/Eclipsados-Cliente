@@ -18,11 +18,15 @@ Cliente::~Cliente(){
 
 }
 
-void Cliente::enviarInformacion(struct informacionEnv infoEnv){
+int Cliente::enviarInformacion(struct informacionEnv infoEnv){
 	int enviado = 0;
 	while (enviado < sizeof(struct informacionEnv)){
-		enviado += send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, 0);
+		enviado += send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, MSG_NOSIGNAL);
+		if (enviado <= 0){
+			return -1;
+		}
 	}
+	return 1;
 
 
 }
@@ -103,9 +107,16 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 
 bool Cliente::esperarConfirmacionDeInicio(){
 	bool noDevuelveNada = false;
-	recv(cliente, &noDevuelveNada, sizeof(bool), 0);
+	int resultado = 0;
+	bool error = false;
 
-	return noDevuelveNada;
+	resultado = recv(cliente, &noDevuelveNada, sizeof(bool), 0);
+
+	if(resultado <= 0){
+		error = true;
+	}
+
+	return error;
 }
 
 bool Cliente::validarCredenciales(struct credencial credencialesAValidar){
@@ -116,7 +127,7 @@ bool Cliente::validarCredenciales(struct credencial credencialesAValidar){
 
 	Logger::getInstance()->log(DEBUG, "ENVIANDO CREDENCIALES: " + user + " - " + pass);
 
-	send(cliente, &credencialesAValidar, sizeof(struct credencial), 0);
+	send(cliente, &credencialesAValidar, sizeof(struct credencial), MSG_NOSIGNAL);
 
 
 	Logger::getInstance()->log(DEBUG, "RECIBIENDO...");

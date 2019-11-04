@@ -18,7 +18,7 @@ public:
 	Cliente();
 	~Cliente();
 	void recibirMensaje(char replay[1000]);
-	void enviarInformacion(struct informacionEnv info);
+	int enviarInformacion(struct informacionEnv info);
 	struct informacionRec recibirInformacion();
 	void setPortAndIP(char *puerto, std::string ip);
 	bool esperarConfirmacionDeInicio();

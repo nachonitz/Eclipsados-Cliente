@@ -12,20 +12,25 @@ Controlador* controlador;
 credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
-
+bool serverConectado;
 
 void* message_send(void*arg){
-	while(1){
+	serverConectado = true;
+	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
 		struct informacionEnv infoEnv = controlador->eventHandler();
-		cliente.enviarInformacion(infoEnv);
+		int resultadoSend = cliente.enviarInformacion(infoEnv);
 		SDL_Delay(FRAME_DELAY);
+		if (resultadoSend <= 0){
+			serverConectado = false;
+		}
 		//dibujador.dibujar(info);
 	}
 }
 
 void* message_recieve(void*arg){
-	while(1){
+	serverConectado = true;
+	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Recibiendo info de servidor...");
 		struct informacionRec info = cliente.recibirInformacion();
 		pthread_mutex_lock(&mutexQueue);
@@ -35,7 +40,8 @@ void* message_recieve(void*arg){
 }
 
 void* render_vista(void*arg){
-	while(1){
+	serverConectado = true;
+	while(serverConectado){
 		if(!colaInfoRecibida.empty()){
 			pthread_mutex_lock(&mutexQueue);
 			struct informacionRec info = colaInfoRecibida.front();
@@ -96,29 +102,30 @@ int main(int argc, char *argv[]){
 	//cliente.setID(credencialesCliente.myID);
 
 	//dibujador.login(&credencialesCliente,false,true);
-
 	dibujador.mostrarPantallaEspera();
 
 
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
-	bool puedoEntrar = cliente.esperarConfirmacionDeInicio();
+	bool errorEspera = cliente.esperarConfirmacionDeInicio();
 
-	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(puedoEntrar));
+	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(errorEspera));
 
-	if (!puedoEntrar) {
+	if (errorEspera) {
 
-		dibujador.mostrarPantallaServidorCaido();
+		//dibujador.mostrarPantallaServidorCaido();
 		return 0;
 	}
 
-
-	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
+	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
 	pthread_create(&hiloRender,NULL,render_vista,NULL);
-
-	pthread_join(hiloRecieveMessage,NULL);
 	pthread_join(hiloSendMessage,NULL);
-	pthread_join(hiloRender, NULL);
+	dibujador.mostrarPantallaServidorCaido();
+
+	//pthread_join(hiloRecieveMessage,NULL);
+
+	//pthread_join(hiloRender, NULL);
+
 
 	return 0;
 }
