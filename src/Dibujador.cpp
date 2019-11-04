@@ -470,7 +470,6 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 
 void Dibujador::mostrarPantallaEspera(int  myID) {
 
-	std::cout<< "ID: "<<myID;
 
 	SDL_Color colorTextoError;
 
