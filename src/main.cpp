@@ -102,7 +102,7 @@ int main(int argc, char *argv[]){
 	//cliente.setID(credencialesCliente.myID);
 
 	//dibujador.login(&credencialesCliente,false,true);
-	dibujador.mostrarPantallaEspera();
+	dibujador.mostrarPantallaEspera(cliente.getID());
 
 	int bytesRecibidos;
 

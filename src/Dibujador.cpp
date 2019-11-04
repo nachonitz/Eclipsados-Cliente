@@ -465,17 +465,21 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 
 }
 
-void Dibujador::mostrarPantallaEspera() {
+void Dibujador::mostrarPantallaEspera(int  myID) {
 
-	SDL_Surface* surfaceTextoEsperando;
+	std::cout<< "ID: "<<myID;
 
 	SDL_Color colorTextoError;
 
 	int width, height;
 
+	SDL_Surface* surfaceTextoEsperando;
 	SDL_Texture* texturaTextoEsperando;
-
 	SDL_Rect rectTextoEsperando;
+
+	SDL_Surface* surfaceTextoPersonaje;
+	SDL_Texture* texturaTextoPersonaje;
+	SDL_Rect rectTextoPersonaje;
 
 	TTF_Font* fontInput;
 
@@ -483,6 +487,9 @@ void Dibujador::mostrarPantallaEspera() {
 	SDL_Surface* surfaceFondoLogin1;
 	SDL_Rect rectFondo1source;
 	SDL_Rect rectFondo1dest;
+
+	SDL_Rect sourceCody;
+	SDL_Rect destCody;
 
 	SDL_RenderClear(ren);
 
@@ -492,7 +499,7 @@ void Dibujador::mostrarPantallaEspera() {
 	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
 
 	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
-	colorTextoError.r = 190; colorTextoError.g = 30; colorTextoError.b = 10;
+	colorTextoError.r = 180; colorTextoError.g = 30; colorTextoError.b = 10;
 
 	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Waiting for other players...", colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
@@ -507,11 +514,42 @@ void Dibujador::mostrarPantallaEspera() {
 	banner.x= 0;
 	banner.y= WINDOW_SIZE_VERTICAL / 2 - banner.h/4;
 
+	SDL_Rect banner2;
+	banner2.h= 160;
+	banner2.w= 450;
+	banner2.x= 150;
+	banner2.y= 420;
+
+	sourceCody.x=0;sourceCody.y=0;sourceCody.w=120;sourceCody.h=120;
+	destCody.x=420;destCody.y=400;destCody.w=180;destCody.h=180;
+
+	surfaceTextoPersonaje = TTF_RenderText_Solid(fontInput, "Su personaje es : ", colorTextoError);
+	texturaTextoPersonaje = SDL_CreateTextureFromSurface(ren, surfaceTextoPersonaje);
+	SDL_QueryTexture(texturaTextoPersonaje,NULL,NULL,&width,&height);
+	rectTextoPersonaje.x=180;rectTextoPersonaje.y=470;rectTextoPersonaje.w=width;rectTextoPersonaje.h=height;
+
 	SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
-
 	SDL_RenderFillRect(ren, &banner);
-
+	SDL_RenderFillRect(ren, &banner2);
 	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
+	SDL_RenderCopy(ren, texturaTextoPersonaje,NULL,&rectTextoPersonaje);
+
+	switch(myID){
+		case 0:
+			SDL_RenderCopy(ren, texCody[0],&sourceCody,&destCody);
+			break;
+		case 1:
+			SDL_RenderCopy(ren, texCody[1],&sourceCody,&destCody);;
+			break;
+		case 2:
+			SDL_RenderCopy(ren, texCody[2],&sourceCody,&destCody);
+			break;
+		case 3:
+			SDL_RenderCopy(ren, texCody[3],&sourceCody,&destCody);
+			break;
+
+	}
+
 	SDL_RenderPresent(ren);
 
 }

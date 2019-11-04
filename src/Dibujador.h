@@ -73,7 +73,7 @@ public:
 	void login(struct credencial* credencialCliente, bool errorAlValidar, bool esperar);
 	~Dibujador();
 
-	void mostrarPantallaEspera();
+	void mostrarPantallaEspera(int myId);
 	void mostrarPantallaConTextoYCerrarCliente(std::string mensaje);
 
 private:
