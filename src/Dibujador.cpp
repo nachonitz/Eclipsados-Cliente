@@ -442,7 +442,7 @@ void Dibujador::login(struct credencial* credencialCliente, bool errorAlValidar,
 	}
 
 	// quitar espacio del final
-	textoIngresadoContrasenia[textoIngresadoContrasenia.find(' ')] = '\0';
+	//textoIngresadoContrasenia[textoIngresadoContrasenia.find(' ')] = '\0';
 
 	strcpy(credencialCliente->usuario, textoIngresadoUsuario.c_str());
 	strcpy(credencialCliente->contrasenia, textoIngresadoContrasenia.c_str());
