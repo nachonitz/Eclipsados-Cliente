@@ -10,11 +10,10 @@ Cliente::Cliente(char *puerto){
 
 void signalHandler(int signum){
 
-	std::cout<<"Signal Handler"<<std::endl;
+	Logger::getInstance()->log(ERROR, "Se ha capturado una excepcion SIGPIPE. Comportamiento Handler: no se hace nada");
 }
 
 Cliente::Cliente(){
-
 }
 
 Cliente::~Cliente(){
@@ -27,12 +26,12 @@ Cliente::~Cliente(){
 int Cliente::enviarInformacion(struct informacionEnv infoEnv){
 	int enviado = 0;
 	int actual = 0;
-	//signal(SIGPIPE, signalHandler);
+	signal(SIGPIPE, signalHandler);
 	while (enviado < sizeof(struct informacionEnv)){
 		actual = send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, 0);
 		enviado += actual;
 		if (actual <= 0){
-			std::cout<<"exit de send"<<std::endl;
+			Logger::getInstance()->log(ERROR, "Servidor desconectado (error en Send). Desconectando cliente: " + std::to_string(ID));
 			return -1;
 		}
 	}
