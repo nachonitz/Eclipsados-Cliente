@@ -253,11 +253,13 @@ struct informacionEnv Controlador::eventHandler(){
 
 	if(keystates[SDL_SCANCODE_ESCAPE]) {
 		//setear variable para salir
+		Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
 		exit(0);
 	}
 
 	if(e.type == SDL_QUIT){
 		//setear variable para salir
+		Logger::getInstance()->log(INFO, "X apretada. Desconexion voluntaria. Desconectando del servidor");
 		exit(0);
 	}
 

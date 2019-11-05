@@ -18,8 +18,9 @@ Cliente::Cliente(){
 
 Cliente::~Cliente(){
 
-	close(sock);
-	printf("Socket numero %d Closed\n", sock);
+	printf("Socket numero %d Closed\n", cliente);
+	Logger::getInstance()->log(INFO, "Cerrando socket: " + std::to_string(cliente));
+	close(cliente);
 
 }
 
@@ -40,15 +41,6 @@ int Cliente::enviarInformacion(struct informacionEnv infoEnv){
 
 }
 
-void Cliente::recibirMensaje(char reply[1000]){
-
-	bzero(sGuest.userName, 1000);
-	bzero(sGuest.mrec, 1000);
-	recv(cliente, &sGuest, sizeof(struct rec), 0);
-	printf("%s:\n", sGuest.userName);
-	printf("%s\n", sGuest.mrec);
-
-}
 
 struct informacionRec Cliente::recibirInformacion(){
 	struct informacionRec infoRec;
@@ -127,24 +119,23 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 	direccionServer.sin_addr.s_addr = inet_addr(ip.c_str());
 	direccionServer.sin_port = htons( atoi(puerto) );
 
-		c = sizeof(struct sockaddr_in);
-		cliente = socket(AF_INET, SOCK_STREAM, 0);
+	c = sizeof(struct sockaddr_in);
+	cliente = socket(AF_INET, SOCK_STREAM, 0);
 
-		//Accept
-		sock = connect( cliente, (struct sockaddr *)&direccionServer, sizeof(direccionServer));
+	//Accept
+	sock = connect( cliente, (struct sockaddr *)&direccionServer, sizeof(direccionServer));
 
-		if (sock != 0){
-			Logger::getInstance()->log(ERROR, "Servidor con IP: " + ip + " y puerto " + std::string(puerto) + " no encontrado.");
+	if (sock != 0){
+		Logger::getInstance()->log(ERROR, "Servidor con IP: " + ip + " y puerto " + std::string(puerto) + " no encontrado.");
+		perror("Acceptance Failed. Error");
+		close(cliente);
+		exit(-1);
+	}else{
+		Logger::getInstance()->log(INFO, "Conexion con servidor exitosa!");
 
-			perror("Acceptance Failed. Error");
-			close(sock);
-			exit(-1);
-		}else{
-			Logger::getInstance()->log(INFO, "Conexion con servidor exitosa!");
-
-			puts("Accepting Connection...");
-			puts("Connection Successful");
-		}
+		puts("Accepting Connection...");
+		puts("Connection Successful");
+	}
 }
 
 
