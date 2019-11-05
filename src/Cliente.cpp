@@ -149,7 +149,7 @@ void Cliente::setPortAndIP(char *puerto, std::string ip){
 
 
 bool Cliente::esperarConfirmacionDeInicio(int* bufferError){
-	bool confirmacion = false;
+	bool confirmacion = true;
 
 	*bufferError = recv(cliente, &confirmacion, sizeof(bool), 0);
 

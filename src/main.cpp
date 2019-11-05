@@ -9,6 +9,7 @@ pthread_t hiloSendMessage;
 pthread_t hiloRecieveMessage;
 pthread_t hiloRender;
 pthread_t hiloTimer;
+pthread_t previeneProgramNotResponding;
 Dibujador dibujador;
 Controlador* controlador;
 credencial credencialesCliente;
@@ -16,7 +17,16 @@ queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
 pthread_mutex_t mutexTimer;
 bool serverConectado;
+bool terminarHiloNotResponding = false;
 int tiempoEsperaSend;
+
+void* mantenerAplicacionActiva(void*arg){
+	int i = 0;
+	while(!terminarHiloNotResponding){
+		sleep(0.5);
+		i++;
+	}
+}
 
 void* timer(void*arg){
 	Logger::getInstance()->log(DEBUG, "Hilo Timer creado");
@@ -138,8 +148,11 @@ int main(int argc, char *argv[]){
 
 	int bytesRecibidos;
 
+	pthread_create(&previeneProgramNotResponding,NULL,mantenerAplicacionActiva,NULL);
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
 	bool confirmacion = cliente.esperarConfirmacionDeInicio(&bytesRecibidos);
+	terminarHiloNotResponding = true;
+	pthread_join(previeneProgramNotResponding,NULL);
 
 	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(confirmacion));
 
@@ -149,7 +162,7 @@ int main(int argc, char *argv[]){
 		return 0;
 	}
 
-	else if (bytesRecibidos <= 0) {
+	else if (!confirmacion && bytesRecibidos <= 0) {
 		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
 		dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
 		return 0;
