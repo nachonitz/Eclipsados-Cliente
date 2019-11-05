@@ -2,24 +2,46 @@
 #include <pthread.h>
 #include "Dibujador.h"
 #include <queue>
-
 #include "ParserXML.h"
 
 Cliente cliente;
-
+pthread_t hiloSendMessage;
+pthread_t hiloRecieveMessage;
+pthread_t hiloRender;
+pthread_t hiloTimer;
 Dibujador dibujador;
 Controlador* controlador;
 credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
+pthread_mutex_t mutexTimer;
 bool serverConectado;
+int tiempoEsperaSend;
+
+void* timer(void*arg){
+	Logger::getInstance()->log(DEBUG, "Hilo Timer creado");
+	while (tiempoEsperaSend <= 5){
+		sleep(1);
+		pthread_mutex_lock(&mutexTimer);
+		tiempoEsperaSend ++;
+		pthread_mutex_unlock(&mutexTimer);
+	}
+	Logger::getInstance()->log(ERROR, "Tiempo de espera maximo alcanzado. Desconcetando de Servidor");
+	serverConectado = false;
+	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+	exit(0);
+}
 
 void* message_send(void*arg){
 	serverConectado = true;
+
+
 	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
 		struct informacionEnv infoEnv = controlador->eventHandler();
+
 		int resultadoSend = cliente.enviarInformacion(infoEnv);
+
 		SDL_Delay(FRAME_DELAY);
 		if (resultadoSend <= 0){
 			serverConectado = false;
@@ -31,17 +53,24 @@ void* message_send(void*arg){
 
 void* message_recieve(void*arg){
 	serverConectado = true;
+	tiempoEsperaSend = 0;
+	pthread_create(&hiloTimer,NULL,timer,NULL);
 	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Recibiendo info de servidor...");
 		struct informacionRec info = cliente.recibirInformacion();
 		pthread_mutex_lock(&mutexQueue);
 		colaInfoRecibida.push(info);
 		pthread_mutex_unlock(&mutexQueue);
+		//terminar hilo timer
+		pthread_mutex_lock(&mutexTimer);
+		tiempoEsperaSend =0;
+		pthread_mutex_unlock(&mutexTimer);
 	}
 }
 
 void* render_vista(void*arg){
 	serverConectado = true;
+
 	while(serverConectado){
 		if(!colaInfoRecibida.empty()){
 			pthread_mutex_lock(&mutexQueue);
@@ -70,13 +99,11 @@ int main(int argc, char *argv[]){
 
 	parser.parsearConfig(nivel1, nivel2, sprites);
 
-	pthread_t hiloSendMessage;
-	pthread_t hiloRecieveMessage;
-	pthread_t hiloRender;
 
 	credencialesCliente.credencialValida = false;
 
 	pthread_mutex_init(&mutexQueue,NULL);
+	pthread_mutex_init(&mutexTimer,NULL);
 
 	controlador = new Controlador();
 
@@ -135,6 +162,7 @@ int main(int argc, char *argv[]){
 	pthread_create(&hiloRender,NULL,render_vista,NULL);
 
 	pthread_join(hiloSendMessage,NULL);
+
 
 	Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
 

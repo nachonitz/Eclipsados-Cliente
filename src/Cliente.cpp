@@ -1,10 +1,16 @@
 #include "Cliente.h"
+#include <csignal>
 
 
 Cliente::Cliente(char *puerto){
 
 	setPortAndIP(puerto, "127.0.0.1");
 
+}
+
+void signalHandler(int signum){
+
+	std::cout<<"Signal Handler"<<std::endl;
 }
 
 Cliente::Cliente(){
@@ -20,9 +26,13 @@ Cliente::~Cliente(){
 
 int Cliente::enviarInformacion(struct informacionEnv infoEnv){
 	int enviado = 0;
+	int actual = 0;
+	signal(SIGPIPE, signalHandler);
 	while (enviado < sizeof(struct informacionEnv)){
-		enviado += send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, MSG_NOSIGNAL);
-		if (enviado <= 0){
+		actual = send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, 0);
+		enviado += actual;
+		if (actual <= 0){
+			std::cout<<"exit de send"<<std::endl;
 			return -1;
 		}
 	}

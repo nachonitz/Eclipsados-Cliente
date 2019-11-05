@@ -525,7 +525,7 @@ void Dibujador::mostrarPantallaEspera(int  myID) {
 	sourceCody.x=0;sourceCody.y=0;sourceCody.w=120;sourceCody.h=120;
 	destCody.x=420;destCody.y=400;destCody.w=180;destCody.h=180;
 
-	surfaceTextoPersonaje = TTF_RenderText_Solid(fontInput, "Su personaje es : ", colorTextoError);
+	surfaceTextoPersonaje = TTF_RenderText_Solid(fontInput, "Your character is : ", colorTextoError);
 	texturaTextoPersonaje = SDL_CreateTextureFromSurface(ren, surfaceTextoPersonaje);
 	SDL_QueryTexture(texturaTextoPersonaje,NULL,NULL,&width,&height);
 	rectTextoPersonaje.x=180;rectTextoPersonaje.y=470;rectTextoPersonaje.w=width;rectTextoPersonaje.h=height;
