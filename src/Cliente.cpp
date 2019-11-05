@@ -27,7 +27,7 @@ Cliente::~Cliente(){
 int Cliente::enviarInformacion(struct informacionEnv infoEnv){
 	int enviado = 0;
 	int actual = 0;
-	signal(SIGPIPE, signalHandler);
+	//signal(SIGPIPE, signalHandler);
 	while (enviado < sizeof(struct informacionEnv)){
 		actual = send(cliente, &infoEnv+enviado, sizeof(struct informacionEnv)-enviado, 0);
 		enviado += actual;
@@ -57,21 +57,41 @@ struct informacionRec Cliente::recibirInformacion(){
 
 	int recibido = 0;
 	while (recibido < sizeof(int)){
-		recibido += recv(cliente, &infoRec.cantAnimados+recibido, sizeof(infoRec.cantAnimados)-recibido, 0);
+		int temp = recv(cliente, &infoRec.cantAnimados+recibido, sizeof(infoRec.cantAnimados)-recibido, 0);
+		if (temp <= 0) {
+			infoRec.cantJugadores = -1;
+			return infoRec;
+		}
+		recibido += temp;
 	}
 	recibido = 0;
 	while (recibido < sizeof(int)){
-		recibido += recv(cliente, &infoRec.cantJugadores+recibido, sizeof(infoRec.cantJugadores)-recibido, 0);
+		int temp = recv(cliente, &infoRec.cantJugadores+recibido, sizeof(infoRec.cantJugadores)-recibido, 0);
+		if (temp <= 0) {
+			infoRec.cantJugadores = -1;
+			return infoRec;
+		}
+		recibido += temp;
 	}
 	recibido = 0;
 	while (recibido < sizeof(int)){
-		recibido += recv(cliente, &infoRec.cantElementos+recibido, sizeof(infoRec.cantElementos)-recibido, 0);
+		int temp= recv(cliente, &infoRec.cantElementos+recibido, sizeof(infoRec.cantElementos)-recibido, 0);
+		if (temp <= 0) {
+			infoRec.cantJugadores = -1;
+			return infoRec;
+		}
+		recibido += temp;
 	}
 
 	for(int i=0; i < infoRec.cantAnimados; i++){
 		recibido = 0;
 		while (recibido < sizeof(struct animado)){
-			recibido += recv(cliente, &infoRec.animados[i]+recibido, sizeof(infoRec.animados[i])-recibido, 0);
+			int temp= recv(cliente, &infoRec.animados[i]+recibido, sizeof(infoRec.animados[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
 		}
 
 	}
@@ -79,14 +99,24 @@ struct informacionRec Cliente::recibirInformacion(){
 	for(int i=0; i < 3; i++){
 		recibido = 0;
 		while (recibido < sizeof(struct capa)){
-			recibido += recv(cliente, &infoRec.capas[i]+recibido, sizeof(infoRec.capas[i])-recibido, 0);
+			int temp= recv(cliente, &infoRec.capas[i]+recibido, sizeof(infoRec.capas[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
 		}
 	}
 
 	for(int i=0; i < infoRec.cantElementos; i++){
 		recibido = 0;
 		while (recibido < sizeof(struct elemento)){
-			recibido += recv(cliente, &infoRec.elementos[i]+recibido, sizeof(infoRec.elementos[i])-recibido, 0);
+			int temp= recv(cliente, &infoRec.elementos[i]+recibido, sizeof(infoRec.elementos[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
 		}
 	}
 
