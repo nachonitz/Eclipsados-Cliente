@@ -148,11 +148,11 @@ int main(int argc, char *argv[]){
 
 	int bytesRecibidos;
 
-	pthread_create(&previeneProgramNotResponding,NULL,mantenerAplicacionActiva,NULL);
+//	pthread_create(&previeneProgramNotResponding,NULL,mantenerAplicacionActiva,NULL);
 	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
 	bool confirmacion = cliente.esperarConfirmacionDeInicio(&bytesRecibidos);
-	terminarHiloNotResponding = true;
-	pthread_join(previeneProgramNotResponding,NULL);
+//	terminarHiloNotResponding = true;
+//	pthread_join(previeneProgramNotResponding,NULL);
 
 	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(confirmacion));
 
