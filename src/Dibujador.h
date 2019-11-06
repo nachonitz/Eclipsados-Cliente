@@ -93,7 +93,7 @@ private:
 
 	SDL_Texture* texCody[MAX_CLIENTES];
 	SDL_Texture* texCodyInactivo;
-	SDL_Texture* texEnemigo;
+	SDL_Texture* texEnemigo[3];
 	SDL_Texture* texElemento;
 	SDL_Renderer* ren;
 	SDL_Window* win;

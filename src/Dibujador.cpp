@@ -44,7 +44,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 	}
 
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
-		renderizableActual.textura = texEnemigo;
+		renderizableActual.textura = texEnemigo[i % 3];
 		renderizableActual.source = info.animados[i].src;
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
@@ -173,7 +173,9 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	texCody[3] = crearTexturaDesdeRuta(sprites.at(3).c_str());
 	texCodyInactivo = crearTexturaDesdeRuta(sprites.at(8).c_str());
 
-	texEnemigo = crearTexturaDesdeRuta(sprites.at(6).c_str());
+	texEnemigo[0] = crearTexturaDesdeRuta(sprites.at(5).c_str());
+	texEnemigo[1] = crearTexturaDesdeRuta(sprites.at(6).c_str());
+	texEnemigo[2] = crearTexturaDesdeRuta(sprites.at(7).c_str());
 	texElemento = crearTexturaDesdeRuta(sprites.at(4).c_str());
 
 }
@@ -617,7 +619,9 @@ Dibujador::~Dibujador(){
 	SDL_DestroyTexture(texCody[1]);
 	SDL_DestroyTexture(texCody[2]);
 	SDL_DestroyTexture(texCody[3]);
-	SDL_DestroyTexture(texEnemigo);
+	SDL_DestroyTexture(texEnemigo[0]);
+	SDL_DestroyTexture(texEnemigo[1]);
+	SDL_DestroyTexture(texEnemigo[2]);
 	SDL_DestroyTexture(texElemento);
 
 }
