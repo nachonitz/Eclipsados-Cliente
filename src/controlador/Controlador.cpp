@@ -12,6 +12,7 @@ Controlador::Controlador() {
 	agachando = false;
 	gameController = NULL;
 	teclado = true;
+	musicPlaying = true;
 
 	SDL_Init(SDL_INIT_JOYSTICK);
 
@@ -144,7 +145,7 @@ void Controlador::preparoSalto(int tipoDeSalto, int setAction){
 	}
 }
 
-struct informacionEnv Controlador::eventHandler(){
+struct informacionEnv Controlador::eventHandler(Sonido* musica){
 
 	//actualizar el array de estados (para GetKeyboardState)
 	SDL_PumpEvents();
@@ -250,6 +251,19 @@ struct informacionEnv Controlador::eventHandler(){
 			infoEnv.flip = spriteFlip;
 		}
 	}
+
+	if(e.key.keysym.sym == SDLK_m) {
+		if(musicPlaying){
+			Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
+			musica->stop();
+			musicPlaying = false;
+		}else{
+			Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
+			musica->resume();
+			musicPlaying = true;
+		}
+	}
+
 
 	if(keystates[SDL_SCANCODE_ESCAPE]) {
 		//setear variable para salir

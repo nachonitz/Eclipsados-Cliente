@@ -41,6 +41,7 @@ struct informacionRec{
 	int cantAnimados;
 	int cantElementos;
 	int cantJugadores;
+	int nivelActual;
 };
 
 

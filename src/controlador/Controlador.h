@@ -6,6 +6,7 @@
 #include <SDL2/SDL_image.h>
 #include "../defs.h"
 #include "../Logger.h"
+#include "../Sonido.h"
 
 struct informacionEnv{
 	int animacionActual;
@@ -19,7 +20,7 @@ class Controlador {
 public:
 	Controlador();
 	~Controlador();
-	struct informacionEnv eventHandler();
+	struct informacionEnv eventHandler(Sonido* musica);
 
 	void setAccionActual(int acActual);
 	void setAcciones(int c, int p, int s, int sPatada, int g, int a, int sV);
@@ -53,7 +54,7 @@ private:
 	const int JOYSTICK_DEAD_ZONE = 8000;
 	int x_move;
 	int y_move;
-	bool teclado;
+	bool teclado, musicPlaying;
 	struct informacionEnv infoEnv;
 };
 

@@ -3,6 +3,7 @@
 #include "Dibujador.h"
 #include <queue>
 #include "ParserXML.h"
+#include "Sonido.h"
 
 Cliente cliente;
 pthread_t hiloSendMessage;
@@ -12,6 +13,7 @@ pthread_t hiloTimer;
 pthread_t previeneProgramNotResponding;
 Dibujador dibujador;
 Controlador* controlador;
+Sonido *musicaFondo;
 credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
@@ -19,6 +21,7 @@ pthread_mutex_t mutexTimer;
 bool serverConectado;
 bool terminarHiloNotResponding = false;
 int tiempoEsperaSend;
+int nivel;
 
 void* mantenerAplicacionActiva(void*arg){
 	int i = 0;
@@ -48,7 +51,7 @@ void* message_send(void*arg){
 
 	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
-		struct informacionEnv infoEnv = controlador->eventHandler();
+		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo);
 
 		int resultadoSend = cliente.enviarInformacion(infoEnv);
 
@@ -88,6 +91,14 @@ void* render_vista(void*arg){
 			pthread_mutex_unlock(&mutexQueue);
 
 			dibujador.dibujar(info, cliente.getID());
+			if(nivel != info.nivelActual){
+				if(nivel != 0){
+					delete(musicaFondo);
+				}
+				musicaFondo = new Sonido(info.nivelActual);
+				musicaFondo->play();
+				nivel = info.nivelActual;
+			}
 			colaInfoRecibida.pop();
 		}
 	}
@@ -109,6 +120,7 @@ int main(int argc, char *argv[]){
 
 	parser.parsearConfig(nivel1, nivel2, sprites);
 
+	nivel = 0;
 
 	credencialesCliente.credencialValida = false;
 
@@ -181,8 +193,7 @@ int main(int argc, char *argv[]){
 
 	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
 
-
-
+	delete(musicaFondo);
 
 	return 0;
 }

@@ -48,6 +48,16 @@ struct informacionRec Cliente::recibirInformacion(){
 
 	int recibido = 0;
 	while (recibido < sizeof(int)){
+		int temp = recv(cliente, &infoRec.nivelActual+recibido, sizeof(infoRec.nivelActual)-recibido, 0);
+		if (temp <= 0) {
+			infoRec.nivelActual = -1;
+			return infoRec;
+		}
+		recibido += temp;
+	}
+
+	recibido = 0;
+	while (recibido < sizeof(int)){
 		int temp = recv(cliente, &infoRec.cantAnimados+recibido, sizeof(infoRec.cantAnimados)-recibido, 0);
 		if (temp <= 0) {
 			infoRec.cantJugadores = -1;
