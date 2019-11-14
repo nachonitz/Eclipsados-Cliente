@@ -252,7 +252,7 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica){
 		}
 	}
 
-	if(e.key.keysym.sym == SDLK_m) {
+	if(keystates[SDL_SCANCODE_M]) {
 		if(musicPlaying){
 			Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
 			musica->stop();
@@ -263,7 +263,6 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica){
 			musicPlaying = true;
 		}
 	}
-
 
 	if(keystates[SDL_SCANCODE_ESCAPE]) {
 		//setear variable para salir
