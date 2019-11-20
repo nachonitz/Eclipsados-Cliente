@@ -24,5 +24,7 @@
 		<sprite>sprites/Dug.png</sprite>
 		<sprite>sprites/Haggar.png</sprite>
 		<sprite>sprites/SpriteCodyInactivo-120x120.png</sprite>
+		<sprite>sprites/barraEnergia-200x600.png</sprite>
+		<sprite>sprites/caraCody-95x95.png</sprite>
 	</sprites>
 </configuracionCliente>

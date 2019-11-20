@@ -96,6 +96,21 @@ private:
 	SDL_Texture* texCodyInactivo;
 	SDL_Texture* texEnemigo[3];
 	SDL_Texture* texElemento;
+
+	SDL_Texture* texCarasCody;
+	SDL_Rect caraCodysrc[MAX_CLIENTES];
+	SDL_Rect carasCodydest[MAX_CLIENTES];
+	SDL_Texture* texBarrasEnergia;
+	SDL_Rect barrasEnergiasrc[MAX_NIVELES_ENERGIA];
+	SDL_Rect barrasEnergiadest[MAX_CLIENTES];
+
+	SDL_Color colorTextoScore;
+	TTF_Font* fontScore;
+	SDL_Surface* surfaceTextoScore;
+	SDL_Texture* texturaTextoScore[MAX_CLIENTES];
+	SDL_Rect rectTextoScore[MAX_CLIENTES];
+	int width, height, score;
+
 	SDL_Renderer* ren;
 	SDL_Window* win;
 	struct informacionRec informacion;

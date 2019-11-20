@@ -10,6 +10,7 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	//Logger::getInstance()->log(INFO, "Inicializando ventana...");
 	if ( SDL_CreateWindowAndRenderer(WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL, 0, &win, &ren) ); // @suppress("Suspicious semicolon")
 	//Logger::getInstance()->log(ERROR, SDL_GetError());
+	if(TTF_Init());
 
 	SDL_SetRenderDrawBlendMode(ren, SDL_BLENDMODE_BLEND);
 
@@ -17,7 +18,20 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 
 	setearTexturas(nivel1, nivel2, sprites);
 
+	for(int i=0; i< MAX_CLIENTES; i++){
+		caraCodysrc[i].x= 95*i; caraCodysrc[i].y= 0; caraCodysrc[i].w= 95; caraCodysrc[i].h= 95;
+		carasCodydest[i].x= 200*i + 20; carasCodydest[i].y= 20; carasCodydest[i].w= 70; carasCodydest[i].h= 70;
+		barrasEnergiadest[i].x= 200*i + 100; barrasEnergiadest[i].y= 30; barrasEnergiadest[i].w= 95; barrasEnergiadest[i].h= 25;
+	}
+	for(int i=0; i< MAX_NIVELES_ENERGIA;i++){
+		barrasEnergiasrc[i].x= 0; barrasEnergiasrc[i].y= 200*i; barrasEnergiasrc[i].w= 900; barrasEnergiasrc[i].h= 200;
+	}
+
+	fontScore = TTF_OpenFont("sprites/Sansation-Bold.ttf", 20);
+	colorTextoScore.r = 225; colorTextoScore.g = 225; colorTextoScore.b = 20;
+
 	Logger::getInstance()->log(DEBUG, "Inicializado SDL");
+
 
 }
 
@@ -42,6 +56,21 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		SDL_RenderCopy(ren, nivel2Capa2, &info.capas[1].src, &info.capas[1].dest);
 		SDL_RenderCopy(ren, nivel2Capa1, &info.capas[0].src, &info.capas[0].dest);
 	}
+
+
+	for(int i=0; i< (info.cantJugadores); i++){
+		SDL_RenderCopy(ren, texCarasCody, &caraCodysrc[i] , &carasCodydest[i]);
+		//jugador obtener energia restante
+		SDL_RenderCopy(ren, texBarrasEnergia, &barrasEnergiasrc[i], &barrasEnergiadest[i] );
+		//jugador obtener score
+		surfaceTextoScore = TTF_RenderText_Solid(fontScore, "Score 7474", colorTextoScore);
+		texturaTextoScore[i] = SDL_CreateTextureFromSurface(ren, surfaceTextoScore);
+		SDL_QueryTexture(texturaTextoScore[i],NULL,NULL,&width,&height);
+		rectTextoScore[i].x=200*i + 100;rectTextoScore[i].y=55;rectTextoScore[i].w=width;rectTextoScore[i].h=height;
+		SDL_RenderCopy(ren, texturaTextoScore[i],NULL,&rectTextoScore[i]);
+
+	}
+
 
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
 		renderizableActual.textura = texEnemigo[i % 3];
@@ -178,6 +207,8 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	texEnemigo[2] = crearTexturaDesdeRuta(sprites.at(7).c_str());
 	texElemento = crearTexturaDesdeRuta(sprites.at(4).c_str());
 
+	texCarasCody = crearTexturaDesdeRuta(sprites.at(10).c_str());
+	texBarrasEnergia = crearTexturaDesdeRuta(sprites.at(9).c_str());
 }
 
 SDL_Texture* Dibujador::crearTexturaDesdeRuta(std::string ruta) {
