@@ -19,6 +19,7 @@ struct animado{
 	SDL_RendererFlip flip;
 	int tipoEnemigo;
 	int ID;
+	int elementoEnMano;
 };
 
 struct elemento{
@@ -94,6 +95,10 @@ private:
 	SDL_Texture* nivel2Capa3;
 
 	SDL_Texture* texCody[MAX_CLIENTES];
+	SDL_Texture* texCodyCuchillo[MAX_CLIENTES];
+	SDL_Texture* texCodyCanio[MAX_CLIENTES];
+
+
 	SDL_Texture* texCodyInactivo;
 	SDL_Texture* texEnemigo[3];
 	SDL_Texture* texElemento;

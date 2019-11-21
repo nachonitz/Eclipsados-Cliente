@@ -45,6 +45,12 @@
 #define ACCION_AGACHADO 5
 #define ACCION_SALTO_VERTICAL 6
 
+
+//animados.elementoEnMano
+#define ELEMENTO_MANO 0
+#define ELEMENTO_CUCHILLO 1
+#define ELEMENTO_CANIO 2
+
 #define FRAME_DELAY 1000/60
 
 #define MAX_CANT_ANIMADOS 100
