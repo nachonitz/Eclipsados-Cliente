@@ -89,15 +89,18 @@ void* render_vista(void*arg){
 			struct informacionRec info = colaInfoRecibida.front();
 			pthread_mutex_unlock(&mutexQueue);
 
-			dibujador.dibujar(info, cliente.getID());
 			if(nivel != info.nivelActual){
 				int scores[MAX_CLIENTES] = {1000,2000,3000,4000};
-				dibujador.mostrarPantallaScores(scores, info.cantJugadores);
-				delete(musicaFondo);
+				if (nivel != 0){
+					dibujador.mostrarPantallaScores(scores, info.cantJugadores);
+					delete(musicaFondo);
+				}
 				musicaFondo = new Sonido(info.nivelActual);
 				musicaFondo->play();
 				nivel = info.nivelActual;
 			}
+
+			dibujador.dibujar(info, cliente.getID());
 			colaInfoRecibida.pop();
 		}
 	}

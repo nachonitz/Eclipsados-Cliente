@@ -580,7 +580,7 @@ void Dibujador::mostrarPantallaEspera(int  myID) {
 	banner2.x= 150;
 	banner2.y= 420;
 
-	sourceCody.x=0;sourceCody.y=0;sourceCody.w=120;sourceCody.h=120;
+	sourceCody.x=0;sourceCody.y=0;sourceCody.w=230;sourceCody.h=280;
 	destCody.x=420;destCody.y=400;destCody.w=180;destCody.h=180;
 
 	surfaceTextoPersonaje = TTF_RenderText_Solid(fontInput, "Your character is : ", colorTextoError);

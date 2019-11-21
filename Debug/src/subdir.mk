@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/Dibujador.cpp \
 ../src/Logger.cpp \
 ../src/ParserXML.cpp \
+../src/Sonido.cpp \
 ../src/Vista.cpp \
 ../src/main.cpp 
 
@@ -16,6 +17,7 @@ OBJS += \
 ./src/Dibujador.o \
 ./src/Logger.o \
 ./src/ParserXML.o \
+./src/Sonido.o \
 ./src/Vista.o \
 ./src/main.o 
 
@@ -24,6 +26,7 @@ CPP_DEPS += \
 ./src/Dibujador.d \
 ./src/Logger.d \
 ./src/ParserXML.d \
+./src/Sonido.d \
 ./src/Vista.d \
 ./src/main.d 
 
