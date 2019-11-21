@@ -19,12 +19,20 @@
 		<sprite>sprites/SpriteCodyCompleto2-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto3-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto4-230x280.png</sprite>
-		<sprite>sprites/objetos_varios.png</sprite>
+		<sprite>sprites/objetos_varios_con_ruptura.png</sprite>
 		<sprite>sprites/DugCompleto-220x220.png</sprite>
 		<sprite>sprites/AndoreCompleto-220x264.png</sprite>
 		<sprite>sprites/HaggarCompleto-220x264.png</sprite>
-		<sprite>sprites/SpriteCodyInactivo-220x220.png</sprite>
+		<sprite>sprites/SpriteCodyInactivo-230x280.png</sprite>
 		<sprite>sprites/barraEnergia-200x600.png</sprite>
 		<sprite>sprites/caraCody-95x95.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto1-cuchillo-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto2-cuchillo-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto3-cuchillo-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto4-cuchillo-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto1-canio-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto2-canio-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto3-canio-230x280.png</sprite>
+		<sprite>sprites/SpriteCodyCompleto4-canio-230x280.png</sprite>
 	</sprites>
 </configuracionCliente>
