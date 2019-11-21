@@ -75,7 +75,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 
 
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
-		renderizableActual.textura = texEnemigo[i % 3];
+		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];					//TODO: SIEMPRE ANDORE!
 		renderizableActual.source = info.animados[i].src;
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
@@ -86,7 +86,19 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 	}
 
 	for(int i = 0; i < (info.cantJugadores); i++){
-		renderizableActual.textura = texCody[i];
+
+		switch(info.animados[i].elementoEnMano) {
+		case ELEMENTO_MANO:
+			renderizableActual.textura = texCody[i];
+			break;
+		case ELEMENTO_CUCHILLO:
+			renderizableActual.textura = texCodyCuchillo[i];
+			break;
+		case ELEMENTO_CANIO:
+			renderizableActual.textura = texCodyCanio[i];
+			break;
+		}
+
 		renderizableActual.source = info.animados[i].src;
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
@@ -202,6 +214,17 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	texCody[1] = crearTexturaDesdeRuta(sprites.at(1).c_str());
 	texCody[2] = crearTexturaDesdeRuta(sprites.at(2).c_str());
 	texCody[3] = crearTexturaDesdeRuta(sprites.at(3).c_str());
+
+	texCodyCuchillo[0] = crearTexturaDesdeRuta(sprites.at(11).c_str());
+	texCodyCuchillo[1] = crearTexturaDesdeRuta(sprites.at(12).c_str());
+	texCodyCuchillo[2] = crearTexturaDesdeRuta(sprites.at(13).c_str());
+	texCodyCuchillo[3] = crearTexturaDesdeRuta(sprites.at(14).c_str());
+
+	texCodyCanio[0] = crearTexturaDesdeRuta(sprites.at(15).c_str());
+	texCodyCanio[1] = crearTexturaDesdeRuta(sprites.at(16).c_str());
+	texCodyCanio[2] = crearTexturaDesdeRuta(sprites.at(17).c_str());
+	texCodyCanio[3] = crearTexturaDesdeRuta(sprites.at(18).c_str());
+
 	texCodyInactivo = crearTexturaDesdeRuta(sprites.at(8).c_str());
 
 	texEnemigo[0] = crearTexturaDesdeRuta(sprites.at(5).c_str());
