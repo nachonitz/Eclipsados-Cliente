@@ -20,10 +20,10 @@
 		<sprite>sprites/SpriteCodyCompleto3-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto4-230x280.png</sprite>
 		<sprite>sprites/objetos_varios.png</sprite>
-		<sprite>sprites/DugCompleto-115x115.png</sprite>
+		<sprite>sprites/DugCompleto-220x220.png</sprite>
 		<sprite>sprites/AndoreCompleto-220x264.png</sprite>
-		<sprite>sprites/HaggarCompleto-125x115.png</sprite>
-		<sprite>sprites/SpriteCodyInactivo-120x120.png</sprite>
+		<sprite>sprites/HaggarCompleto-220x264.png</sprite>
+		<sprite>sprites/SpriteCodyInactivo-220x220.png</sprite>
 		<sprite>sprites/barraEnergia-200x600.png</sprite>
 		<sprite>sprites/caraCody-95x95.png</sprite>
 	</sprites>
