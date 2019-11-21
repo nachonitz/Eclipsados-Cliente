@@ -73,7 +73,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 
 
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
-		renderizableActual.textura = texEnemigo[1];					//TODO: SIEMPRE ANDORE!
+		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];					//TODO: SIEMPRE ANDORE!
 		renderizableActual.source = info.animados[i].src;
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
