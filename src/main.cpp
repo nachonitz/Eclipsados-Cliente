@@ -20,8 +20,7 @@ pthread_mutex_t mutexQueue;
 pthread_mutex_t mutexTimer;
 bool serverConectado;
 bool terminarHiloNotResponding = false;
-int tiempoEsperaSend;
-int nivel;
+int tiempoEsperaSend, nivel, cantidadClientes;
 
 void* mantenerAplicacionActiva(void*arg){
 	int i = 0;
@@ -41,7 +40,7 @@ void* timer(void*arg){
 	}
 	Logger::getInstance()->log(ERROR, "Tiempo de espera maximo alcanzado. Desconcetando de Servidor");
 	serverConectado = false;
-	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+	dibujador.mostrarPantallaErrorConTexto("Server connection lost, shutting down...");
 	exit(0);
 }
 
@@ -92,9 +91,9 @@ void* render_vista(void*arg){
 
 			dibujador.dibujar(info, cliente.getID());
 			if(nivel != info.nivelActual){
-				if(nivel != 0){
-					delete(musicaFondo);
-				}
+				int scores[MAX_CLIENTES] = {1000,2000,3000,4000};
+				dibujador.mostrarPantallaScores(scores, info.cantJugadores);
+				delete(musicaFondo);
 				musicaFondo = new Sonido(info.nivelActual);
 				musicaFondo->play();
 				nivel = info.nivelActual;
@@ -153,30 +152,24 @@ int main(int argc, char *argv[]){
 		dibujador.login(&credencialesCliente, true,false);
 	}
 
-	//cliente.setID(credencialesCliente.myID);
-
-	//dibujador.login(&credencialesCliente,false,true);
 	dibujador.mostrarPantallaEspera(cliente.getID());
 
 	int bytesRecibidos;
 
-//	pthread_create(&previeneProgramNotResponding,NULL,mantenerAplicacionActiva,NULL);
-	// Deberia esperar a que todos los clientes terminen el login antes de lanzar los hilos del juego
+	// Espera a que todos los clientes terminen el login antes de lanzar los hilos del juego
 	bool confirmacion = cliente.esperarConfirmacionDeInicio(&bytesRecibidos);
-//	terminarHiloNotResponding = true;
-//	pthread_join(previeneProgramNotResponding,NULL);
 
 	Logger::getInstance()->log(DEBUG, "RECIBIDA CONFIRMACION: " + std::to_string(confirmacion));
 
 	if (!confirmacion && bytesRecibidos > 0) {
 		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " se encuentra lleno! Desconectando....");
-		dibujador.mostrarPantallaConTextoYCerrarCliente("Server full! Disconnecting...");
+		dibujador.mostrarPantallaErrorConTexto("Server full! Disconnecting...");
 		return 0;
 	}
 
 	else if (!confirmacion && bytesRecibidos <= 0) {
 		Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
-		dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+		dibujador.mostrarPantallaErrorConTexto("Server connection lost, shutting down...");
 		return 0;
 	}
 
@@ -191,7 +184,7 @@ int main(int argc, char *argv[]){
 
 	Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
 
-	dibujador.mostrarPantallaConTextoYCerrarCliente("Server connection lost, shutting down...");
+	dibujador.mostrarPantallaErrorConTexto("Server connection lost, shutting down...");
 
 	delete(musicaFondo);
 

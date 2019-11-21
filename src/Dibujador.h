@@ -75,7 +75,8 @@ public:
 	~Dibujador();
 
 	void mostrarPantallaEspera(int myId);
-	void mostrarPantallaConTextoYCerrarCliente(std::string mensaje);
+	void mostrarPantallaErrorConTexto(std::string mensaje);
+	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores);
 
 private:
 

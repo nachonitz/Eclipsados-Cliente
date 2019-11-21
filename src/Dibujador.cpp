@@ -61,8 +61,10 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 	for(int i=0; i< (info.cantJugadores); i++){
 		SDL_RenderCopy(ren, texCarasCody, &caraCodysrc[i] , &carasCodydest[i]);
 		//jugador obtener energia restante
+
 		SDL_RenderCopy(ren, texBarrasEnergia, &barrasEnergiasrc[i], &barrasEnergiadest[i] );
 		//jugador obtener score
+
 		surfaceTextoScore = TTF_RenderText_Solid(fontScore, "Score 7474", colorTextoScore);
 		texturaTextoScore[i] = SDL_CreateTextureFromSurface(ren, surfaceTextoScore);
 		SDL_QueryTexture(texturaTextoScore[i],NULL,NULL,&width,&height);
@@ -589,7 +591,7 @@ void Dibujador::mostrarPantallaEspera(int  myID) {
 
 }
 
-void Dibujador::mostrarPantallaConTextoYCerrarCliente(std::string mensaje){
+void Dibujador::mostrarPantallaErrorConTexto(std::string mensaje){
 	SDL_Surface* surfaceTextoEsperando;
 
 	SDL_Color colorTextoError;
@@ -621,7 +623,8 @@ void Dibujador::mostrarPantallaConTextoYCerrarCliente(std::string mensaje){
 	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, mensaje.c_str(), colorTextoError);
 	texturaTextoEsperando = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
 	SDL_QueryTexture(texturaTextoEsperando,NULL,NULL,&width,&height);
-	rectTextoEsperando.x=140;rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
+	rectTextoEsperando.x= WINDOW_SIZE_HORIZONTAL/2 - width/2;
+	rectTextoEsperando.y=300;rectTextoEsperando.w=width;rectTextoEsperando.h=height;
 
 	SDL_SetRenderDrawColor(ren, 25, 25,25, 200);
 
@@ -638,6 +641,100 @@ void Dibujador::mostrarPantallaConTextoYCerrarCliente(std::string mensaje){
 	SDL_RenderCopy(ren, texturaTextoEsperando,NULL,&rectTextoEsperando);
 	SDL_RenderPresent(ren);
 	SDL_Delay(5000);
+}
+
+void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJugadores){
+	SDL_Surface* surfaceTextoEsperando;
+	SDL_Color colorTextoError;
+	SDL_Color colorPuntajes;
+
+	int width, height;
+	SDL_Texture* texturaTextoScores;
+	SDL_Rect rectTextoScores;
+	SDL_Texture* texturaPuntaje[MAX_CLIENTES];
+	SDL_Rect rectPuntaje[MAX_CLIENTES];
+	TTF_Font* fontInput;
+	TTF_Font* fontScores;
+	SDL_Texture* texturaFondoLogin1;
+	SDL_Surface* surfaceFondoLogin1;
+	SDL_Rect rectFondo1source;
+	SDL_Rect rectFondo1dest;
+	SDL_Texture* texturaFondoLogin2;
+	SDL_Surface* surfaceFondoLogin2;
+	SDL_Rect rectFondo2source;
+	SDL_Rect rectFondo2dest;
+	SDL_Texture* texturaFondoLogin3;
+	SDL_Surface* surfaceFondoLogin3;
+	SDL_Rect rectFondo3source;
+	SDL_Rect rectFondo3dest;
+	SDL_Rect carasCodyScoresDest[MAX_CLIENTES];
+	SDL_Rect banner[MAX_CLIENTES];
+	SDL_RenderClear(ren);
+
+	rectFondo2source.x=0;rectFondo2source.y=0;rectFondo2source.w=640;rectFondo2source.h=394;
+	rectFondo2dest.x=50;rectFondo2dest.y=0;rectFondo2dest.w=450;rectFondo2dest.h=300;
+	surfaceFondoLogin2 = IMG_Load("sprites/FinalFight.png");
+	texturaFondoLogin2 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin2);
+
+	rectFondo3source.x=0;rectFondo3source.y=0;rectFondo3source.w=720;rectFondo3source.h=720;
+	rectFondo3dest.x=350;rectFondo3dest.y=70;rectFondo3dest.w=350;rectFondo3dest.h=350;
+	surfaceFondoLogin3 = IMG_Load("sprites/scores.png");
+	texturaFondoLogin3 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin3);
+
+	rectFondo1source.x=0;rectFondo1source.y=100;rectFondo1source.w=1100;rectFondo1source.h=600;
+	rectFondo1dest.x=0;rectFondo1dest.y=0;rectFondo1dest.w=WINDOW_SIZE_HORIZONTAL;rectFondo1dest.h=WINDOW_SIZE_VERTICAL;
+	surfaceFondoLogin1 = IMG_Load("sprites/asfalto.jpg");
+	texturaFondoLogin1 = SDL_CreateTextureFromSurface(ren,surfaceFondoLogin1);
+
+	fontInput = TTF_OpenFont("sprites/Sansation-Bold.ttf", 45);
+	fontScores = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
+	colorTextoError.r = 220; colorTextoError.g = 30; colorTextoError.b = 10;
+	colorPuntajes.r = 200; colorPuntajes.g = 200; colorPuntajes.b = 30;
+
+	surfaceTextoEsperando = TTF_RenderText_Solid(fontInput, "Scores", colorTextoError);
+	texturaTextoScores = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
+	SDL_QueryTexture(texturaTextoScores,NULL,NULL,&width,&height);
+	rectTextoScores.x= WINDOW_SIZE_HORIZONTAL/2 - width/2;
+	rectTextoScores.y=WINDOW_SIZE_VERTICAL/2 -50 ;rectTextoScores.w=width;rectTextoScores.h=height;
+
+	for(int i=0; i< (cantidadJugadores); i++){
+		std::string s = std::to_string(scores[i]);
+		surfaceTextoEsperando = TTF_RenderText_Solid(fontScores, s.c_str(), colorPuntajes);
+		texturaPuntaje[i] = SDL_CreateTextureFromSurface(ren, surfaceTextoEsperando);
+		SDL_QueryTexture(texturaPuntaje[i],NULL,NULL,&width,&height);
+		rectPuntaje[i].x= 450; rectPuntaje[i].w=width;rectPuntaje[i].h=height;
+		rectPuntaje[i].y=WINDOW_SIZE_VERTICAL/2 + 20 + 75*i + (4-cantidadJugadores)*30;
+
+	}
+
+	for(int i=0; i< (MAX_CLIENTES); i++){
+		carasCodyScoresDest[i].x= 250; carasCodyScoresDest[i].w= 70; carasCodyScoresDest[i].h= 70;
+		carasCodyScoresDest[i].y = WINDOW_SIZE_VERTICAL/2 + 75*i + (4-cantidadJugadores)*30;
+	}
+
+	SDL_SetRenderDrawColor(ren, 170, 10,10, 150);
+
+	for(int i=0; i< (MAX_CLIENTES); i++){
+		banner[i].h= 70;
+		banner[i].w= 330;
+		banner[i].x= 230;
+		banner[i].y= WINDOW_SIZE_VERTICAL/2 + 75*i + (4-cantidadJugadores)*30;
+	}
+
+	SDL_RenderCopy(ren, texturaFondoLogin1,&rectFondo1source,&rectFondo1dest);
+	SDL_RenderCopy(ren, texturaFondoLogin2,&rectFondo2source,&rectFondo2dest);
+	SDL_RenderCopy(ren, texturaFondoLogin3,&rectFondo3source,&rectFondo3dest);
+
+	for(int i=0; i< (cantidadJugadores); i++){
+		SDL_RenderFillRect(ren, &banner[i]);
+		SDL_RenderCopy(ren, texCarasCody, &caraCodysrc[i] , &carasCodyScoresDest[i]);
+	}
+	for(int i=0; i< (cantidadJugadores); i++){
+		SDL_RenderCopy(ren, texturaPuntaje[i],NULL,&rectPuntaje[i]);
+	}
+	//SDL_RenderCopy(ren, texturaTextoScores,NULL,&rectTextoScores);
+	SDL_RenderPresent(ren);
+	SDL_Delay(7000);
 }
 
 Dibujador::~Dibujador(){
