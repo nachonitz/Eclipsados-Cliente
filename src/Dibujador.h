@@ -40,6 +40,9 @@ struct informacionRec{
 	struct elemento elementos[MAX_CANT_ELEMENTOS];
 	struct capa capas[3];
 	struct animado animados[MAX_CANT_ANIMADOS];
+	//int scores[MAX_CLIENTES];
+	//int vidas[MAX_CLIENTES];
+	//int energia[MAX_CLIENTES];
 	int cantAnimados;
 	int cantElementos;
 	int cantJugadores;

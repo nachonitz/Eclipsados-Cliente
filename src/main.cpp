@@ -90,7 +90,7 @@ void* render_vista(void*arg){
 			pthread_mutex_unlock(&mutexQueue);
 
 			if(nivel != info.nivelActual){
-				int scores[MAX_CLIENTES] = {1000,2000,3000,4000};
+				int scores[MAX_CLIENTES] = {747,20190,3000,4};
 				if (nivel != 0){
 					dibujador.mostrarPantallaScores(scores, info.cantJugadores);
 					delete(musicaFondo);
