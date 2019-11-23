@@ -121,6 +121,41 @@ struct informacionRec Cliente::recibirInformacion(){
 		}
 	}
 
+	for(int i=0; i < infoRec.cantJugadores; i++){
+		recibido = 0;
+		while (recibido < sizeof(int)){
+			int temp= recv(cliente, &infoRec.scores[i]+recibido, sizeof(infoRec.scores[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
+		}
+	}
+	for(int i=0; i < infoRec.cantJugadores; i++){
+		recibido = 0;
+		while (recibido < sizeof(int)){
+			int temp= recv(cliente, &infoRec.vidas[i]+recibido, sizeof(infoRec.vidas[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
+		}
+	}
+	for(int i=0; i < infoRec.cantJugadores; i++){
+		recibido = 0;
+		while (recibido < sizeof(int)){
+			int temp= recv(cliente, &infoRec.energia[i]+recibido, sizeof(infoRec.energia[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
+		}
+	}
+
+
 	return infoRec;
 }
 

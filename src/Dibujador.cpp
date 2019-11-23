@@ -2,6 +2,23 @@
 #include "Logger.h"
 #include <string>
 
+int Dibujador::obtenerIndiceBarra(int nivelEnergiaRestante){
+	switch(nivelEnergiaRestante){
+		case 100:
+			return 0;
+		case 80:
+			return 1;
+		case 60:
+			return 2;
+		case 40:
+			return 3;
+		case 20:
+			return 4;
+		case 0:
+			return 5;
+	}
+	return -1;
+}
 
 void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites){
 	if ( SDL_Init(SDL_INIT_VIDEO) != 0); // @suppress("Suspicious semicolon")
@@ -57,22 +74,29 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		SDL_RenderCopy(ren, nivel2Capa1, &info.capas[0].src, &info.capas[0].dest);
 	}
 
+	int scoresCopy [MAX_CLIENTES] = {0,0,0,0};
+
+	for(int i=0; i< (info.cantJugadores); i++){
+		scoresCopy[i] = info.scores[i];
+	}
+
 
 	for(int i=0; i< (info.cantJugadores); i++){
 		SDL_RenderCopy(ren, texCarasCody, &caraCodysrc[i] , &carasCodydest[i]);
 		//jugador obtener energia restante
 
-		SDL_RenderCopy(ren, texBarrasEnergia, &barrasEnergiasrc[i], &barrasEnergiadest[i] );
+		int indice = obtenerIndiceBarra(info.energia[i]);
+		SDL_RenderCopy(ren, texBarrasEnergia, &barrasEnergiasrc[indice], &barrasEnergiadest[i] );
 		//jugador obtener score
 
-		surfaceTextoScore = TTF_RenderText_Solid(fontScore, "Score 7474", colorTextoScore);
+		std::string s = std::to_string(scoresCopy[i]);
+		surfaceTextoScore = TTF_RenderText_Solid(fontScore, s.c_str(), colorTextoScore);
 		texturaTextoScore[i] = SDL_CreateTextureFromSurface(ren, surfaceTextoScore);
 		SDL_QueryTexture(texturaTextoScore[i],NULL,NULL,&width,&height);
 		rectTextoScore[i].x=200*i + 100;rectTextoScore[i].y=55;rectTextoScore[i].w=width;rectTextoScore[i].h=height;
 		SDL_RenderCopy(ren, texturaTextoScore[i],NULL,&rectTextoScore[i]);
 
 	}
-
 
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
 		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];					//TODO: SIEMPRE ANDORE!
@@ -789,6 +813,8 @@ void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJuga
 	SDL_RenderPresent(ren);
 	SDL_Delay(7000);
 }
+
+
 
 Dibujador::~Dibujador(){
 	SDL_DestroyRenderer(ren);
