@@ -10,6 +10,8 @@
 #include "defs.h"
 #include <algorithm>
 
+#include "Sonido.h"
+
 //#include "cody.h"
 struct animado{
 	//SDL_Texture* txt;
@@ -74,7 +76,7 @@ class Dibujador {
 public:
 
 	void inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
-	void dibujar(struct informacionRec info, int ID);
+	void dibujar(struct informacionRec info, int ID, Sonido* reproductorMusica);
 	void setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void login(struct credencial* credencialCliente, bool errorAlValidar, bool esperar);
 	~Dibujador();

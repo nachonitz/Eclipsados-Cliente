@@ -59,6 +59,10 @@
 #define MAX_USER_LEN 30
 #define MAX_PASS_LEN 30
 
+// de 0 a 128 (creo xd)
+#define VOLUMEN_ACCIONES 10
+#define VOLUMEN_MUSICA 64
+
 #define MAX_NIVELES_ENERGIA 6
 
 #endif /* SRC_DEFS_H_ */

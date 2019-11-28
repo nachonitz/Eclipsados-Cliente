@@ -99,7 +99,7 @@ void* render_vista(void*arg){
 				nivel = info.nivelActual;
 			}
 
-			dibujador.dibujar(info, cliente.getID());
+			dibujador.dibujar(info, cliente.getID(), musicaFondo);
 			colaInfoRecibida.pop();
 		}
 	}
