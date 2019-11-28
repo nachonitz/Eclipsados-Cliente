@@ -2,7 +2,7 @@
 #include "Logger.h"
 
 
-Sonido::Sonido(int numeroNivel) {
+Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
 
     Logger::getInstance()->log(INFO, "Inicializando subsistema de sonido...");
 	if ( SDL_Init(SDL_INIT_AUDIO) != 0)
@@ -12,38 +12,58 @@ Sonido::Sonido(int numeroNivel) {
     if ( Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
         Logger::getInstance()->log(ERROR, Mix_GetError());
 
-    if (numeroNivel == 1){
-		Logger::getInstance()->log(INFO, "Cargando música de fondo: nivel 1 (musica/Nivel1-musica.mp3)");
-		musicaFondoNivel = Mix_LoadMUS( "musica/Nivel1-musica.mp3" );
-	}else{
-		Logger::getInstance()->log(INFO, "Cargando música de fondo: nivel 2 (musica/Nivel2-musica.mp3)");
-		musicaFondoNivel = Mix_LoadMUS( "musica/Nivel2-musica.mp3" );
-	}
-    if ( !musicaFondoNivel )
-    	Logger::getInstance()->log(ERROR, Mix_GetError());
+    musicaFondoNivel1 = cargarMusica(rutasParseadas[0].c_str());
+
+    musicaFondoNivel2 = cargarMusica( rutasParseadas[1].c_str() );
 
     Mix_VolumeMusic(VOLUMEN_MUSICA);
 
-    golpeMano = Mix_LoadWAV("musica/acciones/golpeMano.wav");
-    Mix_VolumeChunk(golpeMano, VOLUMEN_ACCIONES);
+    golpeMano = cargarChunk(rutasParseadas[2].c_str());
+    Mix_VolumeChunk(golpeMano, 30);
 
-    golpeCanio = Mix_LoadWAV("musica/acciones/golpeCanio.wav");
+    golpeCanio = cargarChunk(rutasParseadas[3].c_str());
     Mix_VolumeChunk(golpeCanio, VOLUMEN_ACCIONES);
 
-    golpeCuchillo = Mix_LoadWAV("musica/acciones/golpeCanio.wav");
+    golpeCuchillo = cargarChunk(rutasParseadas[4].c_str());
     Mix_VolumeChunk(golpeCuchillo, VOLUMEN_ACCIONES);
 
-    agarrarElemento = Mix_LoadWAV("musica/acciones/agarrarElemento.wav");
+    agarrarElemento = cargarChunk(rutasParseadas[5].c_str());
     Mix_VolumeChunk(agarrarElemento, VOLUMEN_ACCIONES);
 
-    muerteJugador = Mix_LoadWAV("musica/acciones/muerteJugador.wav");
+    muerteJugador = cargarChunk(rutasParseadas[6].c_str());
     Mix_VolumeChunk(muerteJugador, VOLUMEN_ACCIONES);
 
-    muerteEnemigo = Mix_LoadWAV("musica/acciones/muerteEnemigo.wav");
-    Mix_VolumeChunk(muerteEnemigo, VOLUMEN_ACCIONES);
+    muerteEnemigo = cargarChunk(rutasParseadas[7].c_str());
+    Mix_VolumeChunk(muerteEnemigo, 30);
+
+    recibirDanio = cargarChunk(rutasParseadas[8].c_str());
+    Mix_VolumeChunk(recibirDanio, 30);
 
 
 }
+
+Mix_Music* Sonido::cargarMusica(const char* ruta) {
+
+	Logger::getInstance()->log(INFO, "Cargando música de fondo: " + std::string(ruta));
+	Mix_Music* temp = Mix_LoadMUS( ruta );
+
+	if ( !temp )
+		Logger::getInstance()->log(ERROR, Mix_GetError());
+
+	return temp;
+}
+
+Mix_Chunk* Sonido::cargarChunk(const char* ruta) {
+
+	Logger::getInstance()->log(INFO, "Cargando sonido: " + std::string(ruta));
+	Mix_Chunk* temp = Mix_LoadWAV( ruta );
+
+	if ( !temp )
+		Logger::getInstance()->log(ERROR, Mix_GetError());
+
+	return temp;
+}
+
 
 Sonido::~Sonido() {
 
@@ -54,10 +74,26 @@ Sonido::~Sonido() {
     Mix_FreeChunk( agarrarElemento);
 
     //Libero la musica de fondo
-    Mix_FreeMusic(musicaFondoNivel);
+    Mix_FreeMusic(musicaFondoNivel1);
+
+    Mix_FreeMusic(musicaFondoNivel2);
     Mix_Quit();
 
 }
+
+void Sonido::pasarNivel(int numeroNivel) {
+
+	switch(numeroNivel) {
+	case 1:
+		Mix_PlayMusic(musicaFondoNivel1, -1);
+		break;
+
+	case 2:
+		Mix_PlayMusic(musicaFondoNivel2, -1);
+		break;
+	}
+}
+
 
 void Sonido::reproducirSonidoEnemigoSegunSrc(SDL_Rect& srcEnemigo) {
 	int x = srcEnemigo.x;
@@ -68,10 +104,13 @@ void Sonido::reproducirSonidoEnemigoSegunSrc(SDL_Rect& srcEnemigo) {
 
 	switch (y) {
 	case 264*2:	// golpe
-		this->reproducir(golpeMano);
+		//this->reproducir(golpeMano);
 		break;
 
 	case 264*3:	// recibir danio
+		// this->reproducir(recibirDanio); // no reproducir nada de momento
+		break;
+
 	case 264*4:	// muerte :(
 		this->reproducir(muerteEnemigo);
 		break;
@@ -84,7 +123,7 @@ void Sonido::reproducirSonidoJugadorSegunSrc(SDL_Rect& srcJugador, int ELEMENTO_
 	int x = srcJugador.x;
 	int y = srcJugador.y;
 
-	if (x != 230) // reproduce sonido solo si esta en el tick=1
+	if (!(x == 230 || (x == 230*4 && y == 280*6) || (x == 0 && y == 280*6))) // reproduce sonido solo si esta en el tick=1, o en tick 4 y muriendo
 		return;
 
 	switch (y) {
@@ -102,8 +141,12 @@ void Sonido::reproducirSonidoJugadorSegunSrc(SDL_Rect& srcJugador, int ELEMENTO_
 			this->reproducir(golpeCuchillo);
 		break;
 
-	case 280*6: // recibir golpe
-		this->reproducir(muerteJugador);
+	case 280*6: // recibir golpe o  morir
+		if (x == 0)
+			this->reproducir(recibirDanio);
+		else if (x == 230*4)
+			this->reproducir(muerteJugador);
+		break;
 	}
 
 }
@@ -115,13 +158,6 @@ void Sonido::reproducirSonidoElementoSegunSrc(SDL_Rect& srcElemento) {
 
 void Sonido::reproducir(Mix_Chunk* sonido) {
     Mix_PlayChannel( -1, sonido, 0 );
-}
-
-void Sonido::play(){
-
-  Logger::getInstance()->log(INFO, "Reproduciendo música de fondo...");
-	if ( Mix_PlayMusic(musicaFondoNivel, -1) == -1)
-    Logger::getInstance()->log(ERROR, Mix_GetError());
 }
 
 void Sonido::stop(){

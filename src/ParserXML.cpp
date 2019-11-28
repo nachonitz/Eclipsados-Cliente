@@ -60,7 +60,7 @@ void ParserXML::setDebugLevelFromDefault() {
 }
 
 
-void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites) {
+void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos) {
 
 	Logger::getInstance()->log(INFO, "Iniciando parseo de XML.");
 
@@ -152,6 +152,20 @@ void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std:
 		asignarLista(sprites, configDefault.FirstChildElement("configuracion")->FirstChildElement("sprites"), "sprite");
 	}
 
+	XMLElement* eSonidos = hRaiz.FirstChildElement("sonidos").ToElement();
+
+	Logger::getInstance()->log(DEBUG, "Parseando sonidos...");
+
+	if (eSonidos!= nullptr) {
+		//asume que los sprites estan en orden! ni le da bola a las tags
+		asignarLista(sonidos, eSonidos, "sonido");
+	}
+	if (sonidos.size() < CANT_SONIDOS) {
+		Logger::getInstance()->log(ERROR, "Cantidad insuficiente de items en <sonidos> (se esperaban " + std::to_string(CANT_SONIDOS) + "), o etiqueta no existente. Se utilizaran sonidos predeterminados.");
+		sonidos.clear();
+		asignarLista(sonidos, configDefault.FirstChildElement("configuracion")->FirstChildElement("sonidos"), "sonido");
+	}
+
 	Logger::getInstance()->log(INFO, "Finalizado el parseo del XML.");
 
 }
@@ -187,7 +201,7 @@ void ParserXML::asignarLista(std::vector<std::string> &lista, XMLElement* eBase,
 	//asume que los elementos estan en orden
   Logger::getInstance()->log(DEBUG, "Leyendo rutas: " + std::string(nombreItems) + "...");
 	for(XMLElement* e = eBase->FirstChildElement(nombreItems); e != NULL; e = e->NextSiblingElement(nombreItems)) {
-      Logger::getInstance()->log(DEBUG, "Sprite a cargar: " + std::string(e->GetText()));
+      Logger::getInstance()->log(DEBUG, std::string(nombreItems) + " a cargar: " + std::string(e->GetText()));
 	    lista.push_back(e->GetText());
 	}
 

@@ -12,6 +12,7 @@
 
 #define CANT_CAPAS 3
 #define CANT_SPRITES 19
+#define CANT_SONIDOS 9
 
 #include <string>
 
@@ -25,7 +26,7 @@ class ParserXML {
 public:
 	ParserXML(std::string rutaConfig);
 
-	void parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
+	void parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos);
 
 	void parsearConfigDefault(int *cantEnemigos, int *cantCuchillos, int *cantCajas, int *cantCanios, int *cantBarriles);
 

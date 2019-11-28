@@ -20,7 +20,7 @@
 		<sprite>sprites/SpriteCodyCompleto3-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto4-230x280.png</sprite>
 		<sprite>sprites/objetos_varios_con_ruptura.png</sprite>
-		<sprite>sprites/DugCompleto-220x220.png</sprite>
+		<sprite>sprites/DugCompleto-220x264.png</sprite>
 		<sprite>sprites/AndoreCompleto-220x264.png</sprite>
 		<sprite>sprites/HaggarCompleto-220x264.png</sprite>
 		<sprite>sprites/SpriteCodyInactivo-230x280.png</sprite>
@@ -35,4 +35,15 @@
 		<sprite>sprites/SpriteCodyCompleto3-canio-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto4-canio-230x280.png</sprite>
 	</sprites>
+	<sonidos>
+		<sonido>musica/Nivel1-musica.mp3</sonido>
+		<sonido>musica/Nivel2-musica.mp3</sonido>
+		<sonido>musica/acciones/golpeMano.wav</sonido>
+		<sonido>musica/acciones/golpeCanio.wav</sonido>
+		<sonido>musica/acciones/golpeCuchillo.wav</sonido>
+		<sonido>musica/acciones/agarrarElemento.wav</sonido>
+		<sonido>musica/acciones/muerteJugador.wav</sonido>
+		<sonido>musica/acciones/muerteEnemigo.wav</sonido>
+		<sonido>musica/acciones/recibirGolpe.wav</sonido>
+	</sonidos>
 </configuracionCliente>

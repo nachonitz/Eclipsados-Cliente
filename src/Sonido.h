@@ -5,13 +5,15 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_mixer.h"
 
+#include <vector>
+#include <string>
+
 #include "defs.h"
 
 class Sonido {
 public:
-	Sonido(int numeroNivel);
+	Sonido(std::vector<std::string> &rutas);
 	virtual ~Sonido();
-	void play();
 	void stop();
 	void resume();
 
@@ -21,10 +23,12 @@ public:
 
 	void reproducirSonidoElementoSegunSrc(SDL_Rect& srcElemento);
 
+	void pasarNivel(int numeroNivel);
+
 
 private:
 	//La musica de fondo
-	Mix_Music *musicaFondoNivel;
+	Mix_Music *musicaFondoNivel1, *musicaFondoNivel2;
 
 	//Efectos de sonidos
 	Mix_Chunk *golpeMano, *golpeCuchillo, *golpeCanio;
@@ -35,7 +39,12 @@ private:
 	Mix_Chunk *patada= nullptr;
 	Mix_Chunk *muerteJugador,*muerteEnemigo;
 
+	int nivelActual;
+
 	void reproducir(Mix_Chunk* sonido);
+
+	Mix_Music* cargarMusica(const char* ruta);
+	Mix_Chunk* cargarChunk(const char* ruta);
 
 
 };

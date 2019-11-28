@@ -92,7 +92,7 @@ void* render_vista(void*arg){
 
 			if(nivel != info.nivelActual){
 				if (nivel != 0){
-					delete(musicaFondo);
+					//delete(musicaFondo);
 				}
 				if(info.nivelActual == 2){
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false);
@@ -105,8 +105,7 @@ void* render_vista(void*arg){
 					//Aca hay que mostrar una pantalla mejor que esta de game over
 					dibujador.mostrarPantallaErrorConTexto("Game Over");
 				}
-				musicaFondo = new Sonido(info.nivelActual);
-				musicaFondo->play();
+				musicaFondo->pasarNivel(info.nivelActual);
 				nivel = info.nivelActual;
 			}
 
@@ -128,9 +127,9 @@ int main(int argc, char *argv[]){
 
 	ParserXML parser(customXmlPath);
 
-	std::vector<std::string> nivel1, nivel2, sprites;
+	std::vector<std::string> nivel1, nivel2, sprites, sonidos;
 
-	parser.parsearConfig(nivel1, nivel2, sprites);
+	parser.parsearConfig(nivel1, nivel2, sprites, sonidos);
 
 	nivel = 0;
 
@@ -154,6 +153,8 @@ int main(int argc, char *argv[]){
 	}
 
 	dibujador.inicializar(nivel1, nivel2, sprites);
+
+	musicaFondo = new Sonido(sonidos);
 
 	dibujador.login(& credencialesCliente, false,false);
 	//-> Ventana Login
@@ -187,6 +188,8 @@ int main(int argc, char *argv[]){
 	}
 
 	Logger::getInstance()->log(INFO, "Listo para comenzar, iniciando escenario!");
+
+	musicaFondo->pasarNivel(1);
 
 	pthread_create(&hiloSendMessage,NULL,message_send,NULL);
 	pthread_create(&hiloRecieveMessage,NULL,message_recieve,NULL);
