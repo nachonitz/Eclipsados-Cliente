@@ -235,6 +235,8 @@ void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std
 	texEnemigo[0] = crearTexturaDesdeRuta(sprites.at(5).c_str());
 	texEnemigo[1] = crearTexturaDesdeRuta(sprites.at(6).c_str());
 	texEnemigo[2] = crearTexturaDesdeRuta(sprites.at(7).c_str());
+	texEnemigo[3] = crearTexturaDesdeRuta(sprites.at(19).c_str());
+
 	texElemento = crearTexturaDesdeRuta(sprites.at(4).c_str());
 
 	texCarasCody = crearTexturaDesdeRuta(sprites.at(10).c_str());

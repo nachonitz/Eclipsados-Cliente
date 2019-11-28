@@ -108,7 +108,7 @@ private:
 
 
 	SDL_Texture* texCodyInactivo;
-	SDL_Texture* texEnemigo[3];
+	SDL_Texture* texEnemigo[4];
 	SDL_Texture* texElemento;
 
 	SDL_Texture* texCarasCody;
