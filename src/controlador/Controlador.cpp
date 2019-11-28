@@ -145,7 +145,7 @@ void Controlador::preparoSalto(int tipoDeSalto, int setAction){
 	}
 }
 
-struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *serverConectado){
+struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 
 	//actualizar el array de estados (para GetKeyboardState)
 	SDL_PumpEvents();
@@ -267,15 +267,15 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *serverCone
 	if(keystates[SDL_SCANCODE_ESCAPE]) {
 		//setear variable para salir
 		Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
-		//*serverConectado = false;
-		exit(0);
+		*salir = true;
+		//exit(0);
 	}
 
 	if(e.type == SDL_QUIT){
 		//setear variable para salir
 		Logger::getInstance()->log(INFO, "X apretada. Desconexion voluntaria. Desconectando del servidor");
-		//*serverConectado = false;
-		exit(0);
+		*salir = true;
+		//exit(0);
 	}
 
 	if(e.type == SDL_KEYUP && !golpeando && !agachando){

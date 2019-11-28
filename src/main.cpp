@@ -18,7 +18,7 @@ credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
 pthread_mutex_t mutexTimer;
-bool serverConectado;
+bool serverConectado, salir;
 bool terminarHiloNotResponding = false;
 int tiempoEsperaSend, nivel, cantidadClientes;
 
@@ -46,11 +46,11 @@ void* timer(void*arg){
 
 void* message_send(void*arg){
 	serverConectado = true;
+	salir = false;
 
-
-	while(serverConectado){
+	while(serverConectado && !salir){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
-		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo, &serverConectado);
+		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo, &salir);
 
 		int resultadoSend = cliente.enviarInformacion(infoEnv);
 
@@ -65,9 +65,10 @@ void* message_send(void*arg){
 
 void* message_recieve(void*arg){
 	serverConectado = true;
+	salir = false;
 	tiempoEsperaSend = 0;
 	pthread_create(&hiloTimer,NULL,timer,NULL);
-	while(serverConectado){
+	while(serverConectado && !salir){
 		//Logger::getInstance()->log(DEBUG, "Recibiendo info de servidor...");
 		struct informacionRec info = cliente.recibirInformacion();
 		pthread_mutex_lock(&mutexQueue);
@@ -82,8 +83,8 @@ void* message_recieve(void*arg){
 
 void* render_vista(void*arg){
 	serverConectado = true;
-
-	while(serverConectado){
+	salir = false;
+	while(serverConectado && !salir){
 		if(!colaInfoRecibida.empty()){
 			pthread_mutex_lock(&mutexQueue);
 			struct informacionRec info = colaInfoRecibida.front();
@@ -186,7 +187,11 @@ int main(int argc, char *argv[]){
 
 	Logger::getInstance()->log(ERROR, "Server en puerto " + std::string((char*)argv[1]) + " con IP: " + puerto + " caido! (no se encuentra el server) Desconectando...");
 
-	dibujador.mostrarPantallaErrorConTexto("Server connection lost, shutting down...");
+	if(salir){
+		dibujador.mostrarPantallaErrorConTexto("Saliendo del Juego...");
+	}else{
+		dibujador.mostrarPantallaErrorConTexto("Server connection lost, shutting down...");
+	}
 
 	delete(musicaFondo);
 
