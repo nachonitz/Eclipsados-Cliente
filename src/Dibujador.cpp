@@ -52,13 +52,11 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 
 }
 
-void Dibujador::dibujar(struct informacionRec info, int ID){
+void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorMusica){
 	//toDo Pasar de char* a las posiciones
 
 	//frameStart=SDL_GetTicks();
 	//static int lastTime;
-
-	int j = 0;
 
 	renderizable renderizableActual;
 
@@ -98,9 +96,14 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 
 	}
 
+
+	// DIBUJAR ENEMIGOS
 	for(int i = info.cantJugadores; i < (info.cantAnimados); i++){
-		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];					//TODO: SIEMPRE ANDORE!
+		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];
+
 		renderizableActual.source = info.animados[i].src;
+		reproductorMusica->reproducirSonidoEnemigoSegunSrc(renderizableActual.source);
+
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
 		renderizableActual.soyJugador = false;
@@ -109,6 +112,8 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		renderizables.push_back(renderizableActual);
 	}
 
+
+	// DIBUJAR CODYS
 	for(int i = 0; i < (info.cantJugadores); i++){
 
 		switch(info.animados[i].elementoEnMano) {
@@ -124,6 +129,8 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		}
 
 		renderizableActual.source = info.animados[i].src;
+		reproductorMusica->reproducirSonidoJugadorSegunSrc(renderizableActual.source, info.animados[i].elementoEnMano);
+
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
 		renderizableActual.soyJugador = true;
@@ -135,9 +142,14 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		}
 	}
 
+
+	// DIBUJAR ELEMENTOS
 	for(int i = 0; i < (info.cantElementos); i++){
 		renderizableActual.textura = texElemento;
+
 		renderizableActual.source = info.elementos[i].src;
+		reproductorMusica->reproducirSonidoElementoSegunSrc(renderizableActual.source);
+
 		renderizableActual.destination = info.elementos[i].dest;
 		renderizableActual.flip = SDL_FLIP_NONE;
 		renderizableActual.soyJugador = false;
@@ -148,6 +160,8 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 
 	std::sort(renderizables.begin(), renderizables.end());
 
+
+	// OBTENGO EN RENDACTUAL EL QUE ME CORRESPONDE (EL MIO)
 	for (uint i = 0; i < renderizablesJugadores.size(); i++) {
 		if(renderizablesJugadores[i].idxJugador == ID){
 			renderizableActual.textura = texCody[i];
@@ -168,62 +182,27 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		}
 	}
 
-/*	for (uint i = 0; i < renderizables.size(); i++) {
-		if(renderizables[i].soyJugador && renderizables[i].idxJugador != ID){
-			j++;
-			SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-		}else{
-			if(!(renderizables[i].soyJugador)){
-				SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
+
+
+	for (uint i = 0; i < renderizablesJugadores.size(); i++) {
+		if(renderizableActual.destination.x >= (renderizablesJugadores[i].destination.x - 10) && renderizableActual.destination.x <= (renderizablesJugadores[i].destination.x + 10) && renderizableActual.destination.y >= (renderizablesJugadores[i].destination.y - 10) && renderizableActual.destination.y <= (renderizablesJugadores[i].destination.y + 10) && renderizableActual.idxJugador != renderizablesJugadores[i].idxJugador){
+			if (renderizables[i].estaActivo){
+				SDL_RenderCopyEx(ren, renderizableActual.textura, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
 			}else{
-				if(j == 3){
-					if (renderizables[i].estaActivo){
-						SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-					}else{
-						SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-					}
-				}else{
-					for(uint k = i-1; k < renderizables.size(); k++){
-						if(renderizables[i].destination.x == renderizables[k].destination.x && renderizables[i].destination.y == renderizables[k].destination.y && renderizables[k].soyJugador){
-							if (renderizables[k].estaActivo){
-								SDL_RenderCopyEx(ren, renderizables[k].textura, &renderizables[k].source, &renderizables[k].destination, 0, NULL, renderizables[k].flip);
-							}else{
-								SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[k].source, &renderizables[k].destination, 0, NULL, renderizables[k].flip);
-							}
-							if (renderizables[i].estaActivo){
-								SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-								//std::swap(renderizables[i], renderizables[k]);
-							}else{
-								SDL_RenderCopyEx(ren, texCodyInactivo, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-
-							}
-						}
-					}
-				}
+				SDL_RenderCopyEx(ren, texCodyInactivo, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
 			}
 		}
 	}
-*/
 
-		for (uint i = 0; i < renderizablesJugadores.size(); i++) {
-			if(renderizableActual.destination.x >= (renderizablesJugadores[i].destination.x - 10) && renderizableActual.destination.x <= (renderizablesJugadores[i].destination.x + 10) && renderizableActual.destination.y >= (renderizablesJugadores[i].destination.y - 10) && renderizableActual.destination.y <= (renderizablesJugadores[i].destination.y + 10) && renderizableActual.idxJugador != renderizablesJugadores[i].idxJugador){
-				if (renderizables[i].estaActivo){
-					SDL_RenderCopyEx(ren, renderizableActual.textura, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
-				}else{
-					SDL_RenderCopyEx(ren, texCodyInactivo, &renderizableActual.source, &renderizableActual.destination, 0, NULL, renderizableActual.flip);
-				}
-			}
-		}
+	SDL_RenderPresent(ren);
 
-		SDL_RenderPresent(ren);
-
-		renderizables.clear();
-		renderizablesJugadores.clear();
-	/*
-		if(frameDelay > lastTime){
-			SDL_Delay(frameDelay - lastTime);
-		}*/
-	}
+	renderizables.clear();
+	renderizablesJugadores.clear();
+/*
+	if(frameDelay > lastTime){
+		SDL_Delay(frameDelay - lastTime);
+	}*/
+}
 
 
 void Dibujador::setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites) {
