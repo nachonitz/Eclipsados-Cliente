@@ -671,7 +671,7 @@ void Dibujador::mostrarPantallaErrorConTexto(std::string mensaje){
 	SDL_Delay(5000);
 }
 
-void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJugadores){
+void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJugadores,bool finDelJuego){
 	SDL_Surface* surfaceTextoEsperando;
 	SDL_Color colorTextoError;
 	SDL_Color colorPuntajes;

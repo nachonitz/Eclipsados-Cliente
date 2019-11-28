@@ -91,17 +91,17 @@ void* render_vista(void*arg){
 			pthread_mutex_unlock(&mutexQueue);
 
 			if(nivel != info.nivelActual){
-				std::cout<<"Nivel: "<<nivel<<std::endl;
-				std::cout<<"NivelActual: "<<info.nivelActual<<std::endl;
 				if (nivel != 0){
 					delete(musicaFondo);
 				}
 				if(info.nivelActual == 2){
-					//nivel 3 es cuando termina la partida
-					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores);
+					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false);
 				}
 				if(info.nivelActual == 3){
-					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores);
+					//nivel 3 va a ser cuando termina la partida
+					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true);
+					//Aca hay que mostrar una pantalla mejor que esta de game over
+					dibujador.mostrarPantallaErrorConTexto("Game Over");
 				}
 				musicaFondo = new Sonido(info.nivelActual);
 				musicaFondo->play();

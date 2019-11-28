@@ -84,7 +84,7 @@ public:
 
 	void mostrarPantallaEspera(int myId);
 	void mostrarPantallaErrorConTexto(std::string mensaje);
-	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores);
+	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
 
 private:
 
