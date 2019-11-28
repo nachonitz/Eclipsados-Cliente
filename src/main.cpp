@@ -32,7 +32,7 @@ void* mantenerAplicacionActiva(void*arg){
 
 void* timer(void*arg){
 	Logger::getInstance()->log(DEBUG, "Hilo Timer creado");
-	while (tiempoEsperaSend <= 5){
+	while (tiempoEsperaSend <= 10){
 		sleep(1);
 		pthread_mutex_lock(&mutexTimer);
 		tiempoEsperaSend ++;
@@ -96,10 +96,12 @@ void* render_vista(void*arg){
 				}
 				if(info.nivelActual == 2){
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false);
+					sleep(7);
 				}
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true);
+					sleep(7);
 					//Aca hay que mostrar una pantalla mejor que esta de game over
 					dibujador.mostrarPantallaErrorConTexto("Game Over");
 				}

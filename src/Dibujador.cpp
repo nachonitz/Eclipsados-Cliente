@@ -792,7 +792,6 @@ void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJuga
 	}
 
 	SDL_RenderPresent(ren);
-	SDL_Delay(7000);
 }
 
 
