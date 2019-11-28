@@ -20,6 +20,7 @@ struct animado{
 	int tipoEnemigo;
 	int ID;
 	int elementoEnMano;
+	bool dibujar;
 };
 
 struct elemento{

@@ -129,8 +129,10 @@ void Dibujador::dibujar(struct informacionRec info, int ID){
 		renderizableActual.soyJugador = true;
 		renderizableActual.estaActivo = info.animados[i].estaActivo;
 		renderizableActual.idxJugador = info.animados[i].ID;
-		renderizablesJugadores.push_back(renderizableActual);
-		renderizables.push_back(renderizableActual);
+		if(info.animados[i].dibujar){
+			renderizablesJugadores.push_back(renderizableActual);
+			renderizables.push_back(renderizableActual);
+		}
 	}
 
 	for(int i = 0; i < (info.cantElementos); i++){

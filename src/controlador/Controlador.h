@@ -20,7 +20,7 @@ class Controlador {
 public:
 	Controlador();
 	~Controlador();
-	struct informacionEnv eventHandler(Sonido* musica);
+	struct informacionEnv eventHandler(Sonido* musica, bool *serverConectado);
 
 	void setAccionActual(int acActual);
 	void setAcciones(int c, int p, int s, int sPatada, int g, int a, int sV);

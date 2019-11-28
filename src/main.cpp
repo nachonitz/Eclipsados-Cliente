@@ -50,7 +50,7 @@ void* message_send(void*arg){
 
 	while(serverConectado){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
-		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo);
+		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo, &serverConectado);
 
 		int resultadoSend = cliente.enviarInformacion(infoEnv);
 
