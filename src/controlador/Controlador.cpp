@@ -18,21 +18,19 @@ Controlador::Controlador() {
 
 	//Check for joysticks
 	if( SDL_NumJoysticks() < 1 ){
-		//Loggear error
-		//printf( "Warning: No joysticks connected!\n" );
+		Logger::getInstance()->log(DEBUG, "Warning: No joysticks connected!");
 	}
 	else{
 		//Load joystick
 		SDL_JoystickEventState(SDL_ENABLE);
 		gameController = SDL_JoystickOpen( 0 );
 		if( gameController == NULL ){
-			//Loggear error
-			//printf( "Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError() );
+			Logger::getInstance()->log(DEBUG, "Warning: Unable to open game controller! SDL Error: %s\n" /*SDL_GetError()*/);
 		}
 		//Cosas Para Loggear
-		//std::cout << "Controller Name: " << SDL_JoystickName(gameController) << std::endl;
-		//std::cout << "Cant Axes: " << SDL_JoystickNumAxes(gameController) << std::endl;
-		//std::cout << "Cant Buttons: " << SDL_JoystickNumButtons(gameController) << std::endl;
+		Logger::getInstance()->log(INFO, "Controller Name: " /*SDL_JoystickName(gameController)*/);
+		Logger::getInstance()->log(INFO, "Cant Axes: " /* SDL_JoystickNumAxes(gameController)*/);
+		Logger::getInstance()->log(INFO, "Cant Buttons: " /* SDL_JoystickNumButtons(gameController)*/);
 	}
 }
 
@@ -174,6 +172,28 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 			break;
 			case 2: goto pegar;
 			break;
+			case 3:	if( x_move > JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_DERECHA, saltoPatada);
+						teclado = false;
+					}
+					if( x_move < -JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_IZQUIERDA, saltoPatada);
+						teclado = false;
+					}
+			break;
+			case 6:	if(musicPlaying){
+						Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
+						musica->stop();
+						musicPlaying = false;
+					}else{
+						Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
+						musica->resume();
+						musicPlaying = true;
+					}
+			break;
+			case 7:	Logger::getInstance()->log(INFO, "START apretado. Desconexion voluntaria. Desconectando del servidor");
+					*salir = true;
+			break;
 			}
 		}
 
@@ -252,30 +272,27 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 		}
 	}
 
-	if(keystates[SDL_SCANCODE_M]) {
-		if(musicPlaying){
-			Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
-			musica->stop();
-			musicPlaying = false;
-		}else{
-			Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
-			musica->resume();
-			musicPlaying = true;
+	if(e.type == SDL_KEYDOWN) {
+		switch(e.key.keysym.sym){
+		case SDLK_m:	if(musicPlaying){
+							Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
+							musica->stop();
+							musicPlaying = false;
+						}else{
+							Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
+							musica->resume();
+							musicPlaying = true;
+						}
+		break;
+		case SDLK_ESCAPE:	Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
+							*salir = true;
+		break;
 		}
 	}
 
-	if(keystates[SDL_SCANCODE_ESCAPE]) {
-		//setear variable para salir
-		Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
-		*salir = true;
-		//exit(0);
-	}
-
 	if(e.type == SDL_QUIT){
-		//setear variable para salir
 		Logger::getInstance()->log(INFO, "X apretada. Desconexion voluntaria. Desconectando del servidor");
 		*salir = true;
-		//exit(0);
 	}
 
 	if(e.type == SDL_KEYUP && !golpeando && !agachando){
@@ -287,24 +304,3 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 
 	return infoEnv;
 }
-/*
-	if(e.jbutton.button == 3 && accionActual != saltoPatada || keystates[SDL_SCANCODE_LSHIFT]){
-		/*jugador->setAnimacionActual(saltoPatada, spriteFlip);
-		mandar al servidor que updatee la animacion
-		accionActual = saltoPatada;
-		infoEnv.animacionActual = accionActual;
-		infoEnv.flip = spriteFlip;
-	} */
-	/*if(alturaActualSalto < alturaMaximaSalto ){
-		//juego->movimientoSalto();	avisarle al servidor que se salto
-		//alturaActualSalto = juego->getPosicionJugador()->getVertical(); pedir altura al servidor
-		switch(tipoSalto){
-			case SALTO_VERTICAL: return infoEnv = ACCION_SALTO;				//Salta en vertical
-			break;
-			case SALTO_DERECHA: infoEnv.movimiento = SALTO_RIGHT; 	//juego->movimientoDerecha();	servidor mover derecha
-			break;
-			case SALTO_IZQUIERDA: infoEnv.movimiento = SALTO_LEFT; //juego->movimientoIzquierda();	servidor mover izquierda
-			break;
-		}
-		return infoEnv;
-	}*/
