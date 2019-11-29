@@ -104,6 +104,7 @@ void* render_vista(void*arg){
 					sleep(7);
 					//Aca hay que mostrar una pantalla mejor que esta de game over
 					dibujador.mostrarPantallaErrorConTexto("Game Over");
+					salir = true;
 				}
 				musicaFondo->pasarNivel(info.nivelActual);
 				nivel = info.nivelActual;
