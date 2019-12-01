@@ -31,12 +31,16 @@
 #define SALTO_DERECHA 1
 #define SALTO_IZQUIERDA 2
 
+
+//infoEnv.movimiento:
 #define RIGHT 0
 #define LEFT 1
 #define UP 2
 #define DOWN 3
 #define STAND 4
 
+
+//infoRec.animacionActual:
 #define ACCION_PARADO 0
 #define ACCION_CAMINAR 1
 #define ACCION_SALTO 2
@@ -44,6 +48,7 @@
 #define ACCION_SALTO_PATADA 4
 #define ACCION_AGACHADO 5
 #define ACCION_SALTO_VERTICAL 6
+#define ACCION_TESTMODE 7
 
 
 //animados.elementoEnMano

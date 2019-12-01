@@ -87,6 +87,8 @@ public:
 	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
 	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombres[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
 
+	static void toggleTestMode() {Dibujador::showTestMode = !Dibujador::showTestMode;}
+
 private:
 
 	SDL_Texture* crearTexturaDesdeRuta(std::string ruta);
@@ -138,7 +140,11 @@ private:
 
 	int scoresParciales[MAX_CLIENTES];
 
+	SDL_Texture* texturaTestMode;
+	SDL_Rect ubicacionTestMode;
+	SDL_Rect bannerTestMode;
 
+	static bool showTestMode;
 };
 
 #endif

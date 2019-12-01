@@ -272,24 +272,6 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 		}
 	}
 
-	if(e.type == SDL_KEYDOWN) {
-		switch(e.key.keysym.sym){
-		case SDLK_m:	if(musicPlaying){
-							Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
-							musica->stop();
-							musicPlaying = false;
-						}else{
-							Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
-							musica->resume();
-							musicPlaying = true;
-						}
-		break;
-		case SDLK_ESCAPE:	Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
-							*salir = true;
-		break;
-		}
-	}
-
 	if(e.type == SDL_QUIT){
 		Logger::getInstance()->log(INFO, "X apretada. Desconexion voluntaria. Desconectando del servidor");
 		*salir = true;
@@ -300,6 +282,50 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 		infoEnv.animacionActual = accionActual;
 		infoEnv.flip = spriteFlip;
 		infoEnv.movimiento = STAND;
+	}
+
+	if(e.type == SDL_KEYDOWN) {
+		switch(e.key.keysym.sym){
+		case SDLK_m:
+			if (!musicaYaApretada) {
+				if(musicPlaying){
+					Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
+					musica->stop();
+					musicPlaying = false;
+				}else{
+					Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
+					musica->resume();
+					musicPlaying = true;
+				}
+				musicaYaApretada = true;
+			}
+		break;
+		case SDLK_ESCAPE:	Logger::getInstance()->log(INFO, "ESC apretado. Desconexion voluntaria. Desconectando del servidor");
+							*salir = true;
+		break;
+		case SDLK_t:
+			if (!testModeYaApretado) {
+				Logger::getInstance()->log(INFO, "Alternado el Test Mode...");
+				infoEnv.animacionActual = ACCION_TESTMODE;
+				Dibujador::toggleTestMode();
+				testModeYaApretado = true;
+			}
+			else
+				infoEnv.animacionActual = ACCION_PARADO;
+			break;
+		}
+	}
+
+	if (e.type == SDL_KEYUP) {
+		switch(e.key.keysym.sym){
+		case SDLK_m:
+			musicaYaApretada = false;
+			break;
+		break;
+		case SDLK_t:
+			testModeYaApretado = false;
+			break;
+		}
 	}
 
 	return infoEnv;

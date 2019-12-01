@@ -8,6 +8,8 @@
 #include "../Logger.h"
 #include "../Sonido.h"
 
+#include "../Dibujador.h"
+
 struct informacionEnv{
 	int animacionActual;
 	int movimiento;
@@ -56,6 +58,10 @@ private:
 	int y_move;
 	bool teclado, musicPlaying;
 	struct informacionEnv infoEnv;
+
+	bool musicaYaApretada = false, testModeYaApretado = false;
+
+	int timeoutT = 50, timeoutM = 50;
 };
 
 #endif /* CONTROLADOR_H_ */

@@ -1,6 +1,8 @@
 #include "Dibujador.h"
 #include "Logger.h"
 
+bool Dibujador::showTestMode = false;
+
 
 int Dibujador::obtenerIndiceBarra(int nivelEnergiaRestante){
 	switch(nivelEnergiaRestante){
@@ -15,6 +17,8 @@ int Dibujador::obtenerIndiceBarra(int nivelEnergiaRestante){
 		case 20:
 			return 4;
 		case 0:
+			return 5;
+		default:
 			return 5;
 	}
 	return -1;
@@ -54,6 +58,24 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	for(int i=0; i< MAX_CLIENTES; i++){
 		scoresParciales[i] = 0;
 	}
+
+	// inicializar texto TEST MODE
+	TTF_Font* fontTestMode = TTF_OpenFont("sprites/Sansation-Bold.ttf", 30);
+	SDL_Color colorTestMode;
+	colorTestMode.r = 200; colorTestMode.g = 50; colorTestMode.b = 50;
+	SDL_Surface* surfaceTestMode = TTF_RenderText_Solid(fontTestMode, "TEST MODE", colorTestMode);
+	texturaTestMode = SDL_CreateTextureFromSurface(ren, surfaceTestMode);
+	int widthTest,heightTest;
+	SDL_QueryTexture(texturaTestMode,NULL,NULL,&widthTest,&heightTest);
+	ubicacionTestMode.x=30;ubicacionTestMode.y=120;ubicacionTestMode.w=widthTest;ubicacionTestMode.h=heightTest;
+
+	SDL_SetRenderDrawColor(ren, 25, 25,25, 175);
+
+	bannerTestMode.h=heightTest + 20;
+	bannerTestMode.w=widthTest + 40;
+	bannerTestMode.x= 0;
+	bannerTestMode.y= 110;
+
 }
 
 void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorMusica){
@@ -199,6 +221,12 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 			}
 		}
 	}
+
+	if (showTestMode) {
+		SDL_RenderFillRect(ren, &bannerTestMode);
+		SDL_RenderCopy(ren, texturaTestMode,NULL,&ubicacionTestMode);
+	}
+
 
 	SDL_RenderPresent(ren);
 
@@ -968,7 +996,7 @@ void Dibujador::mostrarPantallaGameOver(int scores[MAX_CLIENTES], string nombres
 
 
 
-SDL_SetRenderDrawColor(ren, 170, 10,10, 220);
+	SDL_SetRenderDrawColor(ren, 170, 10,10, 220);
 
 
 	SDL_RenderFillRect(ren, &banner);
