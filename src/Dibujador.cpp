@@ -69,8 +69,6 @@ void Dibujador::inicializar(std::vector<std::string> &nivel1, std::vector<std::s
 	SDL_QueryTexture(texturaTestMode,NULL,NULL,&widthTest,&heightTest);
 	ubicacionTestMode.x=30;ubicacionTestMode.y=120;ubicacionTestMode.w=widthTest;ubicacionTestMode.h=heightTest;
 
-	SDL_SetRenderDrawColor(ren, 25, 25,25, 175);
-
 	bannerTestMode.h=heightTest + 20;
 	bannerTestMode.w=widthTest + 40;
 	bannerTestMode.x= 0;
@@ -223,6 +221,7 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 	}
 
 	if (showTestMode) {
+		SDL_SetRenderDrawColor(ren, 25, 25,25, 175);
 		SDL_RenderFillRect(ren, &bannerTestMode);
 		SDL_RenderCopy(ren, texturaTestMode,NULL,&ubicacionTestMode);
 	}
