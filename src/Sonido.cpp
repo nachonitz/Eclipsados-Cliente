@@ -19,25 +19,32 @@ Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
     Mix_VolumeMusic(VOLUMEN_MUSICA);
 
     golpeMano = cargarChunk(rutasParseadas[2].c_str());
-    Mix_VolumeChunk(golpeMano, 30);
+    if (golpeMano)
+    	Mix_VolumeChunk(golpeMano, 30);
 
     golpeCanio = cargarChunk(rutasParseadas[3].c_str());
-    Mix_VolumeChunk(golpeCanio, VOLUMEN_ACCIONES);
+    if (golpeCanio)
+    	Mix_VolumeChunk(golpeCanio, VOLUMEN_ACCIONES);
 
     golpeCuchillo = cargarChunk(rutasParseadas[4].c_str());
-    Mix_VolumeChunk(golpeCuchillo, VOLUMEN_ACCIONES);
+    if (golpeCuchillo)
+    	Mix_VolumeChunk(golpeCuchillo, VOLUMEN_ACCIONES);
 
     agarrarElemento = cargarChunk(rutasParseadas[5].c_str());
-    Mix_VolumeChunk(agarrarElemento, VOLUMEN_ACCIONES);
+    if (agarrarElemento)
+    	Mix_VolumeChunk(agarrarElemento, VOLUMEN_ACCIONES);
 
     muerteJugador = cargarChunk(rutasParseadas[6].c_str());
-    Mix_VolumeChunk(muerteJugador, VOLUMEN_ACCIONES);
+    if (muerteJugador)
+    	Mix_VolumeChunk(muerteJugador, VOLUMEN_ACCIONES);
 
     muerteEnemigo = cargarChunk(rutasParseadas[7].c_str());
-    Mix_VolumeChunk(muerteEnemigo, 30);
+    if (muerteEnemigo)
+    	Mix_VolumeChunk(muerteEnemigo, 30);
 
     recibirDanio = cargarChunk(rutasParseadas[8].c_str());
-    Mix_VolumeChunk(recibirDanio, 30);
+    if (recibirDanio)
+    	Mix_VolumeChunk(recibirDanio, 30);
 
 
 }
@@ -72,6 +79,9 @@ Sonido::~Sonido() {
     Mix_FreeChunk( golpeCuchillo);
     Mix_FreeChunk( golpeMano);
     Mix_FreeChunk( agarrarElemento);
+    Mix_FreeChunk( muerteEnemigo);
+    Mix_FreeChunk( muerteJugador);
+    Mix_FreeChunk( recibirDanio);
 
     //Libero la musica de fondo
     Mix_FreeMusic(musicaFondoNivel1);
@@ -157,7 +167,8 @@ void Sonido::reproducirSonidoElementoSegunSrc(SDL_Rect& srcElemento) {
 
 
 void Sonido::reproducir(Mix_Chunk* sonido) {
-    Mix_PlayChannel( -1, sonido, 0 );
+    if (sonido)
+    	Mix_PlayChannel( -1, sonido, 0 );
 }
 
 void Sonido::stop(){
