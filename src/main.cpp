@@ -4,6 +4,7 @@
 #include <queue>
 #include "ParserXML.h"
 #include "Sonido.h"
+#include <string>
 
 Cliente cliente;
 pthread_t hiloSendMessage;
@@ -100,10 +101,15 @@ void* render_vista(void*arg){
 				}
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida
+
+					int scores[4]= {1000,2000,3000,4000};
+					std::string nombres[MAX_CLIENTES] = {"Juana","Messi","Barovero","Gabi_9"};
+
+					dibujador.mostrarPantallaGameOver(scores,nombres,4,false);
+					sleep(5);
+
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true);
 					sleep(7);
-					//Aca hay que mostrar una pantalla mejor que esta de game over
-					dibujador.mostrarPantallaErrorConTexto("Game Over");
 					salir = true;
 				}
 				musicaFondo->pasarNivel(info.nivelActual);

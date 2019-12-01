@@ -11,7 +11,7 @@
 #define SRC_PARSERXML_H_
 
 #define CANT_CAPAS 3
-#define CANT_SPRITES 20
+#define CANT_SPRITES 22
 #define CANT_SONIDOS 9
 
 #include <string>

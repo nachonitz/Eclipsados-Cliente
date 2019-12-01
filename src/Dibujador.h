@@ -9,6 +9,7 @@
 #include <vector>
 #include "defs.h"
 #include <algorithm>
+#include <string>
 
 #include "Sonido.h"
 
@@ -75,7 +76,6 @@ struct renderizable {
 
 class Dibujador {
 public:
-
 	void inicializar(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
 	void dibujar(struct informacionRec info, int ID, Sonido* reproductorMusica);
 	void setearTexturas(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites);
@@ -85,6 +85,7 @@ public:
 	void mostrarPantallaEspera(int myId);
 	void mostrarPantallaErrorConTexto(std::string mensaje);
 	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
+	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombres[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
 
 private:
 
@@ -117,6 +118,9 @@ private:
 	SDL_Texture* texBarrasEnergia;
 	SDL_Rect barrasEnergiasrc[MAX_NIVELES_ENERGIA];
 	SDL_Rect barrasEnergiadest[MAX_CLIENTES];
+	SDL_Texture* texVidas;
+	SDL_Rect vidassrc[4];
+	SDL_Rect vidasdest[MAX_CLIENTES];
 
 	SDL_Color colorTextoScore;
 	TTF_Font* fontScore;
@@ -131,6 +135,8 @@ private:
 
 	std::vector<renderizable> renderizables;
 	std::vector<renderizable> renderizablesJugadores;
+
+	int scoresParciales[MAX_CLIENTES];
 
 
 };

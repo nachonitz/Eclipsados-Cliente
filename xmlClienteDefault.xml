@@ -35,6 +35,8 @@
 		<sprite>sprites/SpriteCodyCompleto3-canio-230x280.png</sprite>
 		<sprite>sprites/SpriteCodyCompleto4-canio-230x280.png</sprite>
 		<sprite>sprites/SpriteFinalBossDamnd-325x280.png</sprite>
+		<sprite>sprites/heart-100x100.png</sprite>
+		<sprite>sprites/gameOver-azul.png</sprite>
 	</sprites>
 	<sonidos>
 		<sonido>musica/Nivel1-musica.mp3</sonido>
