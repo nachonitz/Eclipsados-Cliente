@@ -46,6 +46,10 @@ Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
     if (recibirDanio)
     	Mix_VolumeChunk(recibirDanio, 30);
 
+    intro = cargarChunk(rutasParseadas[9].c_str());
+    if (intro)
+    	Mix_VolumeChunk(intro, 40);
+
 
 }
 
@@ -90,6 +94,11 @@ Sonido::~Sonido() {
     Mix_Quit();
 
 }
+
+void Sonido::reproducirSonidoIntro() {
+	this->reproducir(intro);
+}
+
 
 void Sonido::pasarNivel(int numeroNivel) {
 

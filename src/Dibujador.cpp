@@ -1016,6 +1016,63 @@ void Dibujador::mostrarPantallaGameOver(int scores[MAX_CLIENTES], string nombres
 	SDL_RenderPresent(ren);
 }
 
+void Dibujador::mostrarIntroEclipsados(Sonido* musica) {
+	SDL_Texture* texLogo;
+	SDL_Surface* surfLogo;
+	SDL_Rect logoDest;
+
+	logoDest.x=300;logoDest.y=200;logoDest.w=200;logoDest.h=200;
+	surfLogo = IMG_Load("sprites/logo-retro.png");
+	texLogo = SDL_CreateTextureFromSurface(ren,surfLogo);
+
+	musica->reproducirSonidoIntro();
+
+	for (int i = 0; i < 100; i++) {
+		SDL_RenderClear(ren);
+
+		SDL_SetTextureAlphaMod(texLogo, i * 255/100);
+
+		SDL_RenderCopy(ren, texLogo,NULL,&logoDest);
+
+		SDL_RenderPresent(ren);
+
+		SDL_Delay(1000/90);
+
+	}
+
+	SDL_Texture* texEclip;
+	SDL_Surface* surfEclip;
+	SDL_Rect eclipDest;
+
+	eclipDest.x=300;eclipDest.y=425;eclipDest.w=200;eclipDest.h=50;
+	surfEclip= IMG_Load("sprites/logo-texto.png");
+	texEclip= SDL_CreateTextureFromSurface(ren,surfEclip);
+
+	for (int i = 0; i < 100; i++) {
+
+		SDL_RenderClear(ren);
+
+		SDL_SetTextureAlphaMod(texEclip, i * 255/100);
+
+		SDL_RenderCopy(ren, texEclip,NULL,&eclipDest);
+		SDL_RenderCopy(ren, texLogo,NULL,&logoDest);
+
+		SDL_RenderPresent(ren);
+
+		SDL_Delay(1000/90);
+
+	}
+
+
+
+	SDL_Delay(2000);
+
+	SDL_RenderClear(ren);
+
+
+}
+
+
 
 Dibujador::~Dibujador(){
 	SDL_DestroyRenderer(ren);

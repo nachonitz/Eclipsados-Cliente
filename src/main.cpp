@@ -186,6 +186,8 @@ int main(int argc, char *argv[]){
 
 	musicaFondo = new Sonido(sonidos);
 
+	dibujador.mostrarIntroEclipsados(musicaFondo);
+
 	dibujador.login(& credencialesCliente, false,false);
 	//-> Ventana Login
 

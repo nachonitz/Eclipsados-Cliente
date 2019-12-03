@@ -48,5 +48,7 @@
 		<sonido>musica/acciones/muerteJugador.wav</sonido>
 		<sonido>musica/acciones/muerteEnemigo.wav</sonido>
 		<sonido>musica/acciones/recibirGolpe.wav</sonido>
+		<sonido>musica/eclipsadosLogo.wav</sonido>
+
 	</sonidos>
 </configuracionCliente>
