@@ -17,11 +17,14 @@ Controlador* controlador;
 Sonido *musicaFondo;
 credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
-pthread_mutex_t mutexQueue;
+pthread_mutex_t mutexQueue, mutexPantallaScores;
 pthread_mutex_t mutexTimer;
 bool serverConectado, salir;
 bool terminarHiloNotResponding = false;
 int tiempoEsperaSend, nivel, cantidadClientes;
+bool mostrandoPantallaScores = false;
+
+struct informacionEnv crearInfoEnvQuieto();
 
 void* mantenerAplicacionActiva(void*arg){
 	int i = 0;
@@ -51,7 +54,16 @@ void* message_send(void*arg){
 
 	while(serverConectado && !salir){
 		//Logger::getInstance()->log(DEBUG, "Tomando input usuario para luego enviar...");
-		struct informacionEnv infoEnv = controlador->eventHandler(musicaFondo, &salir);
+		pthread_mutex_lock(&mutexPantallaScores);
+
+		struct informacionEnv infoEnv;
+
+		if (!mostrandoPantallaScores)
+			infoEnv = controlador->eventHandler(musicaFondo, &salir);
+		else
+			infoEnv = crearInfoEnvQuieto();
+
+		pthread_mutex_unlock(&mutexPantallaScores);
 
 		int resultadoSend = cliente.enviarInformacion(infoEnv);
 
@@ -97,7 +109,16 @@ void* render_vista(void*arg){
 				}
 				if(info.nivelActual == 2){
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false);
+
+					pthread_mutex_lock(&mutexPantallaScores);
+					mostrandoPantallaScores = true;
+					pthread_mutex_unlock(&mutexPantallaScores);
+
 					sleep(7);
+
+					pthread_mutex_lock(&mutexQueue);
+					mostrandoPantallaScores = false;
+					pthread_mutex_unlock(&mutexQueue);
 				}
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida
@@ -144,6 +165,8 @@ int main(int argc, char *argv[]){
 
 	pthread_mutex_init(&mutexQueue,NULL);
 	pthread_mutex_init(&mutexTimer,NULL);
+	pthread_mutex_init(&mutexPantallaScores,NULL);
+
 
 	controlador = new Controlador();
 
@@ -216,4 +239,16 @@ int main(int argc, char *argv[]){
 	delete(musicaFondo);
 
 	return 0;
+}
+
+
+
+struct informacionEnv crearInfoEnvQuieto() {
+	struct informacionEnv infoEnv;
+
+	infoEnv.animacionActual = ACCION_PARADO;
+	infoEnv.flip = SDL_FLIP_NONE;
+	infoEnv.movimiento = STAND;
+
+	return infoEnv;
 }
