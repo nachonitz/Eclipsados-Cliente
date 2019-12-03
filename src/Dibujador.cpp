@@ -155,7 +155,10 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 		}
 
 		renderizableActual.source = info.animados[i].src;
-		reproductorMusica->reproducirSonidoJugadorSegunSrc(renderizableActual.source, info.animados[i].elementoEnMano);
+
+		// reproducir sonido solo si esta conectado! (si se desconecta en el tick justo, spamea sonido)
+		if (info.animados[i].estaActivo)
+			reproductorMusica->reproducirSonidoJugadorSegunSrc(renderizableActual.source, info.animados[i].elementoEnMano);
 
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
