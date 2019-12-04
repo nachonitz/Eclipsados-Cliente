@@ -117,7 +117,13 @@ void* render_vista(void*arg){
 				if (nivel != 0){
 					//delete(musicaFondo);
 				}
-				if(info.nivelActual == 2){
+				cout<<nivel<<endl;
+				cout<<info.nivelActual<<endl;
+				cout<<info.perdieronTodos<<endl;
+				if(nivel !=0 && info.nivelActual == 2 ){
+					//&& !info.perdieronTodos
+					//perdieron todos es que se esta reconectando el jugador...
+
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false, info.nivelActual);
 
 					// musicaFondo->stop();
