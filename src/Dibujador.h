@@ -87,7 +87,7 @@ public:
 
 	void mostrarPantallaEspera(int myId);
 	void mostrarPantallaErrorConTexto(std::string mensaje);
-	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
+	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego, int nivel);
 	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombresJugadores[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
 
 	void mostrarIntroEclipsados(Sonido* musica);

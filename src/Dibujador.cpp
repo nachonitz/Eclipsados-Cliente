@@ -711,7 +711,7 @@ void Dibujador::mostrarPantallaErrorConTexto(std::string mensaje){
 	SDL_Delay(5000);
 }
 
-void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJugadores,bool finDelJuego){
+void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJugadores,bool finDelJuego, int nivel){
 	SDL_Surface* surfaceTextoEsperando;
 	SDL_Color colorTextoParcial;
 	SDL_Color colorTextoParcialSombreado;
@@ -802,7 +802,7 @@ void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJuga
 
 	maxTempScore = 0;
 	int scoresParcialesCopy[MAX_CLIENTES] = {0,0,0,0};
-	if(!finDelJuego){
+	if(!finDelJuego || nivel == 1){
 		for(int i=0; i< (cantidadJugadores); i++){
 			scoresParcialesCopy[i] = scores[i];
 			scoresParciales[i]=scores[i];

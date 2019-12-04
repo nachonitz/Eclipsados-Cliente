@@ -118,7 +118,7 @@ void* render_vista(void*arg){
 					//delete(musicaFondo);
 				}
 				if(info.nivelActual == 2){
-					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false);
+					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false, info.nivelActual);
 
 					pthread_mutex_lock(&mutexPantallaScores);
 					mostrandoPantallaScores = true;
@@ -132,11 +132,14 @@ void* render_vista(void*arg){
 				}
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida
-
 					dibujador.mostrarPantallaGameOver(info.scores,nombres,info.cantJugadores,info.perdieronTodos);
 					sleep(5);
+					if(nivel == 1){
+						dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true,1);
+					}else{
+						dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true, 2);
+					}
 
-					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true);
 					sleep(7);
 					salir = true;
 				}
