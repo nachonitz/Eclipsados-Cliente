@@ -1021,6 +1021,10 @@ void Dibujador::mostrarIntroEclipsados(Sonido* musica) {
 	SDL_Surface* surfLogo;
 	SDL_Rect logoDest;
 
+	SDL_Texture* texEclip;
+	SDL_Surface* surfEclip;
+	SDL_Rect eclipDest;
+
 	logoDest.x=300;logoDest.y=200;logoDest.w=200;logoDest.h=200;
 	surfLogo = IMG_Load("sprites/logo-retro.png");
 	texLogo = SDL_CreateTextureFromSurface(ren,surfLogo);
@@ -1040,10 +1044,6 @@ void Dibujador::mostrarIntroEclipsados(Sonido* musica) {
 
 	}
 
-	SDL_Texture* texEclip;
-	SDL_Surface* surfEclip;
-	SDL_Rect eclipDest;
-
 	eclipDest.x=300;eclipDest.y=425;eclipDest.w=200;eclipDest.h=50;
 	surfEclip= IMG_Load("sprites/logo-texto.png");
 	texEclip= SDL_CreateTextureFromSurface(ren,surfEclip);
@@ -1062,8 +1062,6 @@ void Dibujador::mostrarIntroEclipsados(Sonido* musica) {
 		SDL_Delay(1000/90);
 
 	}
-
-
 
 	SDL_Delay(2000);
 

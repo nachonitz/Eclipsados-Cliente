@@ -1,5 +1,6 @@
 <configuracionCliente>
 	<debugLevel>DEBUG</debugLevel>
+	<mostrarIntro>true</mostrarIntro>
 	<escenario>
 		<niveles>
 			<nivel1>

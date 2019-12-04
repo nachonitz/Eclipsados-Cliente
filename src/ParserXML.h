@@ -26,7 +26,7 @@ class ParserXML {
 public:
 	ParserXML(std::string rutaConfig);
 
-	void parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos);
+	void parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos, bool* mostrarIntro);
 
 	void parsearConfigDefault(int *cantEnemigos, int *cantCuchillos, int *cantCajas, int *cantCanios, int *cantBarriles);
 
@@ -35,6 +35,8 @@ public:
 	void asignarValor(int* variable, const char* nombre, tinyxml2::XMLHandle base, tinyxml2::XMLElement* backup);
 
 	void asignarLista(std::vector<std::string> &lista, tinyxml2::XMLElement* eBase, const char * nombreItems);
+
+	void asignarBool(bool* variable, const char* nombre, tinyxml2::XMLHandle base, tinyxml2::XMLElement* backup);
 
 
 	void setDebugLevelFromDefault();

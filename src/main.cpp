@@ -166,7 +166,9 @@ int main(int argc, char *argv[]){
 
 	std::vector<std::string> nivel1, nivel2, sprites, sonidos;
 
-	parser.parsearConfig(nivel1, nivel2, sprites, sonidos);
+	bool mostrarIntro = true;
+
+	parser.parsearConfig(nivel1, nivel2, sprites, sonidos, &mostrarIntro);
 
 	nivel = 0;
 
@@ -195,7 +197,8 @@ int main(int argc, char *argv[]){
 
 	musicaFondo = new Sonido(sonidos);
 
-	dibujador.mostrarIntroEclipsados(musicaFondo);
+	if (mostrarIntro)
+		dibujador.mostrarIntroEclipsados(musicaFondo);
 
 	dibujador.login(& credencialesCliente, false,false);
 	//-> Ventana Login

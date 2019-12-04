@@ -60,7 +60,7 @@ void ParserXML::setDebugLevelFromDefault() {
 }
 
 
-void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos) {
+void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std::string> &nivel2, std::vector<std::string> &sprites, std::vector<std::string> &sonidos, bool* mostrarIntro) {
 
 	Logger::getInstance()->log(INFO, "Iniciando parseo de XML.");
 
@@ -166,6 +166,10 @@ void ParserXML::parsearConfig(std::vector<std::string> &nivel1, std::vector<std:
 		asignarLista(sonidos, configDefault.FirstChildElement("configuracion")->FirstChildElement("sonidos"), "sonido");
 	}
 
+	asignarBool(mostrarIntro, "mostrarIntro", hRaiz, configDefault.FirstChildElement("configuracionCliente"));
+	Logger::getInstance()->log(DEBUG, std::string("Mostrar Intro parseado como: " + std::to_string(*mostrarIntro)));
+
+
 	Logger::getInstance()->log(INFO, "Finalizado el parseo del XML.");
 
 }
@@ -192,6 +196,24 @@ void ParserXML::asignarValor(int* variable, const char* nombre, XMLHandle base, 
 
 		Logger::getInstance()->log(ERROR, "Etiqueta <" + std::string(nombre) + "> inexistente o con datos erroneos/nulos. Utilizando valor predeterminado.");
 		backup->FirstChildElement(nombre)->QueryIntText(variable);
+	}
+
+
+}
+
+void ParserXML::asignarBool(bool* variable, const char* nombre, XMLHandle base, XMLElement* backup) {
+
+	XMLElement* pElemento = base.FirstChildElement(nombre).ToElement();
+
+	XMLError error = XML_SUCCESS;
+
+	if (pElemento)
+		error = pElemento->QueryBoolText(variable);
+
+	if (!pElemento || error != XML_SUCCESS) {
+
+		Logger::getInstance()->log(ERROR, "Etiqueta <" + std::string(nombre) + "> inexistente o con datos erroneos/nulos. Utilizando valor predeterminado.");
+		backup->FirstChildElement(nombre)->QueryBoolText(variable);
 	}
 
 
