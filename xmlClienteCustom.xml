@@ -52,5 +52,6 @@
 		<sonido>musica/eclipsadosLogo.wav</sonido>
 		<sonido>musica/acciones/saltoConPatada.wav</sonido>
 		<sonido>musica/finNivel1.wav</sonido>
+		<sonido>musica/acciones/roturaElemento.wav</sonido>
 	</sonidos>
 </configuracionCliente>

@@ -58,6 +58,10 @@ Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
     if (finNivel1)
     	Mix_VolumeChunk(finNivel1, 80);
 
+    roturaElemento = cargarChunk(rutasParseadas[12].c_str());
+    if (roturaElemento)
+    	Mix_VolumeChunk(roturaElemento, 20);
+
 }
 
 Mix_Music* Sonido::cargarMusica(const char* ruta) {
@@ -187,7 +191,11 @@ void Sonido::reproducirSonidoJugadorSegunSrc(SDL_Rect& srcJugador, int ELEMENTO_
 }
 
 void Sonido::reproducirSonidoElementoSegunSrc(SDL_Rect& srcElemento) {
+	int x = srcElemento.x;
+	int y = srcElemento.y;
 
+	if (y == 100*3)
+		this->reproducir(roturaElemento);
 }
 
 

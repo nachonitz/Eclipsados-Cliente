@@ -42,7 +42,7 @@ private:
 	Mix_Chunk* agarrarElemento;
 	Mix_Chunk *saltoConPatada= nullptr;
 	Mix_Chunk *muerteJugador,*muerteEnemigo;
-	Mix_Chunk *finNivel1;
+	Mix_Chunk *finNivel1, *roturaElemento;
 
 
 	int nivelActual;

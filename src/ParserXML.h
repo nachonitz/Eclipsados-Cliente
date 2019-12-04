@@ -12,7 +12,7 @@
 
 #define CANT_CAPAS 3
 #define CANT_SPRITES 22
-#define CANT_SONIDOS 12
+#define CANT_SONIDOS 13
 
 #include <string>
 
