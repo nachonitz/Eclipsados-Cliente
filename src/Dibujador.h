@@ -90,6 +90,8 @@ public:
 	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
 	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombresJugadores[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
 
+	void mostrarIntroEclipsados(Sonido* musica);
+
 	static void toggleTestMode() {Dibujador::showTestMode = !Dibujador::showTestMode;}
 
 private:

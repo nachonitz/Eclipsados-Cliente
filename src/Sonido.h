@@ -25,6 +25,8 @@ public:
 
 	void pasarNivel(int numeroNivel);
 
+	void reproducirSonidoIntro();
+
 
 private:
 	//La musica de fondo
@@ -33,6 +35,7 @@ private:
 	//Efectos de sonidos
 	Mix_Chunk *golpeMano, *golpeCuchillo, *golpeCanio;
 	Mix_Chunk* recibirDanio= nullptr;
+	Mix_Chunk* intro;
 	Mix_Chunk* roturaElemento = nullptr;
 	Mix_Chunk* agarrarElemento;
 	Mix_Chunk *salto= nullptr;
