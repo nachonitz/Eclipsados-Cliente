@@ -28,9 +28,9 @@ Controlador::Controlador() {
 			Logger::getInstance()->log(DEBUG, "Warning: Unable to open game controller! SDL Error: %s\n" /*SDL_GetError()*/);
 		}
 		//Cosas Para Loggear
-		Logger::getInstance()->log(INFO, "Controller Name: " + std::string(SDL_JoystickName(gameController)));
-		Logger::getInstance()->log(INFO, "Cant Axes: " + std::to_string(SDL_JoystickNumAxes(gameController)));
-		Logger::getInstance()->log(INFO, "Cant Buttons: " + std::to_string(SDL_JoystickNumButtons(gameController)));
+		Logger::getInstance()->log(INFO, "Controller Name: " /*SDL_JoystickName(gameController)*/);
+		Logger::getInstance()->log(INFO, "Cant Axes: " /* SDL_JoystickNumAxes(gameController)*/);
+		Logger::getInstance()->log(INFO, "Cant Buttons: " /* SDL_JoystickNumButtons(gameController)*/);
 	}
 }
 
@@ -89,36 +89,7 @@ void Controlador::moviendoIzquierda(int setAction){
 	}
 }
 
-void Controlador::preparoSalto(int tipoDeSalto, int setAction){
-	tipoSalto = tipoDeSalto;
-	if(accionActual != setAction){
-		accionActual = setAction;
-		infoEnv.animacionActual = setAction;
-		infoEnv.flip = spriteFlip;
-	}
-}
-
-void Controlador::agacharse(SDL_RendererFlip spriteFlip){
-	infoEnv.movimiento = ACCION_AGACHADO;
-	infoEnv.flip = spriteFlip;
-	if(accionActual != agachado){
-		accionActual = agachado;
-		infoEnv.animacionActual = accionActual;
-		infoEnv.flip = spriteFlip;
-	}
-}
-
-void Controlador::pegar(SDL_RendererFlip spriteFlip){
-	infoEnv.movimiento = ACCION_GOLPEAR;
-	infoEnv.flip = spriteFlip;
-	if(accionActual != golpear){
-		accionActual = golpear;
-		infoEnv.animacionActual = accionActual;
-		infoEnv.flip = spriteFlip;
-	}
-}
-
-void Controlador::verificarJoystick(SDL_Event e, Sonido* musica, bool *salir){
+void Controlador::verificarJoystick(){
 
 	//Joystciks
 
@@ -161,47 +132,15 @@ void Controlador::verificarJoystick(SDL_Event e, Sonido* musica, bool *salir){
 		infoEnv.movimiento = STAND;
 	}
 
-	if(e.type == SDL_JOYBUTTONDOWN){
-			switch(e.jbutton.button){
-			case 1: preparoSalto(SALTO_VERTICAL, saltoVertical);
-					if( x_move > JOYSTICK_DEAD_ZONE ){
-						preparoSalto(SALTO_DERECHA, salto);
-						teclado = false;
-					}
-					if( x_move < -JOYSTICK_DEAD_ZONE ){
-						preparoSalto(SALTO_IZQUIERDA, salto);
-						teclado = false;
-					}
-			break;
-			case 2: agacharse(spriteFlip);
-			break;
-			case 0: pegar(spriteFlip);
-			break;
-			case 3:	if( x_move > JOYSTICK_DEAD_ZONE ){
-						preparoSalto(SALTO_DERECHA, saltoPatada);
-						teclado = false;
-					}
-					if( x_move < -JOYSTICK_DEAD_ZONE ){
-						preparoSalto(SALTO_IZQUIERDA, saltoPatada);
-						teclado = false;
-					}
-			break;
-			case 8:	if(musicPlaying){
-						Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
-						musica->stop();
-						musicPlaying = false;
-					}else{
-						Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
-						musica->resume();
-						musicPlaying = true;
-					}
-			break;
-			case 9:	Logger::getInstance()->log(INFO, "START apretado. Desconexion voluntaria. Desconectando del servidor");
-					*salir = true;
-			break;
-			}
-		}
+}
 
+void Controlador::preparoSalto(int tipoDeSalto, int setAction){
+	tipoSalto = tipoDeSalto;
+	if(accionActual != setAction){
+		accionActual = setAction;
+		infoEnv.animacionActual = setAction;
+		infoEnv.flip = spriteFlip;
+	}
 }
 
 struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
@@ -216,7 +155,47 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 	x_move = SDL_JoystickGetAxis(gameController, 0);
 	y_move = SDL_JoystickGetAxis(gameController, 1);
 
-	verificarJoystick(e, musica, salir);
+	verificarJoystick();
+	if(e.type == SDL_JOYBUTTONDOWN){
+			switch(e.jbutton.button){
+			case 0: preparoSalto(SALTO_VERTICAL, saltoVertical);
+					if( x_move > JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_DERECHA, salto);
+						teclado = false;
+					}
+					if( x_move < -JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_IZQUIERDA, salto);
+						teclado = false;
+					}
+			break;
+			case 1: goto agacharse;
+			break;
+			case 2: goto pegar;
+			break;
+			case 3:	if( x_move > JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_DERECHA, saltoPatada);
+						teclado = false;
+					}
+					if( x_move < -JOYSTICK_DEAD_ZONE ){
+						preparoSalto(SALTO_IZQUIERDA, saltoPatada);
+						teclado = false;
+					}
+			break;
+			case 6:	if(musicPlaying){
+						Logger::getInstance()->log(INFO, "Opcion de silenciar la musica de fondo elegida");
+						musica->stop();
+						musicPlaying = false;
+					}else{
+						Logger::getInstance()->log(INFO, "Opcion de reanudar la musica de fondo elegida");
+						musica->resume();
+						musicPlaying = true;
+					}
+			break;
+			case 7:	Logger::getInstance()->log(INFO, "START apretado. Desconexion voluntaria. Desconectando del servidor");
+					*salir = true;
+			break;
+			}
+		}
 
 	if(keystates[SDL_SCANCODE_RIGHT] && !(keystates[SDL_SCANCODE_SPACE]) && !golpeando && !agachando) {
 		teclado = true;
@@ -276,27 +255,26 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 	}
 
 	if(keystates[SDL_SCANCODE_LSHIFT] && !saltando && !agachando) {
-		pegar(spriteFlip);
-		/*if(accionActual != golpear){
+		pegar:
+		if(accionActual != golpear){
 			accionActual = golpear;
 			infoEnv.animacionActual = accionActual;
 			infoEnv.flip = spriteFlip;
-		}*/
+		}
 	}
 
 	if(keystates[SDL_SCANCODE_LCTRL] && !saltando && !golpeando) {
-		agacharse(spriteFlip);
-		/*if(accionActual != agachado){
+		agacharse:
+		if(accionActual != agachado){
 			accionActual = agachado;
 			infoEnv.animacionActual = accionActual;
 			infoEnv.flip = spriteFlip;
-		}*/
+		}
 	}
 
 	if(e.type == SDL_QUIT){
 		Logger::getInstance()->log(INFO, "X apretada. Desconexion voluntaria. Desconectando del servidor");
 		*salir = true;
-		return infoEnv;
 	}
 
 	if(e.type == SDL_KEYUP && !golpeando && !agachando){
@@ -304,7 +282,6 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 		infoEnv.animacionActual = accionActual;
 		infoEnv.flip = spriteFlip;
 		infoEnv.movimiento = STAND;
-		return infoEnv;
 	}
 
 	if(e.type == SDL_KEYDOWN) {
@@ -337,7 +314,6 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 				infoEnv.animacionActual = ACCION_PARADO;
 			break;
 		}
-		return infoEnv;
 	}
 
 	if (e.type == SDL_KEYUP) {
@@ -350,7 +326,6 @@ struct informacionEnv Controlador::eventHandler(Sonido* musica, bool *salir){
 			testModeYaApretado = false;
 			break;
 		}
-		return infoEnv;
 	}
 
 	return infoEnv;
