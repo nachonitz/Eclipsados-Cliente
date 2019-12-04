@@ -225,12 +225,6 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 		}
 	}
 
-	for (uint i = 0; i < renderizables.size(); i++) {
-		if ((renderizables[i].source.y <= 280*6 && renderizables[i].source.y >= 280*4) || (renderizables[i].source.y >= 280*2 && renderizables[i].source.y <= 280*3)){
-			SDL_RenderCopyEx(ren, renderizables[i].textura, &renderizables[i].source, &renderizables[i].destination, 0, NULL, renderizables[i].flip);
-		}
-	}
-
 	if (showTestMode) {
 		SDL_SetRenderDrawColor(ren, 25, 25,25, 175);
 		SDL_RenderFillRect(ren, &bannerTestMode);
