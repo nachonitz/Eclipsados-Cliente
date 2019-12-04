@@ -30,8 +30,11 @@ public:
 	void closeController();
 	void moviendoDerecha(int setAction);
 	void moviendoIzquierda(int setAction);
-	void verificarJoystick();
+	void verificarJoystick(SDL_Event e, Sonido* musica, bool *salir);
 	void preparoSalto(int tipoDeSalto, int setAction);
+	void agacharse(SDL_RendererFlip spriteFlip);
+	void pegar(SDL_RendererFlip spriteFlip);
+
 
 private:
 	SDL_Event e;
