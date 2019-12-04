@@ -120,6 +120,10 @@ void* render_vista(void*arg){
 				if(info.nivelActual == 2){
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, false, info.nivelActual);
 
+					// musicaFondo->stop();
+
+					// musicaFondo->reproducirSonidoFinNivel(); // TODO: queda medio meh
+
 					pthread_mutex_lock(&mutexPantallaScores);
 					mostrandoPantallaScores = true;
 					pthread_mutex_unlock(&mutexPantallaScores);
@@ -129,6 +133,8 @@ void* render_vista(void*arg){
 					pthread_mutex_lock(&mutexQueue);
 					mostrandoPantallaScores = false;
 					pthread_mutex_unlock(&mutexQueue);
+
+					// musicaFondo->resume();
 				}
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida

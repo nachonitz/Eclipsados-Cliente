@@ -28,7 +28,7 @@ Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
 
     golpeCuchillo = cargarChunk(rutasParseadas[4].c_str());
     if (golpeCuchillo)
-    	Mix_VolumeChunk(golpeCuchillo, VOLUMEN_ACCIONES);
+    	Mix_VolumeChunk(golpeCuchillo, VOLUMEN_ACCIONES + 30);
 
     agarrarElemento = cargarChunk(rutasParseadas[5].c_str());
     if (agarrarElemento)
@@ -48,8 +48,15 @@ Sonido::Sonido(std::vector<std::string> &rutasParseadas) {
 
     intro = cargarChunk(rutasParseadas[9].c_str());
     if (intro)
-    	Mix_VolumeChunk(intro, 40);
+    	Mix_VolumeChunk(intro, 60);
 
+    saltoConPatada = cargarChunk(rutasParseadas[10].c_str());
+    if (saltoConPatada)
+    	Mix_VolumeChunk(saltoConPatada, 40);
+
+    finNivel1 = cargarChunk(rutasParseadas[11].c_str());
+    if (finNivel1)
+    	Mix_VolumeChunk(finNivel1, 80);
 
 }
 
@@ -99,6 +106,11 @@ void Sonido::reproducirSonidoIntro() {
 	this->reproducir(intro);
 }
 
+void Sonido::reproducirSonidoFinNivel() {
+	this->reproducir(finNivel1);
+}
+
+
 
 void Sonido::pasarNivel(int numeroNivel) {
 
@@ -118,7 +130,7 @@ void Sonido::reproducirSonidoEnemigoSegunSrc(SDL_Rect& srcEnemigo) {
 	int x = srcEnemigo.x;
 	int y = srcEnemigo.y;
 
-	if (x != 220) // reproduce sonido solo si esta en el tick=1
+	if (x != 0) // reproduce sonido solo si esta en el tick=1
 		return;
 
 	switch (y) {
@@ -127,7 +139,7 @@ void Sonido::reproducirSonidoEnemigoSegunSrc(SDL_Rect& srcEnemigo) {
 		break;
 
 	case 264*3:	// recibir danio
-		// this->reproducir(recibirDanio); // no reproducir nada de momento
+		this->reproducir(recibirDanio); // no reproducir nada de momento
 		break;
 
 	case 264*4:	// muerte :(
@@ -165,6 +177,10 @@ void Sonido::reproducirSonidoJugadorSegunSrc(SDL_Rect& srcJugador, int ELEMENTO_
 			this->reproducir(recibirDanio);
 		else if (x == 230*4)
 			this->reproducir(muerteJugador);
+		break;
+
+	case 280*4:	// saltando con patada
+		this->reproducir(saltoConPatada);
 		break;
 	}
 

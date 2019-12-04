@@ -27,6 +27,9 @@ public:
 
 	void reproducirSonidoIntro();
 
+	void reproducirSonidoFinNivel();
+
+
 
 private:
 	//La musica de fondo
@@ -36,11 +39,11 @@ private:
 	Mix_Chunk *golpeMano, *golpeCuchillo, *golpeCanio;
 	Mix_Chunk* recibirDanio= nullptr;
 	Mix_Chunk* intro;
-	Mix_Chunk* roturaElemento = nullptr;
 	Mix_Chunk* agarrarElemento;
-	Mix_Chunk *salto= nullptr;
-	Mix_Chunk *patada= nullptr;
+	Mix_Chunk *saltoConPatada= nullptr;
 	Mix_Chunk *muerteJugador,*muerteEnemigo;
+	Mix_Chunk *finNivel1;
+
 
 	int nivelActual;
 

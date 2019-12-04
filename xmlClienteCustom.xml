@@ -44,11 +44,13 @@
 		<sonido>musica/Nivel2-musica.mp3</sonido>
 		<sonido>musica/acciones/golpeMano.wav</sonido>
 		<sonido>musica/acciones/golpeCanio.wav</sonido>
-		<sonido>musica/acciones/golpeCuchillo.wav</sonido>
+		<sonido>musica/acciones/golpeCuchillo4.wav</sonido>
 		<sonido>musica/acciones/agarrarElemento.wav</sonido>
 		<sonido>musica/acciones/muerteJugador.wav</sonido>
 		<sonido>musica/acciones/muerteEnemigo.wav</sonido>
 		<sonido>musica/acciones/recibirGolpe.wav</sonido>
 		<sonido>musica/eclipsadosLogo.wav</sonido>
+		<sonido>musica/acciones/saltoConPatada.wav</sonido>
+		<sonido>musica/finNivel1.wav</sonido>
 	</sonidos>
 </configuracionCliente>

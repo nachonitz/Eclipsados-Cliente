@@ -128,7 +128,9 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 		renderizableActual.textura = texEnemigo[info.animados[i].tipoEnemigo];
 
 		renderizableActual.source = info.animados[i].src;
-		reproductorMusica->reproducirSonidoEnemigoSegunSrc(renderizableActual.source);
+
+		if (info.animados[i].tipoEnemigo != 3)	// si no es el final boss
+			reproductorMusica->reproducirSonidoEnemigoSegunSrc(renderizableActual.source);
 
 		renderizableActual.destination = info.animados[i].dest;
 		renderizableActual.flip = info.animados[i].flip;
