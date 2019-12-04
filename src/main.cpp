@@ -19,8 +19,10 @@ credencial credencialesCliente;
 queue <struct informacionRec> colaInfoRecibida;
 pthread_mutex_t mutexQueue;
 pthread_mutex_t mutexTimer;
+string nombres[MAX_CLIENTES];
 bool serverConectado, salir;
 bool terminarHiloNotResponding = false;
+bool nombresInicializados = false;
 int tiempoEsperaSend, nivel, cantidadClientes;
 
 void* mantenerAplicacionActiva(void*arg){
@@ -72,6 +74,14 @@ void* message_recieve(void*arg){
 	while(serverConectado && !salir){
 		//Logger::getInstance()->log(DEBUG, "Recibiendo info de servidor...");
 		struct informacionRec info = cliente.recibirInformacion();
+
+		if(!nombresInicializados){
+			for(int i = 0; i< info.cantJugadores;i++){
+				nombres[i] = info.credenciales[i].usuario;
+			}
+			nombresInicializados = true;
+		}
+
 		pthread_mutex_lock(&mutexQueue);
 		colaInfoRecibida.push(info);
 		pthread_mutex_unlock(&mutexQueue);
@@ -102,10 +112,7 @@ void* render_vista(void*arg){
 				if(info.nivelActual == 3){
 					//nivel 3 va a ser cuando termina la partida
 
-					int scores[4]= {1000,2000,3000,4000};
-					std::string nombres[MAX_CLIENTES] = {"Juana","Messi","Barovero","Gabi_9"};
-
-					dibujador.mostrarPantallaGameOver(scores,nombres,4,false);
+					dibujador.mostrarPantallaGameOver(info.scores,nombres,info.cantJugadores,info.perdieronTodos);
 					sleep(5);
 
 					dibujador.mostrarPantallaScores(info.scores, info.cantJugadores, true);
@@ -115,7 +122,6 @@ void* render_vista(void*arg){
 				musicaFondo->pasarNivel(info.nivelActual);
 				nivel = info.nivelActual;
 			}
-
 			dibujador.dibujar(info, cliente.getID(), musicaFondo);
 			colaInfoRecibida.pop();
 		}

@@ -896,7 +896,7 @@ void Dibujador::mostrarPantallaScores(int scores[MAX_CLIENTES], int cantidadJuga
 	SDL_RenderPresent(ren);
 }
 
-void Dibujador::mostrarPantallaGameOver(int scores[MAX_CLIENTES], string nombres[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos){
+void Dibujador::mostrarPantallaGameOver(int scores[MAX_CLIENTES], string nombresJugadores[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos){
 	SDL_Surface* surfaceTextoEsperando;
 
 	SDL_Color colorTexto;
@@ -973,7 +973,7 @@ void Dibujador::mostrarPantallaGameOver(int scores[MAX_CLIENTES], string nombres
 	for(int i=0; i<cantidadJugadores; i++){
 		if(scores[i]>=scoreMaximo){
 			scoreMaximo = scores[i];
-			nombreGanador = nombres[i];
+			nombreGanador = nombresJugadores[i];
 		}
 	}
 

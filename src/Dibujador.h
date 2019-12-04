@@ -39,6 +39,12 @@ struct capa{
 	SDL_Rect src;
 };
 
+struct credencial {
+	char usuario[MAX_USER_LEN];
+	char contrasenia[MAX_PASS_LEN];
+	bool credencialValida;
+	int myID;
+};
 
 struct informacionRec{
 	struct elemento elementos[MAX_CANT_ELEMENTOS];
@@ -51,15 +57,12 @@ struct informacionRec{
 	int cantElementos;
 	int cantJugadores;
 	int nivelActual;
+	struct credencial credenciales [MAX_CLIENTES];
+	bool perdieronTodos;
 };
 
 
-struct credencial {
-	char usuario[MAX_USER_LEN];
-	char contrasenia[MAX_PASS_LEN];
-	bool credencialValida;
-	int myID;
-};
+
 
 struct renderizable {
 	SDL_Texture* textura;
@@ -85,7 +88,7 @@ public:
 	void mostrarPantallaEspera(int myId);
 	void mostrarPantallaErrorConTexto(std::string mensaje);
 	void mostrarPantallaScores (int scores[MAX_CLIENTES], int cantidadJugadores, bool finDelJuego);
-	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombres[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
+	void mostrarPantallaGameOver(int scores[MAX_CLIENTES], std::string nombresJugadores[MAX_CLIENTES], int cantidadJugadores,int perdieronTodos);
 
 	static void toggleTestMode() {Dibujador::showTestMode = !Dibujador::showTestMode;}
 

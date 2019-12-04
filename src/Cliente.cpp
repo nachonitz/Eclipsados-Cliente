@@ -154,8 +154,26 @@ struct informacionRec Cliente::recibirInformacion(){
 			recibido += temp;
 		}
 	}
-
-
+	for(int i=0; i < infoRec.cantJugadores; i++){
+		recibido = 0;
+		while (recibido < sizeof(struct credencial)){
+			int temp= recv(cliente, &infoRec.credenciales[i]+recibido, sizeof(infoRec.credenciales[i])-recibido, 0);
+			if (temp <= 0) {
+				infoRec.cantJugadores = -1;
+				return infoRec;
+			}
+			recibido += temp;
+		}
+	}
+	recibido = 0;
+	while (recibido < sizeof(bool)){
+		int temp= recv(cliente, &infoRec.perdieronTodos+recibido, sizeof(infoRec.perdieronTodos)-recibido, 0);
+		if (temp <= 0) {
+			infoRec.cantJugadores = -1;
+			return infoRec;
+		}
+		recibido += temp;
+	}
 	return infoRec;
 }
 
