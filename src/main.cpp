@@ -1,7 +1,6 @@
 #include "Cliente.h"
 #include <pthread.h>
 #include "Dibujador.h"
-#include <queue>
 #include "ParserXML.h"
 #include "Sonido.h"
 #include <string>
@@ -16,25 +15,18 @@ Dibujador dibujador;
 Controlador* controlador;
 Sonido *musicaFondo;
 credencial credencialesCliente;
-queue <struct informacionRec> colaInfoRecibida;
-pthread_mutex_t mutexQueue, mutexPantallaScores;
+pthread_mutex_t mutexLastRec, mutexPantallaScores;
 pthread_mutex_t mutexTimer;
 string nombres[MAX_CLIENTES];
 bool serverConectado, salir;
-bool terminarHiloNotResponding = false;
 bool nombresInicializados = false;
 int tiempoEsperaSend, nivel, cantidadClientes;
 bool mostrandoPantallaScores = false;
 
+struct informacionRec lastRec;
+
 struct informacionEnv crearInfoEnvQuieto();
 
-void* mantenerAplicacionActiva(void*arg){
-	int i = 0;
-	while(!terminarHiloNotResponding){
-		sleep(0.5);
-		i++;
-	}
-}
 
 void* timer(void*arg){
 	Logger::getInstance()->log(DEBUG, "Hilo Timer creado");
@@ -94,9 +86,9 @@ void* message_recieve(void*arg){
 			nombresInicializados = true;
 		}
 
-		pthread_mutex_lock(&mutexQueue);
-		colaInfoRecibida.push(info);
-		pthread_mutex_unlock(&mutexQueue);
+		pthread_mutex_lock(&mutexLastRec);
+		lastRec = info;
+		pthread_mutex_unlock(&mutexLastRec);
 		//terminar hilo timer
 		pthread_mutex_lock(&mutexTimer);
 		tiempoEsperaSend =0;
@@ -108,10 +100,11 @@ void* render_vista(void*arg){
 	serverConectado = true;
 	salir = false;
 	while(serverConectado && !salir){
-		if(!colaInfoRecibida.empty()){
-			pthread_mutex_lock(&mutexQueue);
-			struct informacionRec info = colaInfoRecibida.front();
-			pthread_mutex_unlock(&mutexQueue);
+		if(lastRec.cantJugadores > 0){
+
+			pthread_mutex_lock(&mutexLastRec);
+			struct informacionRec info = lastRec;
+			pthread_mutex_unlock(&mutexLastRec);
 
 			if(nivel != info.nivelActual){
 				if (nivel != 0){
@@ -134,9 +127,9 @@ void* render_vista(void*arg){
 
 					sleep(7);
 
-					pthread_mutex_lock(&mutexQueue);
+					pthread_mutex_lock(&mutexPantallaScores);
 					mostrandoPantallaScores = false;
-					pthread_mutex_unlock(&mutexQueue);
+					pthread_mutex_unlock(&mutexPantallaScores);
 
 					// musicaFondo->resume();
 				}
@@ -157,7 +150,8 @@ void* render_vista(void*arg){
 				nivel = info.nivelActual;
 			}
 			dibujador.dibujar(info, cliente.getID(), musicaFondo);
-			colaInfoRecibida.pop();
+
+			SDL_Delay(FRAME_DELAY);
 		}
 	}
 }
@@ -184,7 +178,7 @@ int main(int argc, char *argv[]){
 
 	credencialesCliente.credencialValida = false;
 
-	pthread_mutex_init(&mutexQueue,NULL);
+	pthread_mutex_init(&mutexLastRec,NULL);
 	pthread_mutex_init(&mutexTimer,NULL);
 	pthread_mutex_init(&mutexPantallaScores,NULL);
 
