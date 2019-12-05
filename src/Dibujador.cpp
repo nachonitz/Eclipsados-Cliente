@@ -86,6 +86,13 @@ void Dibujador::dibujar(struct informacionRec info, int ID, Sonido* reproductorM
 
 	SDL_RenderClear(ren);
 
+    SDL_FreeSurface( surfaceTextoScore );
+    SDL_DestroyTexture(texturaTextoScore[0]);
+    SDL_DestroyTexture(texturaTextoScore[1]);
+    SDL_DestroyTexture(texturaTextoScore[2]);
+    SDL_DestroyTexture(texturaTextoScore[3]);
+
+
 	if (info.capas[2].nivel == 1){
 		SDL_RenderCopy(ren, tex3, &info.capas[2].src, &info.capas[2].dest);
 		SDL_RenderCopy(ren, tex2, &info.capas[1].src, &info.capas[1].dest);
