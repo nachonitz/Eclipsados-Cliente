@@ -1,7 +1,8 @@
 # Final Fight - Cliente
-### Grupo Eclipsados
 
 <p align="center">
+    <b>Grupo Eclipsados</b><br>
+  <br><br>
   <img src="./intro-eclipsados.gif">
 </p>
 
