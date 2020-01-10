@@ -10,6 +10,10 @@ Juego estilo ['Final Fight'](https://www.youtube.com/watch?v=KL22s0MPiA4), con s
 
 ![Final Fight](./screenshot.png)
 
+Muestra de una partida tipica con dos jugadores en linea:
+
+[![FINAL FIGHT](https://i.ibb.co/wMFWn30/https-i-vimeocdn-com-video-845456794-720.jpg)](https://vimeo.com/383872369 "FINAL FIGHT")
+
 Este repositorio documenta el desarrollo de las fases 2 y 3 del proyecto Final Fight, para la materia Taller de Programacion I de la Facultad de Ingenieria de la UBA. Proyecto realizado el segundo cuatrimestre de 2019.
 
 La ejecucion del codigo aqui presentado es dependiente de su respectivo servidor, disponible en el repositorio [Eclipsados-Servidor](https://github.com/nachonitz/Eclipsados-Servidor).
